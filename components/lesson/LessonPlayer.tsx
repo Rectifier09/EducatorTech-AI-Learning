@@ -16,6 +16,7 @@ import { FillBlankBlockView } from "./blocks/FillBlankBlockView";
 import { ReflectionBlockView } from "./blocks/ReflectionBlockView";
 import { PromptWriteBlockView } from "./blocks/PromptWriteBlockView";
 import { PlaygroundBlockView } from "./blocks/PlaygroundBlockView";
+import { PostSurvey } from "@/components/capstone/PostSurvey";
 import { LessonComplete } from "./LessonComplete";
 import { finishLesson } from "@/app/actions/lesson";
 import type { Lesson, Block } from "@/lib/content/types";
@@ -158,6 +159,8 @@ function BlockRenderer({
           onNext={onNext}
         />
       );
+    case "postSurvey":
+      return <PostSurvey onNext={onNext} />;
     default:
       // exhaustive — all block types handled above
       return null;

@@ -27,9 +27,8 @@
       "saveToToolkit": false
     },
     {
-      "type": "reflection",
-      "id": "l7-reflect",
-      "question": "How confident do you feel using AI in your teaching now?"
+      "type": "postSurvey",
+      "id": "l7-postsurvey"
     }
   ]
 }

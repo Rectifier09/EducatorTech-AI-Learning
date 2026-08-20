@@ -67,6 +67,11 @@ const playgroundSchema = z.object({
   saveToToolkit: z.boolean().optional(),
 });
 
+const postSurveySchema = z.object({
+  type: z.literal("postSurvey"),
+  id: z.string(),
+});
+
 export const blockSchema = z.discriminatedUnion("type", [
   theorySchema,
   mcqSchema,
@@ -75,6 +80,7 @@ export const blockSchema = z.discriminatedUnion("type", [
   reflectionSchema,
   promptWriteSchema,
   playgroundSchema,
+  postSurveySchema,
 ]);
 
 export const lessonSchema = z.object({
