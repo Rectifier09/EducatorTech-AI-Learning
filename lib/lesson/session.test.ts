@@ -4,6 +4,7 @@ import {
   advance,
   computeScore,
   personalize,
+  setSpineArtifact,
 } from "./session";
 import type { Lesson } from "@/lib/content/types";
 
@@ -30,6 +31,11 @@ describe("lesson session", () => {
 
   it("scores 100 when there are no gradable results", () => {
     expect(computeScore({})).toBe(100);
+  });
+
+  it("carries the spine artifact in session state", () => {
+    const s = setSpineArtifact(initSession(lessonWith(1)), "my worksheet");
+    expect(s.spineArtifact).toBe("my worksheet");
   });
 
   it("personalizes subject/grade tokens with fallbacks", () => {

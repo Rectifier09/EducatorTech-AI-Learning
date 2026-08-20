@@ -6,6 +6,7 @@ import {
   advance,
   recordResult,
   computeScore,
+  setSpineArtifact,
   type SessionState,
 } from "@/lib/lesson/session";
 import { Button } from "@/components/ui/Button";
@@ -15,6 +16,7 @@ import { OrderBlockView } from "./blocks/OrderBlockView";
 import { FillBlankBlockView } from "./blocks/FillBlankBlockView";
 import { ReflectionBlockView } from "./blocks/ReflectionBlockView";
 import { PromptWriteBlockView } from "./blocks/PromptWriteBlockView";
+import { PlaygroundBlockView } from "./blocks/PlaygroundBlockView";
 import { LessonComplete } from "./LessonComplete";
 import { finishLesson } from "@/app/actions/lesson";
 import type { Lesson, Block } from "@/lib/content/types";
@@ -65,6 +67,8 @@ export function LessonPlayer({
           block={block}
           profile={profile}
           lessonId={lesson.id}
+          spineArtifact={session.spineArtifact}
+          onArtifact={(t) => setSession((s) => setSpineArtifact(s, t))}
           onNext={onNext}
           onResult={onResult}
         />
@@ -96,12 +100,16 @@ function BlockRenderer({
   block,
   profile,
   lessonId,
+  spineArtifact,
+  onArtifact,
   onNext,
   onResult,
 }: {
   block: Block;
   profile: ProfileCtx;
   lessonId: string;
+  spineArtifact?: string;
+  onArtifact: (text: string) => void;
   onNext: () => void;
   onResult: (passed: boolean) => void;
 }) {
@@ -136,6 +144,17 @@ function BlockRenderer({
           block={block}
           onNext={onNext}
           onResult={onResult}
+        />
+      );
+    case "playground":
+      return (
+        <PlaygroundBlockView
+          block={block}
+          profile={profile}
+          lessonId={lessonId}
+          spineArtifact={spineArtifact}
+          onArtifact={onArtifact}
+          onNext={onNext}
         />
       );
     default:
