@@ -1,26 +1,58 @@
 @import "tailwindcss";
 
+/* SahajAiVidya brand tokens — warm "dignified delight" palette.
+   Single light theme for the pilot (the brand identity is defined in light). */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #fffdf7;
+  --surface: #ffffff;
+  --surface-2: #f7f2e8;
+  --sunk: #f1eadb;
+  --ink: #241f2b;
+  --muted: #6b6472;
+  --line: #ece5d8;
+  --line-2: #e3dac9;
+
+  --indigo: #4338ca;
+  --indigo-ink: #372fa8;
+  --indigo-soft: #eeeffc;
+  --amber: #f59e0b;
+  --amber-ink: #b9760a;
+  --amber-soft: #fdf1d9;
+  --green: #10b981;
+  --green-ink: #0b8a62;
+  --green-soft: #e3f6ef;
+
+  --skin: #e9b98d;
+  --hair: #736a7d;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-sunk: var(--sunk);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-brand: var(--indigo);
+  --color-brand-ink: var(--indigo-ink);
+  --color-brand-soft: var(--indigo-soft);
+  --color-accent: var(--amber);
+  --color-accent-ink: var(--amber-ink);
+  --color-accent-soft: var(--amber-soft);
+  --color-success: var(--green);
+  --color-success-ink: var(--green-ink);
+  --color-success-soft: var(--green-soft);
+
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-mulish), system-ui, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-mulish), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
