@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { requestGenerate } from "@/lib/ai/client";
+import { saveToToolkit } from "@/app/actions/toolkit";
 import type { AiMode } from "@/lib/ai/guardrails";
 
 export function Playground({
@@ -10,11 +11,17 @@ export function Playground({
   mode = "playground",
   seedContent,
   onResult,
+  allowSave = true,
+  artifactType = null,
+  lessonId = null,
 }: {
   scaffold: string;
   mode?: AiMode;
   seedContent?: string;
   onResult?: (text: string) => void;
+  allowSave?: boolean;
+  artifactType?: string | null;
+  lessonId?: string | null;
 }) {
   const [prompt, setPrompt] = useState(seedContent ?? scaffold);
   const [output, setOutput] = useState<string | null>(null);
@@ -22,12 +29,20 @@ export function Playground({
     null,
   );
   const [busy, setBusy] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  async function save() {
+    if (!output || saved) return;
+    setSaved(true);
+    await saveToToolkit({ prompt, output, artifactType, lessonId });
+  }
 
   async function run() {
     if (busy || !prompt.trim()) return;
     setBusy(true);
     setError(null);
     setOutput(null);
+    setSaved(false);
     const r = await requestGenerate(prompt, mode);
     setBusy(false);
     if ("error" in r) {
@@ -80,6 +95,16 @@ export function Playground({
         <div className="whitespace-pre-wrap rounded-xl border border-line bg-surface p-3 text-[14px] leading-relaxed">
           {output}
         </div>
+      )}
+      {output && allowSave && (
+        <Button
+          variant={saved ? "ghost" : "primary"}
+          onClick={save}
+          disabled={saved}
+          className="w-full"
+        >
+          {saved ? "Saved to Toolkit ✓" : "Save to Toolkit"}
+        </Button>
       )}
     </div>
   );

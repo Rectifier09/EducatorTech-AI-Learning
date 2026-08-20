@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { getSessionUser, signOut } from "@/lib/auth";
 import { getAllLessons } from "@/lib/content/loader";
 import { getAllProgress } from "@/lib/data/progress";
@@ -50,11 +51,25 @@ export default async function PathPage() {
 
       <PathMap lessons={lessons} progress={progress} />
 
-      <form action={signOut} className="mt-auto pt-4">
-        <Button variant="ghost" type="submit">
-          Sign out
-        </Button>
-      </form>
+      <div className="mt-auto flex flex-col gap-2 pt-4">
+        <div className="flex gap-2">
+          <Link href="/playground" className="flex-1">
+            <Button variant="ghost" className="w-full">
+              Playground
+            </Button>
+          </Link>
+          <Link href="/toolkit" className="flex-1">
+            <Button variant="ghost" className="w-full">
+              My Toolkit
+            </Button>
+          </Link>
+        </div>
+        <form action={signOut}>
+          <Button variant="ghost" type="submit" className="w-full">
+            Sign out
+          </Button>
+        </form>
+      </div>
     </main>
   );
 }
