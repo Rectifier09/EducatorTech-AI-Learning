@@ -3,6 +3,7 @@
 import { getSessionUser } from "@/lib/auth";
 import { upsertProfile } from "@/lib/data/profile";
 import { validateSurveyInput, insertSurvey } from "@/lib/data/survey";
+import { logEvent } from "@/lib/data/events";
 import type { Attitude, Profile } from "@/lib/data/types";
 
 export async function saveOnboardingField(patch: Partial<Profile>): Promise<void> {
@@ -36,4 +37,5 @@ export async function completeOnboarding(): Promise<void> {
   const user = await getSessionUser();
   if (!user) throw new Error("Not authenticated");
   await upsertProfile(user.id, { onboardedAt: new Date().toISOString() });
+  await logEvent("onboarding_completed");
 }
