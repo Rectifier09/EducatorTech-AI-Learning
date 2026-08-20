@@ -1,0 +1,47 @@
+{
+  "gateway": {
+    "id": "ai-foundations",
+    "label": "AI Foundations for Teachers",
+    "live": true
+  },
+  "branches": [
+    {
+      "id": "classroom-craft",
+      "label": "Classroom Craft",
+      "emoji": "🎓",
+      "nodes": [
+        { "id": "grading", "label": "AI for grading & feedback" },
+        { "id": "differentiation", "label": "Differentiation & worksheets" },
+        { "id": "parent-comms", "label": "Parent & admin communication" }
+      ]
+    },
+    {
+      "id": "responsible-ai",
+      "label": "Responsible & Critical AI",
+      "emoji": "🧭",
+      "nodes": [
+        { "id": "scepticism", "label": "Constructive scepticism deep-dive" },
+        { "id": "misuse", "label": "Spotting AI misuse in student work" },
+        { "id": "privacy", "label": "Bias, privacy & safety" }
+      ]
+    },
+    {
+      "id": "tech-basics",
+      "label": "Tech Basics",
+      "emoji": "🛠️",
+      "nodes": [
+        { "id": "tools", "label": "Everyday digital-tool fluency" },
+        { "id": "automation", "label": "Docs & sheets automation" }
+      ]
+    },
+    {
+      "id": "going-further",
+      "label": "Going Further",
+      "emoji": "🚀",
+      "nodes": [
+        { "id": "build-helper", "label": "Build your own AI helper" },
+        { "id": "leading", "label": "Leading AI in your school" }
+      ]
+    }
+  ]
+}
