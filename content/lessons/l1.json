@@ -42,6 +42,11 @@
       ],
       "correctIds": ["draft", "rephrase"],
       "explanation": "AI shines at drafting and rephrasing (you review). Facts need checking, and judgement calls like grading stay with you."
+    },
+    {
+      "type": "reflection",
+      "id": "l1-reflect",
+      "question": "How clear is \"what AI actually is\" for you now?"
     }
   ]
 }

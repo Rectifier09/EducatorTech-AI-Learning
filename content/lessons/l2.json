@@ -27,6 +27,11 @@
         { "id": "context", "text": "…for a Grade 6 Science class on the water cycle…" }
       ],
       "correctOrder": ["task", "context", "format"]
+    },
+    {
+      "type": "reflection",
+      "id": "l2-reflect",
+      "question": "How confident do you feel writing a clear prompt now?"
     }
   ]
 }

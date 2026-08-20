@@ -37,6 +37,11 @@
           "correctIndex": 1
         }
       ]
+    },
+    {
+      "type": "reflection",
+      "id": "l3-reflect",
+      "question": "How ready do you feel to add your class context to a prompt?"
     }
   ]
 }

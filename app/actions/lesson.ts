@@ -13,3 +13,11 @@ export async function finishLesson(
   await completeLesson(user.id, lessonId, score);
   await logEvent("lesson_completed", { lessonId, score });
 }
+
+export async function logConfidenceCheck(
+  lessonId: string,
+  blockId: string,
+  value: number,
+): Promise<void> {
+  await logEvent("confidence_check", { lessonId, blockId, value });
+}

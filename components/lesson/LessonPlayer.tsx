@@ -13,6 +13,7 @@ import { TheoryBlockView } from "./blocks/TheoryBlockView";
 import { McqBlockView } from "./blocks/McqBlockView";
 import { OrderBlockView } from "./blocks/OrderBlockView";
 import { FillBlankBlockView } from "./blocks/FillBlankBlockView";
+import { ReflectionBlockView } from "./blocks/ReflectionBlockView";
 import { LessonComplete } from "./LessonComplete";
 import { finishLesson } from "@/app/actions/lesson";
 import type { Lesson, Block } from "@/lib/content/types";
@@ -62,6 +63,7 @@ export function LessonPlayer({
           key={block.id}
           block={block}
           profile={profile}
+          lessonId={lesson.id}
           onNext={onNext}
           onResult={onResult}
         />
@@ -92,11 +94,13 @@ function ProgressBar({ current, total }: { current: number; total: number }) {
 function BlockRenderer({
   block,
   profile,
+  lessonId,
   onNext,
   onResult,
 }: {
   block: Block;
   profile: ProfileCtx;
+  lessonId: string;
   onNext: () => void;
   onResult: (passed: boolean) => void;
 }) {
@@ -104,6 +108,14 @@ function BlockRenderer({
     case "theory":
       return (
         <TheoryBlockView block={block} profile={profile} onNext={onNext} />
+      );
+    case "reflection":
+      return (
+        <ReflectionBlockView
+          block={block}
+          lessonId={lessonId}
+          onNext={onNext}
+        />
       );
     case "mcq":
       return (
