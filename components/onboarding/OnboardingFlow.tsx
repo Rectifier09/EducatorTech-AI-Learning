@@ -8,6 +8,7 @@ import { StepWelcome } from "./StepWelcome";
 import { StepRole } from "./StepRole";
 import { StepSubject } from "./StepSubject";
 import { StepGrade } from "./StepGrade";
+import { StepSurvey } from "./StepSurvey";
 
 export function OnboardingFlow({ firstName }: { firstName: string | null }) {
   const [step, setStep] = useState<StepId>("welcome");
@@ -29,7 +30,8 @@ export function OnboardingFlow({ firstName }: { firstName: string | null }) {
         {step === "role" && <StepRole onNext={advance} />}
         {step === "subject" && <StepSubject onNext={advance} />}
         {step === "grade" && <StepGrade onNext={advance} />}
-        {(step === "survey" || step === "trust" || step === "taste") && (
+        {step === "survey" && <StepSurvey onNext={advance} />}
+        {(step === "trust" || step === "taste") && (
           <PlaceholderStep step={step} onNext={advance} />
         )}
       </div>
