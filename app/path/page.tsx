@@ -3,13 +3,15 @@ import Link from "next/link";
 import { getSessionUser, signOut } from "@/lib/auth";
 import { getAllLessons } from "@/lib/content/loader";
 import { getAllProgress } from "@/lib/data/progress";
-import { getProfile } from "@/lib/data/profile";
+import { getUserEvents } from "@/lib/data/events";
+import { getSurveys } from "@/lib/data/survey";
+import { computeXp } from "@/lib/gamification/xp";
+import { computeStreak, activeDatesFromEvents } from "@/lib/gamification/streak";
+import { computeConfidence } from "@/lib/gamification/confidence";
+import { earnedBadges } from "@/lib/gamification/badges";
 import { PathMap } from "@/components/path/PathMap";
+import { ConfidenceMeter } from "@/components/gamification/ConfidenceMeter";
 import { Button } from "@/components/ui/Button";
-
-// Light interim values from existing data. Phase 4 formalizes the full
-// mechanics (forgiving streak, effort XP, the animated Confidence Meter).
-const XP_PER_LESSON = 50;
 
 export const dynamic = "force-dynamic";
 
@@ -20,18 +22,29 @@ export default async function PathPage() {
   const first = user.name?.split(" ")[0] ?? "there";
   const lessons = getAllLessons();
   const progress = await getAllProgress(user.id);
-  const profile = await getProfile(user.id);
+  const events = await getUserEvents(user.id);
+  const surveys = await getSurveys(user.id);
 
   const completed = Object.values(progress).filter(
     (p) => p.status === "completed",
   ).length;
-  const xp = completed * XP_PER_LESSON;
-  const confidence =
-    profile?.confidenceUsing != null && profile?.confidenceTrust != null
-      ? Math.round(
-          (((profile.confidenceUsing + profile.confidenceTrust) / 2) / 5) * 100,
-        )
-      : null;
+  const xp = computeXp(events);
+  const today = new Date().toISOString().slice(0, 10);
+  const streak = computeStreak(activeDatesFromEvents(events), today);
+  const confidenceChecks = events.filter(
+    (e) => e.name === "confidence_check",
+  ).length;
+  const confidence = computeConfidence({
+    preSurvey: surveys.pre,
+    postSurvey: surveys.post,
+    lessonsCompleted: completed,
+    confidenceChecks,
+  });
+  const badges = earnedBadges({
+    progress,
+    events,
+    streakCurrent: streak.current,
+  });
 
   return (
     <main className="flex min-h-full flex-col gap-5 p-6">
@@ -42,16 +55,43 @@ export default async function PathPage() {
         Ready for today&apos;s ~4 min, {first}?
       </h1>
 
-      {/* Interim values from real data; Phase 4 adds the full gamification. */}
       <div className="flex gap-2">
-        <Stat value={completed > 0 ? "1🔥" : "0"} label="Streak" />
+        <Stat value={`${streak.current}🔥`} label="Streak" />
         <Stat value={String(xp)} label="XP" />
-        <Stat value={confidence != null ? `${confidence}%` : "—"} label="Confidence" />
       </div>
+
+      <div className="rounded-xl border border-line bg-surface p-3">
+        <ConfidenceMeter value={confidence} />
+      </div>
+
+      {badges.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {badges.map((b) => (
+            <span
+              key={b.id}
+              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface-2 px-3 py-1.5 text-[13px] font-bold"
+            >
+              {b.emoji} {b.label}
+            </span>
+          ))}
+        </div>
+      )}
 
       <PathMap lessons={lessons} progress={progress} />
 
       <div className="mt-auto flex flex-col gap-2 pt-4">
+        <div className="flex gap-2">
+          <Link href="/explore" className="flex-1">
+            <Button variant="ghost" className="w-full">
+              Explore
+            </Button>
+          </Link>
+          <Link href="/leaderboard" className="flex-1">
+            <Button variant="ghost" className="w-full">
+              Leaderboard
+            </Button>
+          </Link>
+        </div>
         <div className="flex gap-2">
           <Link href="/playground" className="flex-1">
             <Button variant="ghost" className="w-full">
@@ -77,7 +117,10 @@ export default async function PathPage() {
 function Stat({ value, label }: { value: string; label: string }) {
   return (
     <div className="flex-1 rounded-xl border border-line bg-surface p-2 text-center">
-      <div className="font-semibold" style={{ fontFamily: "var(--font-display)" }}>
+      <div
+        className="font-semibold"
+        style={{ fontFamily: "var(--font-display)" }}
+      >
         {value}
       </div>
       <div className="text-[10px] font-bold uppercase tracking-wide text-muted">

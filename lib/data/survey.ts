@@ -27,6 +27,37 @@ export function validateSurveyInput(
   return { ok: true };
 }
 
+export interface SurveyScores {
+  usingScore: number;
+  trustScore: number;
+  attitude: Attitude;
+}
+
+export async function getSurveys(
+  userId: string,
+): Promise<{ pre: SurveyScores | null; post: SurveyScores | null }> {
+  const { createServerClient } = await import("@/lib/supabase/server");
+  const supabase = await createServerClient();
+  const { data } = await supabase
+    .from("survey_responses")
+    .select("phase,using_score,trust_score,attitude")
+    .eq("user_id", userId);
+
+  const rows = (data ?? []) as {
+    phase: SurveyPhase;
+    using_score: number;
+    trust_score: number;
+    attitude: Attitude;
+  }[];
+  const map = (phase: SurveyPhase): SurveyScores | null => {
+    const r = rows.find((x) => x.phase === phase);
+    return r
+      ? { usingScore: r.using_score, trustScore: r.trust_score, attitude: r.attitude }
+      : null;
+  };
+  return { pre: map("pre"), post: map("post") };
+}
+
 export async function insertSurvey(
   userId: string,
   input: SurveyInput,
