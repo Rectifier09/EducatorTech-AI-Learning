@@ -4,7 +4,11 @@ import { ChoiceStep } from "./ChoiceStep";
 import { GRADE_OPTIONS } from "@/lib/onboarding/options";
 import { saveOnboardingField } from "@/app/actions/onboarding";
 
-export function StepGrade({ onNext }: { onNext: () => void }) {
+export function StepGrade({
+  onDone,
+}: {
+  onDone: (gradeBand: string) => void;
+}) {
   return (
     <ChoiceStep
       caption="Which grades, mostly?"
@@ -12,7 +16,7 @@ export function StepGrade({ onNext }: { onNext: () => void }) {
       options={GRADE_OPTIONS}
       onSelect={async (gradeBand) => {
         await saveOnboardingField({ gradeBand });
-        onNext();
+        onDone(gradeBand);
       }}
     />
   );
