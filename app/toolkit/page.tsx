@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getSessionUser } from "@/lib/auth";
 import { listArtifacts, artifactTitle } from "@/lib/data/toolkit";
+import { totalMinutesSaved, formatHoursSaved } from "@/lib/toolkit/timeSaved";
 import { ArtifactCard } from "@/components/toolkit/ArtifactCard";
 import { Button } from "@/components/ui/Button";
 
@@ -21,6 +22,14 @@ export default async function ToolkitPage() {
       >
         My Toolkit
       </h1>
+
+      {artifacts.length > 0 && (
+        <p className="text-sm font-bold text-success-ink">
+          SahajAiVidya has saved you about{" "}
+          {formatHoursSaved(totalMinutesSaved(artifacts))} so far.{" "}
+          <span className="font-normal text-muted">(estimated)</span>
+        </p>
+      )}
 
       {artifacts.length === 0 ? (
         <p className="text-muted">

@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { MascotGuide } from "@/components/brand/MascotGuide";
 import { completeOnboarding } from "@/app/actions/onboarding";
 import { buildTasteExample } from "@/lib/onboarding/tasteTemplate";
+import { requestGenerate } from "@/lib/ai/client";
 
 export function StepTaste({
   subject,
@@ -20,6 +21,22 @@ export function StepTaste({
     subject ?? "your subject",
     gradeBand ?? "your",
   );
+
+  // Try a live example; fall back to the canned one on any error/slowness.
+  const [live, setLive] = useState<string | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const r = await requestGenerate(
+        `Write ONE short, friendly quiz question for a ${gradeBand ?? "school"} ${subject ?? "class"} class. Just the question, nothing else.`,
+        "taste",
+      );
+      if (!cancelled && "text" in r && r.text.trim()) setLive(r.text.trim());
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [subject, gradeBand]);
 
   async function start() {
     if (busy) return;
@@ -39,7 +56,7 @@ export function StepTaste({
           <p className="text-[13px] font-bold text-brand-ink">{promptShown}</p>
         </div>
         <div className="rounded-xl border border-line bg-surface p-3.5 text-[14px] leading-relaxed">
-          {sampleOutput}
+          {live ?? sampleOutput}
         </div>
         <p className="text-[14px] text-muted">
           That took seconds. Next, you&apos;ll do it yourself — and learn how to
