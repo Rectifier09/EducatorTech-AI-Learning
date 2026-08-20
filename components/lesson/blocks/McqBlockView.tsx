@@ -52,24 +52,39 @@ export function McqBlockView({
           {block.options.map((o) => {
             const sel = selected.includes(o.id);
             const isCorrect = block.correctIds.includes(o.id);
+
             let cls = "border-line-2 bg-surface";
-            if (checked) {
-              if (isCorrect)
-                cls = "border-success bg-success-soft text-success-ink";
-              else if (sel)
-                cls = "border-accent bg-accent-soft text-accent-ink";
-            } else if (sel) {
-              cls = "border-brand bg-brand-soft text-brand-ink";
+            let badge: string | null = null;
+
+            if (!checked) {
+              if (sel) cls = "border-brand bg-brand-soft text-brand-ink";
+            } else if (sel && isCorrect) {
+              cls = "border-success bg-success-soft text-success-ink";
+              badge = "✓";
+            } else if (sel && !isCorrect) {
+              cls = "border-accent bg-accent-soft text-accent-ink";
+              badge = "✗";
+            } else if (!sel && isCorrect) {
+              cls = "border-dashed border-success bg-surface text-success-ink";
+              badge = "correct answer";
+            } else {
+              cls = "border-line-2 bg-surface text-muted";
             }
+
             return (
               <button
                 key={o.id}
                 onClick={() => toggle(o.id)}
                 disabled={checked}
                 aria-pressed={sel}
-                className={`rounded-xl border-[1.5px] px-4 py-3 text-left text-[15px] font-bold transition ${cls}`}
+                className={`flex items-center justify-between gap-3 rounded-xl border-[1.5px] px-4 py-3 text-left text-[15px] font-bold transition ${cls}`}
               >
-                {o.text}
+                <span>{o.text}</span>
+                {badge && (
+                  <span className="shrink-0 text-[11px] font-extrabold uppercase tracking-wide">
+                    {badge}
+                  </span>
+                )}
               </button>
             );
           })}
