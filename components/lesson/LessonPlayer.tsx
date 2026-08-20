@@ -27,13 +27,15 @@ export function LessonPlayer({
   lesson,
   profile,
   nextId,
+  initialSpine,
 }: {
   lesson: Lesson;
   profile: ProfileCtx;
   nextId: string | null;
+  initialSpine?: string;
 }) {
   const [session, setSession] = useState<SessionState>(() =>
-    initSession(lesson),
+    initSession(lesson, initialSpine),
   );
   const total = lesson.blocks.length;
   const score = computeScore(session.results);

@@ -3,6 +3,7 @@ import { getSessionUser } from "@/lib/auth";
 import { getLesson, getTrack, nextLessonId } from "@/lib/content/loader";
 import { getAllProgress } from "@/lib/data/progress";
 import { getProfile } from "@/lib/data/profile";
+import { getLatestArtifact } from "@/lib/data/toolkit";
 import { deriveLessonStates } from "@/lib/progress/unlock";
 import { LessonPlayer } from "@/components/lesson/LessonPlayer";
 
@@ -27,11 +28,13 @@ export default async function LessonPage({
 
   const lesson = getLesson(id);
   const profile = await getProfile(user.id);
+  const initialSpine = (await getLatestArtifact(user.id)) ?? undefined;
 
   return (
     <LessonPlayer
       lesson={lesson}
       nextId={nextLessonId(id)}
+      initialSpine={initialSpine}
       profile={{
         subject: profile?.subject ?? null,
         gradeBand: profile?.gradeBand ?? null,

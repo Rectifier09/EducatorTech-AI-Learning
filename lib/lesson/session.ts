@@ -9,8 +9,11 @@ export interface SessionState {
   spineArtifact?: string;
 }
 
-export function initSession(_lesson: Pick<Lesson, "blocks">): SessionState {
-  return { index: 0, results: {}, done: false };
+export function initSession(
+  _lesson: Pick<Lesson, "blocks">,
+  initialSpine?: string,
+): SessionState {
+  return { index: 0, results: {}, done: false, spineArtifact: initialSpine };
 }
 
 export function recordResult(

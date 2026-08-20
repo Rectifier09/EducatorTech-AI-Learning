@@ -18,7 +18,7 @@ export function Playground({
   scaffold: string;
   mode?: AiMode;
   seedContent?: string;
-  onResult?: (text: string) => void;
+  onResult?: (text: string, prompt: string) => void;
   allowSave?: boolean;
   artifactType?: string | null;
   lessonId?: string | null;
@@ -50,7 +50,7 @@ export function Playground({
       return;
     }
     setOutput(r.text);
-    onResult?.(r.text);
+    onResult?.(r.text, prompt);
   }
 
   return (

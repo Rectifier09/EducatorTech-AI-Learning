@@ -74,6 +74,22 @@ export async function saveArtifact(
   return data.id as string;
 }
 
+/** The user's most recent playground output (saved or not) — the artifact spine. */
+export async function getLatestArtifact(
+  userId: string,
+): Promise<string | null> {
+  const { createServerClient } = await import("@/lib/supabase/server");
+  const supabase = await createServerClient();
+  const { data } = await supabase
+    .from("playground_sessions")
+    .select("output")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  return (data?.output as string | undefined) ?? null;
+}
+
 export async function listArtifacts(userId: string): Promise<SavedArtifact[]> {
   const { createServerClient } = await import("@/lib/supabase/server");
   const supabase = await createServerClient();

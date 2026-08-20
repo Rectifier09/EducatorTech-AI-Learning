@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Playground } from "@/components/playground/Playground";
 import { Button } from "@/components/ui/Button";
+import { saveToToolkit } from "@/app/actions/toolkit";
 import { personalize } from "@/lib/lesson/session";
 import type { PlaygroundBlock } from "@/lib/content/types";
 import type { Profile } from "@/lib/data/types";
@@ -100,12 +101,25 @@ export function PlaygroundBlockView({
         mode="playground"
         artifactType={choice || null}
         lessonId={lessonId}
-        allowSave={block.saveToToolkit ?? true}
-        onResult={(text) => {
+        allowSave={false}
+        onResult={(text, prompt) => {
           onArtifact(text);
           setProduced(true);
+          if (block.saveToToolkit !== false) {
+            void saveToToolkit({
+              prompt,
+              output: text,
+              artifactType: choice || null,
+              lessonId,
+            });
+          }
         }}
       />
+      {produced && block.saveToToolkit !== false && (
+        <p className="text-[13px] font-bold text-success-ink">
+          ✓ Saved to your Toolkit — it&apos;s yours.
+        </p>
+      )}
       <Button
         variant="primary"
         onClick={onNext}
