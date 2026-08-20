@@ -2,8 +2,13 @@ import { redirect } from "next/navigation";
 import { getSessionUser, signOut } from "@/lib/auth";
 import { getAllLessons } from "@/lib/content/loader";
 import { getAllProgress } from "@/lib/data/progress";
+import { getProfile } from "@/lib/data/profile";
 import { PathMap } from "@/components/path/PathMap";
 import { Button } from "@/components/ui/Button";
+
+// Light interim values from existing data. Phase 4 formalizes the full
+// mechanics (forgiving streak, effort XP, the animated Confidence Meter).
+const XP_PER_LESSON = 50;
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +19,18 @@ export default async function PathPage() {
   const first = user.name?.split(" ")[0] ?? "there";
   const lessons = getAllLessons();
   const progress = await getAllProgress(user.id);
+  const profile = await getProfile(user.id);
+
+  const completed = Object.values(progress).filter(
+    (p) => p.status === "completed",
+  ).length;
+  const xp = completed * XP_PER_LESSON;
+  const confidence =
+    profile?.confidenceUsing != null && profile?.confidenceTrust != null
+      ? Math.round(
+          (((profile.confidenceUsing + profile.confidenceTrust) / 2) / 5) * 100,
+        )
+      : null;
 
   return (
     <main className="flex min-h-full flex-col gap-5 p-6">
@@ -24,11 +41,11 @@ export default async function PathPage() {
         Ready for today&apos;s ~4 min, {first}?
       </h1>
 
-      {/* Stat strip — real streak/XP/confidence wired in Phase 4 */}
+      {/* Interim values from real data; Phase 4 adds the full gamification. */}
       <div className="flex gap-2">
-        <Stat value="1🔥" label="Streak" />
-        <Stat value="0" label="XP" />
-        <Stat value="—" label="Confidence" />
+        <Stat value={completed > 0 ? "1🔥" : "0"} label="Streak" />
+        <Stat value={String(xp)} label="XP" />
+        <Stat value={confidence != null ? `${confidence}%` : "—"} label="Confidence" />
       </div>
 
       <PathMap lessons={lessons} progress={progress} />
