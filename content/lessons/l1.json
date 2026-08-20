@@ -1,0 +1,10 @@
+{
+  "id": "l1",
+  "title": "What AI actually is (and isn't)",
+  "estMinutes": 4,
+  "goal": "Demystify AI as a fallible assistant you stay in charge of.",
+  "mascot": "Ravi",
+  "blocks": [
+    { "type": "theory", "id": "l1-intro", "body": "Lesson content coming soon." }
+  ]
+}

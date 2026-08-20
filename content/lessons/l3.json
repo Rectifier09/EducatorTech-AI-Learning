@@ -1,0 +1,10 @@
+{
+  "id": "l3",
+  "title": "Make it yours: your classroom context",
+  "estMinutes": 5,
+  "goal": "Grade, subject, and board context make output relevant.",
+  "mascot": "Ravi",
+  "blocks": [
+    { "type": "theory", "id": "l3-intro", "body": "Lesson content coming soon." }
+  ]
+}

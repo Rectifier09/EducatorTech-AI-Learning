@@ -1,0 +1,10 @@
+{
+  "id": "l2",
+  "title": "Talking to AI: a good prompt",
+  "estMinutes": 5,
+  "goal": "Task + Context + Format — clear instructions get better output.",
+  "mascot": "Ravi",
+  "blocks": [
+    { "type": "theory", "id": "l2-intro", "body": "Lesson content coming soon." }
+  ]
+}

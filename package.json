@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
+    "validate:content": "vitest run lib/content/lessons.test.ts",
     "db:migrate": "node --env-file=.env.local scripts/apply-migration.mjs"
   },
   "dependencies": {
