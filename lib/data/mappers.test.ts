@@ -42,6 +42,8 @@ describe("profile mappers", () => {
         attitude: "curious",
         reminderTime: null,
         onboardedAt: null,
+        alias: null,
+        displayName: null,
       }),
     ).toBe(false);
     expect(
@@ -55,6 +57,8 @@ describe("profile mappers", () => {
         attitude: "curious",
         reminderTime: null,
         onboardedAt: "2026-08-20T00:00:00Z",
+        alias: null,
+        displayName: null,
       }),
     ).toBe(true);
   });

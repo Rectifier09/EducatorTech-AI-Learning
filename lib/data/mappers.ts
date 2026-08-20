@@ -10,6 +10,8 @@ export interface ProfileRow {
   attitude: string | null;
   reminder_time: string | null;
   onboarded_at: string | null;
+  alias?: string | null;
+  display_name?: string | null;
 }
 
 const FIELD_TO_COLUMN: Record<keyof Profile, string> = {
@@ -22,6 +24,8 @@ const FIELD_TO_COLUMN: Record<keyof Profile, string> = {
   attitude: "attitude",
   reminderTime: "reminder_time",
   onboardedAt: "onboarded_at",
+  alias: "alias",
+  displayName: "display_name",
 };
 
 export function rowToProfile(row: ProfileRow): Profile {
@@ -35,6 +39,8 @@ export function rowToProfile(row: ProfileRow): Profile {
     attitude: row.attitude as Attitude | null,
     reminderTime: row.reminder_time,
     onboardedAt: row.onboarded_at,
+    alias: row.alias ?? null,
+    displayName: row.display_name ?? null,
   };
 }
 

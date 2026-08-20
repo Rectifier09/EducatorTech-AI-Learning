@@ -36,6 +36,9 @@ export async function savePreSurvey(input: {
 export async function completeOnboarding(): Promise<void> {
   const user = await getSessionUser();
   if (!user) throw new Error("Not authenticated");
-  await upsertProfile(user.id, { onboardedAt: new Date().toISOString() });
+  await upsertProfile(user.id, {
+    onboardedAt: new Date().toISOString(),
+    displayName: user.name ?? null,
+  });
   await logEvent("onboarding_completed");
 }

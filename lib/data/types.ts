@@ -13,6 +13,8 @@ export interface Profile {
   attitude: Attitude | null;
   reminderTime: string | null;
   onboardedAt: string | null;
+  alias: string | null;
+  displayName: string | null;
 }
 
 export type SurveyPhase = "pre" | "post";
