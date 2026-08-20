@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useState, useEffect, useRef } from "react";
 import {
   initSession,
   advance,
@@ -12,6 +11,8 @@ import {
 import { Button } from "@/components/ui/Button";
 import { TheoryBlockView } from "./blocks/TheoryBlockView";
 import { McqBlockView } from "./blocks/McqBlockView";
+import { LessonComplete } from "./LessonComplete";
+import { finishLesson } from "@/app/actions/lesson";
 import type { Lesson, Block } from "@/lib/content/types";
 import type { Profile } from "@/lib/data/types";
 
@@ -20,31 +21,28 @@ type ProfileCtx = Pick<Profile, "subject" | "gradeBand">;
 export function LessonPlayer({
   lesson,
   profile,
+  nextId,
 }: {
   lesson: Lesson;
   profile: ProfileCtx;
+  nextId: string | null;
 }) {
   const [session, setSession] = useState<SessionState>(() =>
     initSession(lesson),
   );
   const total = lesson.blocks.length;
+  const score = computeScore(session.results);
+  const finished = useRef(false);
+
+  useEffect(() => {
+    if (session.done && !finished.current) {
+      finished.current = true;
+      void finishLesson(lesson.id, score);
+    }
+  }, [session.done, lesson.id, score]);
 
   if (session.done) {
-    // Task 11 replaces this with the real completion/celebration + unlock.
-    return (
-      <main className="flex min-h-full flex-col items-start gap-4 p-6">
-        <h1
-          className="text-2xl font-semibold"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          Lesson complete! 🎉
-        </h1>
-        <p className="text-muted">Score: {computeScore(session.results)}</p>
-        <Link href="/path">
-          <Button variant="primary">Back to path</Button>
-        </Link>
-      </main>
-    );
+    return <LessonComplete score={score} nextId={nextId} />;
   }
 
   const block = lesson.blocks[session.index];

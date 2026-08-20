@@ -1,6 +1,6 @@
 import { redirect, notFound } from "next/navigation";
 import { getSessionUser } from "@/lib/auth";
-import { getLesson, getTrack } from "@/lib/content/loader";
+import { getLesson, getTrack, nextLessonId } from "@/lib/content/loader";
 import { getAllProgress } from "@/lib/data/progress";
 import { getProfile } from "@/lib/data/profile";
 import { deriveLessonStates } from "@/lib/progress/unlock";
@@ -31,6 +31,7 @@ export default async function LessonPage({
   return (
     <LessonPlayer
       lesson={lesson}
+      nextId={nextLessonId(id)}
       profile={{
         subject: profile?.subject ?? null,
         gradeBand: profile?.gradeBand ?? null,
