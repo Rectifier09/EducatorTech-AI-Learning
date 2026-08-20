@@ -9,9 +9,12 @@ import { StepRole } from "./StepRole";
 import { StepSubject } from "./StepSubject";
 import { StepGrade } from "./StepGrade";
 import { StepSurvey } from "./StepSurvey";
+import { StepTrust } from "./StepTrust";
+import type { Attitude } from "@/lib/data/types";
 
 export function OnboardingFlow({ firstName }: { firstName: string | null }) {
   const [step, setStep] = useState<StepId>("welcome");
+  const [attitude, setAttitude] = useState<Attitude>("curious");
   const index = ONBOARDING_STEPS.indexOf(step);
 
   function advance() {
@@ -30,10 +33,18 @@ export function OnboardingFlow({ firstName }: { firstName: string | null }) {
         {step === "role" && <StepRole onNext={advance} />}
         {step === "subject" && <StepSubject onNext={advance} />}
         {step === "grade" && <StepGrade onNext={advance} />}
-        {step === "survey" && <StepSurvey onNext={advance} />}
-        {(step === "trust" || step === "taste") && (
-          <PlaceholderStep step={step} onNext={advance} />
+        {step === "survey" && (
+          <StepSurvey
+            onDone={(a) => {
+              setAttitude(a);
+              advance();
+            }}
+          />
         )}
+        {step === "trust" && (
+          <StepTrust attitude={attitude} onNext={advance} />
+        )}
+        {step === "taste" && <PlaceholderStep step={step} onNext={advance} />}
       </div>
     </main>
   );

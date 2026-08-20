@@ -12,7 +12,11 @@ const ATTITUDES: { value: Attitude; label: string }[] = [
   { value: "skeptical", label: "Skeptical" },
 ];
 
-export function StepSurvey({ onNext }: { onNext: () => void }) {
+export function StepSurvey({
+  onDone,
+}: {
+  onDone: (attitude: Attitude) => void;
+}) {
   const [usingScore, setUsing] = useState<number | null>(null);
   const [trustScore, setTrust] = useState<number | null>(null);
   const [attitude, setAttitude] = useState<Attitude | null>(null);
@@ -24,7 +28,7 @@ export function StepSurvey({ onNext }: { onNext: () => void }) {
     if (!ready || busy) return;
     setBusy(true);
     await savePreSurvey({ usingScore, trustScore, attitude });
-    onNext();
+    onDone(attitude);
   }
 
   return (
