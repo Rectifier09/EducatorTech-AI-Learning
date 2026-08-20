@@ -54,7 +54,10 @@ export function LessonPlayer({
     <main className="flex min-h-full flex-col gap-4 p-6">
       <ProgressBar current={session.index} total={total} />
       <div className="flex flex-1 flex-col">
+        {/* key per block id: remounts so per-block state (selection, solved)
+            never leaks between consecutive blocks of the same type */}
         <BlockRenderer
+          key={block.id}
           block={block}
           profile={profile}
           onNext={onNext}
