@@ -7,10 +7,10 @@ import {
   advance,
   recordResult,
   computeScore,
-  personalize,
   type SessionState,
 } from "@/lib/lesson/session";
 import { Button } from "@/components/ui/Button";
+import { TheoryBlockView } from "./blocks/TheoryBlockView";
 import type { Lesson, Block } from "@/lib/content/types";
 import type { Profile } from "@/lib/data/types";
 
@@ -83,7 +83,8 @@ function ProgressBar({ current, total }: { current: number; total: number }) {
   );
 }
 
-// Placeholder — Tasks 6–10 replace each case with the real block view.
+// Renders the current block. Tasks 7–10 add the remaining real block views;
+// unimplemented types fall through to a graceful stub.
 function BlockRenderer({
   block,
   profile,
@@ -94,14 +95,25 @@ function BlockRenderer({
   onNext: () => void;
   onResult: (passed: boolean) => void;
 }) {
+  switch (block.type) {
+    case "theory":
+      return (
+        <TheoryBlockView block={block} profile={profile} onNext={onNext} />
+      );
+    default:
+      return <StubBlock type={block.type} onNext={onNext} />;
+  }
+}
+
+function StubBlock({ type, onNext }: { type: string; onNext: () => void }) {
   return (
     <div className="flex flex-1 flex-col justify-between gap-6">
       <div className="flex flex-1 flex-col justify-center gap-2">
         <p className="text-xs font-bold uppercase tracking-wide text-muted">
-          {block.type}
+          {type}
         </p>
-        <p className="text-[15px] leading-relaxed">
-          {"body" in block ? personalize(block.body, profile) : block.id}
+        <p className="text-[15px] text-muted">
+          This exercise type is coming soon.
         </p>
       </div>
       <Button variant="primary" onClick={onNext} className="w-full">

@@ -5,6 +5,17 @@
   "goal": "Demystify AI as a fallible assistant you stay in charge of.",
   "mascot": "Ravi",
   "blocks": [
-    { "type": "theory", "id": "l1-intro", "body": "Lesson content coming soon." }
+    {
+      "type": "theory",
+      "id": "l1-hook",
+      "title": "First, a quick reframe",
+      "body": "Ever feel your students know something about AI you don't? Let's fix that — in about 4 minutes.\n\nNo tech background needed. You already have the most important skill for this: your judgement."
+    },
+    {
+      "type": "theory",
+      "id": "l1-teach",
+      "title": "What AI actually is",
+      "body": "AI tools like ChatGPT are very good guessers of words. They've read a huge amount of text and predict what should come next.\n\nThink of it as a bright new intern: fast and helpful, but new — and sometimes confidently wrong. You're the expert who checks its work.\n\nIt's great at drafting, rephrasing, summarising and giving examples. It's not reliable for facts, dates, or anything that needs your classroom judgement."
+    }
   ]
 }
