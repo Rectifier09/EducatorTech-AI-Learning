@@ -10,6 +10,7 @@ export function Playground({
   scaffold,
   mode = "playground",
   seedContent,
+  context = null,
   onResult,
   allowSave = true,
   artifactType = null,
@@ -18,6 +19,8 @@ export function Playground({
   scaffold: string;
   mode?: AiMode;
   seedContent?: string;
+  /** Prior material to refine — shown read-only and prepended to the request. */
+  context?: string | null;
   onResult?: (text: string, prompt: string) => void;
   allowSave?: boolean;
   artifactType?: string | null;
@@ -43,7 +46,10 @@ export function Playground({
     setError(null);
     setOutput(null);
     setSaved(false);
-    const r = await requestGenerate(prompt, mode);
+    const userText = context
+      ? `Here is my current material:\n\n${context}\n\nNow do this: ${prompt}`
+      : prompt;
+    const r = await requestGenerate(userText, mode);
     setBusy(false);
     if ("error" in r) {
       setError({ msg: r.error, rate: r.code === "rate_limited" });
@@ -55,6 +61,16 @@ export function Playground({
 
   return (
     <div className="flex flex-col gap-3">
+      {context && (
+        <div className="rounded-xl border border-line bg-sunk p-3">
+          <p className="mb-1 text-[11px] font-bold uppercase tracking-wide text-muted">
+            Refining your earlier material
+          </p>
+          <div className="max-h-40 overflow-auto whitespace-pre-wrap text-[12px] leading-relaxed">
+            {context}
+          </div>
+        </div>
+      )}
       <p className="text-xs text-muted">
         Tip: keep students&apos; personal details out — no names or private info.
       </p>

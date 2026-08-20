@@ -88,16 +88,12 @@ export function PlaygroundBlockView({
     /\{\{artifact\}\}/g,
     choice ?? "",
   );
-  const refineSeed =
-    block.mode === "refine" && spineArtifact
-      ? `Improve this for my class — make it a little easier:\n\n${spineArtifact}`
-      : undefined;
 
   return (
     <div className="flex flex-1 flex-col gap-4">
       <Playground
         scaffold={scaffold}
-        seedContent={refineSeed}
+        context={block.mode === "refine" ? (spineArtifact ?? null) : null}
         mode="playground"
         artifactType={choice || null}
         lessonId={lessonId}
