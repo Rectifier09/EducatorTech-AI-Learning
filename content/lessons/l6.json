@@ -1,0 +1,51 @@
+{
+  "id": "l6",
+  "title": "Don't trust it blindly",
+  "estMinutes": 6,
+  "goal": "Catch AI's mistakes — facts, level, bias, and local fit.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "l6-hook",
+      "title": "Your superpower",
+      "body": "Here's what your students won't teach you: AI can be confidently wrong.\n\nCatching it is your superpower. Check four things: the facts, the level, any bias, and whether it actually fits what you're teaching."
+    },
+    {
+      "type": "mcq",
+      "id": "l6-slip",
+      "question": "An AI answer says: \"Photosynthesis happens in the mitochondria.\" What do you do?",
+      "options": [
+        { "id": "a", "text": "Use it — it sounds confident" },
+        { "id": "b", "text": "Catch it — that's wrong (it's the chloroplast) and fix it" },
+        { "id": "c", "text": "Assume the AI knows best" }
+      ],
+      "correctIds": ["b"],
+      "explanation": "Caught it. 👏 The AI said it with total confidence — and it was wrong. That instinct is the skill no tool replaces."
+    },
+    {
+      "type": "mcq",
+      "id": "l6-fit",
+      "question": "An AI worksheet uses dollars ($) and Fahrenheit for your Indian classroom. That's a problem of…",
+      "options": [
+        { "id": "a", "text": "Cultural / local fit" },
+        { "id": "b", "text": "A factual error" },
+        { "id": "c", "text": "Nothing — it's fine" }
+      ],
+      "correctIds": ["a"],
+      "explanation": "Right — it's not wrong, it just doesn't fit your class. Ask for local context (₹, Celsius, familiar examples)."
+    },
+    {
+      "type": "playground",
+      "id": "l6-verify",
+      "mode": "verify",
+      "scaffold": "",
+      "saveToToolkit": false
+    },
+    {
+      "type": "reflection",
+      "id": "l6-reflect",
+      "question": "How ready do you feel to spot AI's mistakes?"
+    }
+  ]
+}

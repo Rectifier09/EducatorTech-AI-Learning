@@ -1,0 +1,28 @@
+{
+  "id": "l4",
+  "title": "Your first AI-made material",
+  "estMinutes": 7,
+  "goal": "Make a real, usable classroom artifact with AI — you stay the editor.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "l4-hook",
+      "title": "Let's make something real",
+      "body": "Enough theory — let's make something you can actually use tomorrow.\n\nPick what you need, add your topic, and watch AI draft it. You stay in charge as the editor."
+    },
+    {
+      "type": "playground",
+      "id": "l4-make",
+      "mode": "make",
+      "artifactChoices": ["Worksheet", "Quiz", "Lesson-plan outline"],
+      "scaffold": "Make a {{artifact}} on [topic] for a {{gradeBand}} {{subject}} class, with clear instructions and an answer key.",
+      "saveToToolkit": true
+    },
+    {
+      "type": "reflection",
+      "id": "l4-reflect",
+      "question": "How useful was what you just made?"
+    }
+  ]
+}

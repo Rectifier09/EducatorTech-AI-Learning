@@ -1,0 +1,35 @@
+{
+  "id": "l7",
+  "title": "Capstone: make it, check it, use it",
+  "estMinutes": 8,
+  "goal": "Put it all together on something you'll actually use this week.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "l7-hook",
+      "title": "Bring it all together",
+      "body": "Last one. Let's make something real you need this week — then check it like the expert you now are."
+    },
+    {
+      "type": "playground",
+      "id": "l7-make",
+      "mode": "make",
+      "artifactChoices": ["Worksheet", "Quiz", "Lesson-plan outline", "Activity idea"],
+      "scaffold": "Make a {{artifact}} on [topic] for my {{gradeBand}} {{subject}} class.",
+      "saveToToolkit": true
+    },
+    {
+      "type": "playground",
+      "id": "l7-verify",
+      "mode": "verify",
+      "scaffold": "",
+      "saveToToolkit": false
+    },
+    {
+      "type": "reflection",
+      "id": "l7-reflect",
+      "question": "How confident do you feel using AI in your teaching now?"
+    }
+  ]
+}

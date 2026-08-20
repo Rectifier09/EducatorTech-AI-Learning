@@ -1,0 +1,39 @@
+{
+  "id": "l5",
+  "title": "Make it better: refine & iterate",
+  "estMinutes": 5,
+  "goal": "AI is a conversation — refine with follow-ups, don't restart.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "l5-teach",
+      "title": "It's a conversation",
+      "body": "Your draft is good. Great teachers make it great.\n\nDon't start over — refine. Ask for: \"make it easier\", \"add 3 more\", \"shorten\", \"add a worked example\", \"make question 4 multiple-choice\"."
+    },
+    {
+      "type": "mcq",
+      "id": "l5-followup",
+      "question": "Your weaker students are struggling with the worksheet. What's the best follow-up?",
+      "options": [
+        { "id": "a", "text": "Start over with a brand-new prompt" },
+        { "id": "b", "text": "\"Make it a bit easier and add one worked example\"" },
+        { "id": "c", "text": "\"Make it longer\"" }
+      ],
+      "correctIds": ["b"],
+      "explanation": "A specific, small follow-up keeps what works and fixes what doesn't — that's the skill."
+    },
+    {
+      "type": "playground",
+      "id": "l5-refine",
+      "mode": "refine",
+      "scaffold": "Improve this — make it a little easier and add one worked example.",
+      "saveToToolkit": true
+    },
+    {
+      "type": "reflection",
+      "id": "l5-reflect",
+      "question": "How confident do you feel refining AI output now?"
+    }
+  ]
+}
