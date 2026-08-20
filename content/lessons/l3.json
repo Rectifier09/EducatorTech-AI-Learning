@@ -2,9 +2,41 @@
   "id": "l3",
   "title": "Make it yours: your classroom context",
   "estMinutes": 5,
-  "goal": "Grade, subject, and board context make output relevant.",
+  "goal": "Grade, subject and level make AI output relevant to your class.",
   "mascot": "Ravi",
   "blocks": [
-    { "type": "theory", "id": "l3-intro", "body": "Lesson content coming soon." }
+    {
+      "type": "theory",
+      "id": "l3-hook",
+      "title": "Generic in, generic out",
+      "body": "Worksheets feel generic because the AI doesn't know your class.\n\nThe fix is simple: tell it. Grade, subject, level, board — even the language you teach in."
+    },
+    {
+      "type": "theory",
+      "id": "l3-teach",
+      "title": "Context that matters",
+      "body": "The more you tell AI about your class, the less you'll edit later:\n\n• Grade & subject\n• Student level (\"they find fractions hard\")\n• Board / curriculum (CBSE, ICSE, State…)\n• Format & length you need"
+    },
+    {
+      "type": "fillBlank",
+      "id": "l3-fill",
+      "template": "Make this classroom-ready — pick the context that helps most:\n\n\"Explain fractions {{grade}}, {{example}}.\"",
+      "blanks": [
+        {
+          "id": "grade",
+          "options": ["to anyone", "to a Grade 4 class", "quickly"],
+          "correctIndex": 1
+        },
+        {
+          "id": "example",
+          "options": [
+            "in detail",
+            "with a simple real-life example like sharing a pizza",
+            "properly"
+          ],
+          "correctIndex": 1
+        }
+      ]
+    }
   ]
 }

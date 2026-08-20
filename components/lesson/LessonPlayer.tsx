@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/Button";
 import { TheoryBlockView } from "./blocks/TheoryBlockView";
 import { McqBlockView } from "./blocks/McqBlockView";
 import { OrderBlockView } from "./blocks/OrderBlockView";
+import { FillBlankBlockView } from "./blocks/FillBlankBlockView";
 import { LessonComplete } from "./LessonComplete";
 import { finishLesson } from "@/app/actions/lesson";
 import type { Lesson, Block } from "@/lib/content/types";
@@ -111,6 +112,10 @@ function BlockRenderer({
     case "order":
       return (
         <OrderBlockView block={block} onNext={onNext} onResult={onResult} />
+      );
+    case "fillBlank":
+      return (
+        <FillBlankBlockView block={block} onNext={onNext} onResult={onResult} />
       );
     default:
       return <StubBlock type={block.type} onNext={onNext} />;
