@@ -1,0 +1,86 @@
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { requestGenerate } from "@/lib/ai/client";
+import type { AiMode } from "@/lib/ai/guardrails";
+
+export function Playground({
+  scaffold,
+  mode = "playground",
+  seedContent,
+  onResult,
+}: {
+  scaffold: string;
+  mode?: AiMode;
+  seedContent?: string;
+  onResult?: (text: string) => void;
+}) {
+  const [prompt, setPrompt] = useState(seedContent ?? scaffold);
+  const [output, setOutput] = useState<string | null>(null);
+  const [error, setError] = useState<{ msg: string; rate: boolean } | null>(
+    null,
+  );
+  const [busy, setBusy] = useState(false);
+
+  async function run() {
+    if (busy || !prompt.trim()) return;
+    setBusy(true);
+    setError(null);
+    setOutput(null);
+    const r = await requestGenerate(prompt, mode);
+    setBusy(false);
+    if ("error" in r) {
+      setError({ msg: r.error, rate: r.code === "rate_limited" });
+      return;
+    }
+    setOutput(r.text);
+    onResult?.(r.text);
+  }
+
+  return (
+    <div className="flex flex-col gap-3">
+      <p className="text-xs text-muted">
+        Tip: keep students&apos; personal details out — no names or private info.
+      </p>
+      <textarea
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        rows={4}
+        placeholder="Your instructions to the AI…"
+        className="rounded-xl border-[1.5px] border-line-2 bg-surface p-3 text-[14px] leading-relaxed focus-visible:border-brand focus-visible:outline-none"
+      />
+      <Button
+        variant="indigo"
+        onClick={run}
+        disabled={busy || !prompt.trim()}
+        className="w-full"
+      >
+        {busy ? "Thinking…" : "Generate"}
+      </Button>
+
+      {error && (
+        <div className="rounded-xl border border-accent bg-accent-soft p-3 text-[14px]">
+          <p className="font-bold">
+            {error.rate ? "Daily limit reached" : "That didn't go through"}
+          </p>
+          <p className="mt-1">{error.msg}</p>
+          {!error.rate && (
+            <button
+              onClick={run}
+              className="mt-2 font-extrabold text-brand-ink underline"
+            >
+              Retry
+            </button>
+          )}
+        </div>
+      )}
+
+      {output && (
+        <div className="whitespace-pre-wrap rounded-xl border border-line bg-surface p-3 text-[14px] leading-relaxed">
+          {output}
+        </div>
+      )}
+    </div>
+  );
+}
