@@ -9,7 +9,6 @@ import {
   setSpineArtifact,
   type SessionState,
 } from "@/lib/lesson/session";
-import { Button } from "@/components/ui/Button";
 import { TheoryBlockView } from "./blocks/TheoryBlockView";
 import { McqBlockView } from "./blocks/McqBlockView";
 import { OrderBlockView } from "./blocks/OrderBlockView";
@@ -158,24 +157,7 @@ function BlockRenderer({
         />
       );
     default:
-      return <StubBlock type={block.type} onNext={onNext} />;
+      // exhaustive — all block types handled above
+      return null;
   }
-}
-
-function StubBlock({ type, onNext }: { type: string; onNext: () => void }) {
-  return (
-    <div className="flex flex-1 flex-col justify-between gap-6">
-      <div className="flex flex-1 flex-col justify-center gap-2">
-        <p className="text-xs font-bold uppercase tracking-wide text-muted">
-          {type}
-        </p>
-        <p className="text-[15px] text-muted">
-          This exercise type is coming soon.
-        </p>
-      </div>
-      <Button variant="primary" onClick={onNext} className="w-full">
-        Continue
-      </Button>
-    </div>
-  );
 }
