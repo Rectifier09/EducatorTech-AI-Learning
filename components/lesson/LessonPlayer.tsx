@@ -14,6 +14,7 @@ import { McqBlockView } from "./blocks/McqBlockView";
 import { OrderBlockView } from "./blocks/OrderBlockView";
 import { FillBlankBlockView } from "./blocks/FillBlankBlockView";
 import { ReflectionBlockView } from "./blocks/ReflectionBlockView";
+import { PromptWriteBlockView } from "./blocks/PromptWriteBlockView";
 import { LessonComplete } from "./LessonComplete";
 import { finishLesson } from "@/app/actions/lesson";
 import type { Lesson, Block } from "@/lib/content/types";
@@ -128,6 +129,14 @@ function BlockRenderer({
     case "fillBlank":
       return (
         <FillBlankBlockView block={block} onNext={onNext} onResult={onResult} />
+      );
+    case "promptWrite":
+      return (
+        <PromptWriteBlockView
+          block={block}
+          onNext={onNext}
+          onResult={onResult}
+        />
       );
     default:
       return <StubBlock type={block.type} onNext={onNext} />;
