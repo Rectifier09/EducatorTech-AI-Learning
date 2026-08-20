@@ -16,6 +16,32 @@
       "id": "l1-teach",
       "title": "What AI actually is",
       "body": "AI tools like ChatGPT are very good guessers of words. They've read a huge amount of text and predict what should come next.\n\nThink of it as a bright new intern: fast and helpful, but new — and sometimes confidently wrong. You're the expert who checks its work.\n\nIt's great at drafting, rephrasing, summarising and giving examples. It's not reliable for facts, dates, or anything that needs your classroom judgement."
+    },
+    {
+      "type": "mcq",
+      "id": "l1-myth",
+      "question": "Which statement about AI is true?",
+      "options": [
+        { "id": "a", "text": "AI always tells the truth" },
+        { "id": "b", "text": "AI is a great first-draft helper, but can be confidently wrong" },
+        { "id": "c", "text": "AI can replace a teacher's judgement" }
+      ],
+      "correctIds": ["b"],
+      "explanation": "AI drafts fast, but it has no idea whether it's right. Your judgement is what makes the output good."
+    },
+    {
+      "type": "mcq",
+      "id": "l1-reliable",
+      "question": "Which of these can you rely on AI to do well?",
+      "multi": true,
+      "options": [
+        { "id": "draft", "text": "Draft a worksheet you'll review" },
+        { "id": "rephrase", "text": "Rephrase a paragraph more simply" },
+        { "id": "date", "text": "State an exact historical date, no checking" },
+        { "id": "grade", "text": "Decide a student's final grade" }
+      ],
+      "correctIds": ["draft", "rephrase"],
+      "explanation": "AI shines at drafting and rephrasing (you review). Facts need checking, and judgement calls like grading stay with you."
     }
   ]
 }

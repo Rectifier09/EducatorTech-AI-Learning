@@ -11,6 +11,7 @@ import {
 } from "@/lib/lesson/session";
 import { Button } from "@/components/ui/Button";
 import { TheoryBlockView } from "./blocks/TheoryBlockView";
+import { McqBlockView } from "./blocks/McqBlockView";
 import type { Lesson, Block } from "@/lib/content/types";
 import type { Profile } from "@/lib/data/types";
 
@@ -89,6 +90,7 @@ function BlockRenderer({
   block,
   profile,
   onNext,
+  onResult,
 }: {
   block: Block;
   profile: ProfileCtx;
@@ -99,6 +101,10 @@ function BlockRenderer({
     case "theory":
       return (
         <TheoryBlockView block={block} profile={profile} onNext={onNext} />
+      );
+    case "mcq":
+      return (
+        <McqBlockView block={block} onNext={onNext} onResult={onResult} />
       );
     default:
       return <StubBlock type={block.type} onNext={onNext} />;
