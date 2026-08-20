@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { gradeMcq } from "@/lib/lesson/grade";
 import type { McqBlock } from "@/lib/content/types";
@@ -15,12 +15,14 @@ export function McqBlockView({
   onResult: (passed: boolean) => void;
 }) {
   const [selected, setSelected] = useState<string[]>([]);
-  const [checked, setChecked] = useState(false);
+  const [solved, setSolved] = useState(false);
+  const [wrongTry, setWrongTry] = useState(false);
+  const firstScored = useRef(false);
   const multi = block.multi ?? false;
-  const passed = gradeMcq(block, selected);
 
   function toggle(id: string) {
-    if (checked) return;
+    if (solved) return;
+    setWrongTry(false);
     setSelected((cur) =>
       multi
         ? cur.includes(id)
@@ -31,9 +33,15 @@ export function McqBlockView({
   }
 
   function check() {
-    if (selected.length === 0) return;
-    setChecked(true);
-    onResult(gradeMcq(block, selected));
+    if (selected.length === 0 || solved) return;
+    const ok = gradeMcq(block, selected);
+    // Score the first attempt only (honest first-try signal); retries still allowed.
+    if (!firstScored.current) {
+      firstScored.current = true;
+      onResult(ok);
+    }
+    if (ok) setSolved(true);
+    else setWrongTry(true);
   }
 
   return (
@@ -51,60 +59,48 @@ export function McqBlockView({
         <div className="flex flex-col gap-2.5">
           {block.options.map((o) => {
             const sel = selected.includes(o.id);
-            const isCorrect = block.correctIds.includes(o.id);
-
             let cls = "border-line-2 bg-surface";
-            let badge: string | null = null;
-
-            if (!checked) {
-              if (sel) cls = "border-brand bg-brand-soft text-brand-ink";
-            } else if (sel && isCorrect) {
+            if (solved && sel) {
               cls = "border-success bg-success-soft text-success-ink";
-              badge = "✓";
-            } else if (sel && !isCorrect) {
-              cls = "border-accent bg-accent-soft text-accent-ink";
-              badge = "✗";
-            } else if (!sel && isCorrect) {
-              cls = "border-dashed border-success bg-surface text-success-ink";
-              badge = "correct answer";
-            } else {
-              cls = "border-line-2 bg-surface text-muted";
+            } else if (sel) {
+              cls = "border-brand bg-brand-soft text-brand-ink";
             }
-
             return (
               <button
                 key={o.id}
                 onClick={() => toggle(o.id)}
-                disabled={checked}
+                disabled={solved}
                 aria-pressed={sel}
                 className={`flex items-center justify-between gap-3 rounded-xl border-[1.5px] px-4 py-3 text-left text-[15px] font-bold transition ${cls}`}
               >
                 <span>{o.text}</span>
-                {badge && (
-                  <span className="shrink-0 text-[11px] font-extrabold uppercase tracking-wide">
-                    {badge}
-                  </span>
+                {solved && sel && (
+                  <span className="shrink-0 text-[13px]">✓</span>
                 )}
               </button>
             );
           })}
         </div>
-        {checked && (
-          <div
-            className={`rounded-xl border p-3 text-[14px] leading-relaxed ${
-              passed
-                ? "border-success bg-success-soft"
-                : "border-accent bg-accent-soft"
-            }`}
-          >
-            <p className="font-bold">
-              {passed ? "Exactly. 👏" : "Not quite — here's why:"}
-            </p>
+
+        {solved && (
+          <div className="rounded-xl border border-success bg-success-soft p-3 text-[14px] leading-relaxed">
+            <p className="font-bold">Exactly. 👏</p>
             <p className="mt-1">{block.explanation}</p>
           </div>
         )}
+        {wrongTry && !solved && (
+          <div className="rounded-xl border border-accent bg-accent-soft p-3 text-[14px]">
+            <p className="font-bold">Not quite — take another look.</p>
+            {multi && (
+              <p className="mt-1 text-muted">
+                Tip: it&apos;s more than one, and not all of them.
+              </p>
+            )}
+          </div>
+        )}
       </div>
-      {checked ? (
+
+      {solved ? (
         <Button variant="primary" onClick={onNext} className="w-full">
           Continue
         </Button>
