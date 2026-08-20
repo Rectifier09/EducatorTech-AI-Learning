@@ -2,9 +2,31 @@
   "id": "l2",
   "title": "Talking to AI: a good prompt",
   "estMinutes": 5,
-  "goal": "Task + Context + Format — clear instructions get better output.",
+  "goal": "A clear prompt = Task + Context + Format. Vague in, vague out.",
   "mascot": "Ravi",
   "blocks": [
-    { "type": "theory", "id": "l2-intro", "body": "Lesson content coming soon." }
+    {
+      "type": "theory",
+      "id": "l2-hook",
+      "title": "Vague in, vague out",
+      "body": "It's 9pm. You type \"make a worksheet\" and get something useless.\n\nThe problem isn't the AI — it's the instructions. Let's fix that in one line."
+    },
+    {
+      "type": "theory",
+      "id": "l2-teach",
+      "title": "The recipe: Task + Context + Format",
+      "body": "A good prompt has three parts:\n\n• Task — what you want (\"write 5 quiz questions\")\n• Context — about your class (\"Grade 6 Science, the water cycle\")\n• Format — how it should look (\"multiple choice, with an answer key\")\n\nGive it all three and you'll rarely need a second try."
+    },
+    {
+      "type": "order",
+      "id": "l2-order",
+      "prompt": "Build a strong prompt — tap the pieces in order: Task, then Context, then Format.",
+      "items": [
+        { "id": "format", "text": "…as multiple-choice, with an answer key" },
+        { "id": "task", "text": "Write 5 quiz questions…" },
+        { "id": "context", "text": "…for a Grade 6 Science class on the water cycle…" }
+      ],
+      "correctOrder": ["task", "context", "format"]
+    }
   ]
 }
