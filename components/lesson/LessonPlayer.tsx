@@ -29,11 +29,13 @@ export function LessonPlayer({
   profile,
   nextId,
   initialSpine,
+  showGoDeeper = false,
 }: {
   lesson: Lesson;
   profile: ProfileCtx;
   nextId: string | null;
   initialSpine?: string;
+  showGoDeeper?: boolean;
 }) {
   const [session, setSession] = useState<SessionState>(() =>
     initSession(lesson, initialSpine),
@@ -71,6 +73,7 @@ export function LessonPlayer({
           lessonId={lesson.id}
           spineArtifact={session.spineArtifact}
           onArtifact={(t) => setSession((s) => setSpineArtifact(s, t))}
+          showGoDeeper={showGoDeeper}
           onNext={onNext}
           onResult={onResult}
         />
@@ -104,6 +107,7 @@ function BlockRenderer({
   lessonId,
   spineArtifact,
   onArtifact,
+  showGoDeeper,
   onNext,
   onResult,
 }: {
@@ -112,13 +116,19 @@ function BlockRenderer({
   lessonId: string;
   spineArtifact?: string;
   onArtifact: (text: string) => void;
+  showGoDeeper: boolean;
   onNext: () => void;
   onResult: (passed: boolean) => void;
 }) {
   switch (block.type) {
     case "theory":
       return (
-        <TheoryBlockView block={block} profile={profile} onNext={onNext} />
+        <TheoryBlockView
+          block={block}
+          profile={profile}
+          onNext={onNext}
+          showGoDeeper={showGoDeeper}
+        />
       );
     case "reflection":
       return (

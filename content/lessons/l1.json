@@ -15,7 +15,8 @@
       "type": "theory",
       "id": "l1-teach",
       "title": "What AI actually is",
-      "body": "AI tools like ChatGPT are very good guessers of words. They've read a huge amount of text and predict what should come next.\n\nThink of it as a bright new intern: fast and helpful, but new — and sometimes confidently wrong. You're the expert who checks its work.\n\nIt's great at drafting, rephrasing, summarising and giving examples. It's not reliable for facts, dates, or anything that needs your classroom judgement."
+      "body": "AI tools like ChatGPT are very good guessers of words. They've read a huge amount of text and predict what should come next.\n\nThink of it as a bright new intern: fast and helpful, but new — and sometimes confidently wrong. You're the expert who checks its work.\n\nIt's great at drafting, rephrasing, summarising and giving examples. It's not reliable for facts, dates, or anything that needs your classroom judgement.",
+      "goDeeper": "Because it predicts the *most likely* next words, it can invent a fact that merely sounds right — this is called a 'hallucination'. That's why your review always matters."
     },
     {
       "type": "mcq",

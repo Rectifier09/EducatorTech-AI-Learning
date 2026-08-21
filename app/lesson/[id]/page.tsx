@@ -5,6 +5,7 @@ import { getAllProgress } from "@/lib/data/progress";
 import { getProfile } from "@/lib/data/profile";
 import { getLatestArtifact } from "@/lib/data/toolkit";
 import { deriveLessonStates } from "@/lib/progress/unlock";
+import { tonePrefs } from "@/lib/adaptive/tone";
 import { LessonPlayer } from "@/components/lesson/LessonPlayer";
 
 export const dynamic = "force-dynamic";
@@ -35,6 +36,7 @@ export default async function LessonPage({
       lesson={lesson}
       nextId={nextLessonId(id)}
       initialSpine={initialSpine}
+      showGoDeeper={tonePrefs(profile?.attitude ?? "curious").showGoDeeper}
       profile={{
         subject: profile?.subject ?? null,
         gradeBand: profile?.gradeBand ?? null,
