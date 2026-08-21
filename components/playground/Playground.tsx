@@ -60,18 +60,18 @@ export function Playground({
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-4">
       {context && (
-        <div className="rounded-xl border border-line bg-sunk p-3">
-          <p className="mb-1 text-[11px] font-bold uppercase tracking-wide text-muted">
+        <div className="rounded-2xl border border-line bg-sunk p-4">
+          <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-faint">
             Refining your earlier material
           </p>
-          <div className="max-h-40 overflow-auto whitespace-pre-wrap text-[12px] leading-relaxed">
+          <div className="max-h-40 overflow-auto whitespace-pre-wrap text-[12px] leading-relaxed text-muted">
             {context}
           </div>
         </div>
       )}
-      <p className="text-xs text-muted">
+      <p className="text-xs text-faint">
         Tip: keep students&apos; personal details out — no names or private info.
       </p>
       <textarea
@@ -79,7 +79,7 @@ export function Playground({
         onChange={(e) => setPrompt(e.target.value)}
         rows={4}
         placeholder="Your instructions to the AI…"
-        className="rounded-xl border-[1.5px] border-line-2 bg-surface p-3 text-[14px] leading-relaxed focus-visible:border-brand focus-visible:outline-none"
+        className="rounded-2xl border-[1.5px] border-line-2 bg-sunk p-4 text-[15px] leading-relaxed text-ink placeholder:text-faint transition focus-visible:border-brand focus-visible:shadow-[var(--glow-gold)] focus-visible:outline-none"
       />
       <Button
         variant="primary"
@@ -91,11 +91,21 @@ export function Playground({
       </Button>
 
       {error && (
-        <div className="rounded-xl border border-accent bg-accent-soft p-3 text-[14px]">
-          <p className="font-bold">
+        <div
+          className={
+            error.rate
+              ? "rounded-2xl border border-line-2 bg-surface-2 p-4 text-[14px]"
+              : "rounded-2xl border border-coral/40 bg-coral/10 p-4 text-[14px]"
+          }
+        >
+          <p
+            className={
+              error.rate ? "font-bold text-ink" : "font-bold text-coral"
+            }
+          >
             {error.rate ? "Daily limit reached" : "That didn't go through"}
           </p>
-          <p className="mt-1">{error.msg}</p>
+          <p className="mt-1 text-muted">{error.msg}</p>
           {!error.rate && (
             <button
               onClick={run}
@@ -108,7 +118,7 @@ export function Playground({
       )}
 
       {output && (
-        <div className="whitespace-pre-wrap rounded-xl border border-line bg-surface p-3 text-[14px] leading-relaxed">
+        <div className="whitespace-pre-wrap rounded-2xl border border-line bg-surface p-4 text-[14px] leading-relaxed text-ink shadow-[var(--elev-1)]">
           {output}
         </div>
       )}
