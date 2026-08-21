@@ -2,6 +2,8 @@
 
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { AnswerFeedback } from "@/components/lesson/AnswerFeedback";
+import { GoldBurst } from "@/components/lesson/GoldBurst";
 import type { PromptWriteBlock } from "@/lib/content/types";
 import type { PromptGrade } from "@/lib/ai/gradePrompt";
 
@@ -62,20 +64,27 @@ export function PromptWriteBlockView({
             setSubmission(e.target.value);
             setGrade(null);
           }}
-          rows={4}
+          rows={5}
           placeholder="Write your prompt here…"
-          className="rounded-xl border-[1.5px] border-line-2 bg-surface p-3 text-[14px] leading-relaxed focus-visible:border-brand focus-visible:outline-none"
+          className="rounded-2xl border-[1.5px] border-line bg-surface p-4 text-[15px] leading-[1.7] text-ink transition placeholder:text-faint focus-visible:border-brand focus-visible:shadow-[var(--glow-gold)] focus-visible:outline-none"
         />
+
         {grade && (
-          <div
-            className={`rounded-xl border p-3 text-[14px] leading-relaxed ${
-              grade.pass
-                ? "border-success bg-success-soft"
-                : "border-accent bg-accent-soft"
-            }`}
-          >
-            <p className="font-bold">{grade.pass ? "Nice one. 👏" : "Almost there"}</p>
-            <p className="mt-1">{grade.feedback}</p>
+          <div className="relative flex flex-col gap-2">
+            <AnswerFeedback
+              state={grade.pass ? "correct" : "notyet"}
+              correctLine="Nice one."
+            />
+            <div
+              className={`rounded-2xl border-[1.5px] p-4 text-[14px] leading-relaxed ${
+                grade.pass
+                  ? "border-[color:var(--green)] bg-success-soft text-success-ink"
+                  : "border-[color:var(--coral)] bg-surface"
+              }`}
+            >
+              {grade.feedback}
+            </div>
+            <GoldBurst trigger={grade.pass} />
           </div>
         )}
       </div>

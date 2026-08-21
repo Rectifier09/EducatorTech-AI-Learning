@@ -2,6 +2,8 @@
 
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { AnswerFeedback } from "@/components/lesson/AnswerFeedback";
+import { GoldBurst } from "@/components/lesson/GoldBurst";
 import { gradeFillBlank } from "@/lib/lesson/grade";
 import type { FillBlankBlock } from "@/lib/content/types";
 
@@ -43,49 +45,49 @@ export function FillBlankBlockView({
   return (
     <div className="flex flex-1 flex-col justify-between gap-6">
       <div className="flex flex-col gap-4">
-        <p className="text-[16px] leading-[2.2]">
-          {parts.map((part, i) => {
-            const m = part.match(/^\{\{([^}]+)\}\}$/);
-            const blank = m ? blanksById.get(m[1]) : undefined;
-            if (!blank) return <span key={i}>{part}</span>;
-            const chosen = choices[blank.id];
-            return (
-              <select
-                key={i}
-                value={chosen ?? ""}
-                onChange={(e) => pick(blank.id, Number(e.target.value))}
-                disabled={solved}
-                className={`mx-1 rounded-lg border-[1.5px] px-2 py-1 text-[14px] font-bold ${
-                  solved
-                    ? "border-success bg-success-soft text-success-ink"
-                    : chosen !== undefined
-                      ? "border-brand bg-brand-soft text-brand-ink"
-                      : "border-line-2 bg-surface"
-                }`}
-              >
-                <option value="" disabled>
-                  choose…
-                </option>
-                {blank.options.map((opt, oi) => (
-                  <option key={oi} value={oi}>
-                    {opt}
-                  </option>
-                ))}
-              </select>
-            );
-          })}
-        </p>
+        <div className="relative">
+          <p className="text-[16px] leading-[2.4]">
+            {parts.map((part, i) => {
+              const m = part.match(/^\{\{([^}]+)\}\}$/);
+              const blank = m ? blanksById.get(m[1]) : undefined;
+              if (!blank) return <span key={i}>{part}</span>;
+              const chosen = choices[blank.id];
 
-        {solved && (
-          <div className="rounded-xl border border-success bg-success-soft p-3 text-[14px]">
-            <p className="font-bold">Exactly. 👏</p>
-          </div>
-        )}
-        {wrongTry && !solved && (
-          <div className="rounded-xl border border-accent bg-accent-soft p-3 text-[14px]">
-            <p className="font-bold">Not quite — adjust a choice and try again.</p>
-          </div>
-        )}
+              let cls = "border-line-2 text-muted";
+              if (solved) {
+                cls = "border-[color:var(--green)] text-success-ink";
+              } else if (wrongTry) {
+                cls = "border-[color:var(--coral)] text-ink";
+              } else if (chosen !== undefined) {
+                cls = "border-brand text-brand-ink";
+              }
+
+              return (
+                <select
+                  key={i}
+                  value={chosen ?? ""}
+                  onChange={(e) => pick(blank.id, Number(e.target.value))}
+                  disabled={solved}
+                  className={`mx-1 min-w-[64px] border-b-2 bg-transparent px-1 pb-0.5 text-[15px] font-bold transition focus-visible:outline-none ${cls}`}
+                >
+                  <option value="" disabled>
+                    choose…
+                  </option>
+                  {blank.options.map((opt, oi) => (
+                    <option key={oi} value={oi}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+              );
+            })}
+          </p>
+          <GoldBurst trigger={solved} />
+        </div>
+
+        <AnswerFeedback
+          state={solved ? "correct" : wrongTry ? "notyet" : null}
+        />
       </div>
 
       {solved ? (
