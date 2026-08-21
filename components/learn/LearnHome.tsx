@@ -94,7 +94,7 @@ export function LearnHome({
               </p>
               <ProgressDots
                 total={lessons.length}
-                current={continueMeta.index}
+                current={continueMeta.index - 1}
               />
             </Card>
           </Link>
@@ -119,7 +119,7 @@ export function LearnHome({
           }`}
           aria-hidden={!collapsed}
         >
-          <ConfidenceGauge variant="chip" value={confidence} />
+          <ConfidenceGauge variant="chip" value={confidence} animate={collapsed} />
           <span className="ml-auto text-[12px] font-bold text-muted">
             {streak}d · {xp} XP
           </span>

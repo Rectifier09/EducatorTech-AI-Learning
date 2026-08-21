@@ -33,6 +33,7 @@ export function useWindowCollapsibleHeader(
   useEffect(() => {
     const onScroll = () =>
       setCollapsed((prev) => nextCollapsed(window.scrollY, prev, opts));
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [opts.enter, opts.exit]);
