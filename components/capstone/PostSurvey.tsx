@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { ConfidenceMeter } from "@/components/gamification/ConfidenceMeter";
 import { savePostSurvey } from "@/app/actions/survey";
+import { commitToUse } from "@/app/actions/commitment";
 import type { Attitude } from "@/lib/data/types";
 
 const ATTITUDES: { value: Attitude; label: string }[] = [
@@ -25,6 +26,14 @@ export function PostSurvey({ onNext }: { onNext: () => void }) {
     after: number;
     shift: "up" | "same" | "down";
   } | null>(null);
+  const [committed, setCommitted] = useState(false);
+
+  async function commit(daysAhead: number) {
+    const d = new Date();
+    d.setDate(d.getDate() + daysAhead);
+    setCommitted(true);
+    await commitToUse(d.toISOString().slice(0, 10));
+  }
 
   const ready = usingScore !== null && trustScore !== null && attitude !== null;
 
@@ -65,6 +74,33 @@ export function PostSurvey({ onNext }: { onNext: () => void }) {
           You&apos;re now ahead of most teachers in the country. And this is just
           the start.
         </p>
+
+        {committed ? (
+          <p className="text-[14px] font-bold text-success-ink">
+            Great — we&apos;ll check in on how it went. ✅
+          </p>
+        ) : (
+          <div className="flex flex-col gap-2">
+            <p className="text-sm font-bold">
+              When will you use what you made in class?
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => commit(1)}
+                className="flex-1 rounded-lg border-[1.5px] border-line-2 bg-surface py-2 text-[14px] font-bold hover:border-brand"
+              >
+                Tomorrow
+              </button>
+              <button
+                onClick={() => commit(3)}
+                className="flex-1 rounded-lg border-[1.5px] border-line-2 bg-surface py-2 text-[14px] font-bold hover:border-brand"
+              >
+                This week
+              </button>
+            </div>
+          </div>
+        )}
+
         <Button variant="primary" onClick={onNext} className="w-full">
           See what&apos;s next
         </Button>

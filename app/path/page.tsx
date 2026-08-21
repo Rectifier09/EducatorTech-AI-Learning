@@ -9,7 +9,9 @@ import { computeXp } from "@/lib/gamification/xp";
 import { computeStreak, activeDatesFromEvents } from "@/lib/gamification/streak";
 import { computeConfidence } from "@/lib/gamification/confidence";
 import { earnedBadges } from "@/lib/gamification/badges";
+import { getDueFollowUp } from "@/lib/data/commitments";
 import { PathMap } from "@/components/path/PathMap";
+import { ClassFollowUp } from "@/components/followup/ClassFollowUp";
 import { ConfidenceMeter } from "@/components/gamification/ConfidenceMeter";
 import { Button } from "@/components/ui/Button";
 
@@ -45,6 +47,7 @@ export default async function PathPage() {
     events,
     streakCurrent: streak.current,
   });
+  const dueFollowUp = await getDueFollowUp(user.id, today);
 
   return (
     <main className="flex min-h-full flex-col gap-5 p-6">
@@ -76,6 +79,8 @@ export default async function PathPage() {
           ))}
         </div>
       )}
+
+      {dueFollowUp && <ClassFollowUp id={dueFollowUp.id} />}
 
       <PathMap lessons={lessons} progress={progress} />
 
