@@ -17,7 +17,7 @@ export function ProgressDots({
       {Array.from({ length: total }).map((_, i) => (
         <span
           key={i}
-          className={`h-1.5 w-5 rounded-full ${i <= current ? "bg-brand" : "bg-line-2"}`}
+          className={`h-1.5 w-5 rounded-full ${i <= current ? "bg-brand shadow-[var(--glow-gold)]" : "bg-line-2"}`}
         />
       ))}
     </div>

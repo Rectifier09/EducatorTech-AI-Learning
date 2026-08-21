@@ -106,7 +106,7 @@ export function McqBlockView({
         </Button>
       ) : (
         <Button
-          variant="indigo"
+          variant="primary"
           onClick={check}
           disabled={selected.length === 0}
           className="w-full"

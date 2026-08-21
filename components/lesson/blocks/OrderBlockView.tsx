@@ -114,7 +114,7 @@ export function OrderBlockView({
         </Button>
       ) : (
         <Button
-          variant="indigo"
+          variant="primary"
           onClick={check}
           disabled={placed.length !== block.items.length}
           className="w-full"
