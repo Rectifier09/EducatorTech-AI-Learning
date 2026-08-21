@@ -4,8 +4,6 @@ import { useState } from "react";
 import { logConfidenceCheck } from "@/app/actions/lesson";
 import type { ReflectionBlock } from "@/lib/content/types";
 
-const FACES = ["😟", "😕", "🙂", "😃", "🤩"];
-
 export function ReflectionBlockView({
   block,
   lessonId,
@@ -27,27 +25,40 @@ export function ReflectionBlockView({
   }
 
   return (
-    <div className="flex flex-1 flex-col justify-center gap-6">
+    <div className="flex flex-1 flex-col justify-center gap-8">
       <h1
         className="text-[20px] font-semibold text-balance"
         style={{ fontFamily: "var(--font-display)" }}
       >
         {block.question}
       </h1>
-      <div className="flex gap-2">
-        {Array.from({ length: max }, (_, i) => i + 1).map((n) => (
-          <button
-            key={n}
-            onClick={() => choose(n)}
-            disabled={busy}
-            aria-label={`${n} of ${max}`}
-            className="flex-1 rounded-xl border-[1.5px] border-line-2 bg-surface py-3 text-2xl transition hover:border-brand disabled:opacity-60"
-          >
-            {max === 5 ? FACES[n - 1] : n}
-          </button>
-        ))}
+      <div className="rounded-2xl border border-line bg-sunk p-5">
+        <div className="flex items-end justify-between gap-3">
+          {Array.from({ length: max }, (_, i) => i + 1).map((n) => {
+            const ratio = n / max;
+            const dot = 10 + ratio * 16;
+            return (
+              <button
+                key={n}
+                onClick={() => choose(n)}
+                disabled={busy}
+                aria-label={`${n} of ${max}`}
+                className="group flex flex-1 flex-col items-center gap-2 rounded-xl py-2 transition disabled:opacity-60"
+              >
+                <span
+                  className="rounded-full bg-gradient-to-br from-accent to-brand shadow-[var(--glow-gold)] transition group-hover:scale-110 group-focus-visible:scale-110"
+                  style={{
+                    width: `${dot}px`,
+                    height: `${dot}px`,
+                    opacity: 0.3 + ratio * 0.7,
+                  }}
+                />
+              </button>
+            );
+          })}
+        </div>
       </div>
-      <div className="flex justify-between text-[11px] font-bold text-muted">
+      <div className="flex justify-between text-[11px] font-bold uppercase tracking-wide text-muted">
         <span>Not yet</span>
         <span>Totally</span>
       </div>
