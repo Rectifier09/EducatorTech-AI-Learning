@@ -16,6 +16,24 @@ import { LearnHome } from "@/components/learn/LearnHome";
 
 export const dynamic = "force-dynamic";
 
+/**
+ * India-focused pilot: greet by time-of-day in Asia/Kolkata regardless of
+ * the server's own timezone, computed server-side to avoid a client/server
+ * hydration mismatch.
+ */
+function timeOfDayGreeting(now: Date): string {
+  const hour = Number(
+    new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      hourCycle: "h23",
+      timeZone: "Asia/Kolkata",
+    }).format(now),
+  );
+  if (hour < 12) return "Good morning";
+  if (hour < 17) return "Good afternoon";
+  return "Good evening";
+}
+
 export default async function LearnPage() {
   const user = await getSessionUser();
   if (!user) redirect("/login");
@@ -44,6 +62,7 @@ export default async function LearnPage() {
     confidenceChecks,
   });
   const dueFollowUp = await getDueFollowUp(user.id, today);
+  const greeting = timeOfDayGreeting(new Date());
 
   const states = deriveLessonStates(
     lessons.map((l) => l.id),
@@ -65,6 +84,7 @@ export default async function LearnPage() {
   return (
     <LearnHome
       firstName={first}
+      greeting={greeting}
       confidence={confidence}
       deltaThisWeek={undefined}
       streak={streak.current}

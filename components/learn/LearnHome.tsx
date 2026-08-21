@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { useCollapsibleHeader } from "@/hooks/useCollapsibleHeader";
+import { useWindowCollapsibleHeader } from "@/hooks/useCollapsibleHeader";
 import { ConfidenceGauge } from "@/components/gamification/ConfidenceGauge";
 import { ClassFollowUp } from "@/components/followup/ClassFollowUp";
 import { Card } from "@/components/ui/Card";
@@ -28,6 +28,8 @@ interface DueFollowUp {
 
 interface LearnHomeProps {
   firstName: string;
+  /** Server-computed time-of-day greeting, e.g. "Good morning" (Asia/Kolkata). */
+  greeting: string;
   confidence: number;
   deltaThisWeek?: number;
   streak: number;
@@ -43,6 +45,7 @@ interface LearnHomeProps {
 
 export function LearnHome({
   firstName,
+  greeting,
   confidence,
   deltaThisWeek,
   streak,
@@ -55,71 +58,50 @@ export function LearnHome({
   notified,
   dueFollowUp,
 }: LearnHomeProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const collapsed = useCollapsibleHeader(scrollRef);
+  // The Learn route has no bounded/overflow-hidden scroll ancestor, so the
+  // document (window) itself scrolls — same as every other page in the app
+  // shell (BottomTabBar relies on that too, via `sticky bottom-0`).
+  const collapsed = useWindowCollapsibleHeader();
   const [tab, setTab] = useState<SubTab>("journey");
 
   return (
-    <div
-      ref={scrollRef}
-      className="flex min-h-0 flex-1 flex-col overflow-y-auto"
-    >
-      {/* Expanded hero: greeting, gauge, continue card, streak. Slides away
-          on scroll; respects prefers-reduced-motion via motion-reduce. */}
-      <div
-        className="overflow-hidden transition-[max-height,opacity] duration-300 ease-out motion-reduce:transition-none"
-        style={{
-          maxHeight: collapsed ? 0 : 640,
-          opacity: collapsed ? 0 : 1,
-        }}
-        aria-hidden={collapsed}
-      >
-        <div className="flex flex-col items-center gap-4 px-6 pb-5 pt-6">
-          <p className="text-[0.95rem] font-semibold text-muted">
-            Good evening, {firstName}
-          </p>
+    <div className="flex flex-col">
+      {/* Full hero: greeting, gauge, continue card, streak. This is normal
+          document flow — it scrolls away with the page, it isn't toggled. */}
+      <div className="flex flex-col items-center gap-4 px-6 pb-5 pt-6">
+        <p className="text-[0.95rem] font-semibold text-muted">
+          {greeting}, {firstName}
+        </p>
 
-          <ConfidenceGauge
-            variant="full"
-            value={confidence}
-            deltaThisWeek={deltaThisWeek}
-          />
+        <ConfidenceGauge
+          variant="full"
+          value={confidence}
+          deltaThisWeek={deltaThisWeek}
+        />
 
-          {continueTarget && continueMeta && (
-            <Link href={`/lesson/${continueTarget}`} className="w-full">
-              <Card className="flex flex-col gap-2">
-                <p className="text-[11px] font-bold uppercase tracking-wide text-muted">
-                  Continue · Lesson {continueMeta.index + 1} · ~
-                  {continueMeta.estMinutes} min
-                </p>
-                <p
-                  className="text-[17px] font-bold text-ink"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  {continueMeta.title}
-                </p>
-                <ProgressDots
-                  total={lessons.length}
-                  current={continueMeta.index}
-                />
-              </Card>
-            </Link>
-          )}
+        {continueTarget && continueMeta && (
+          <Link href={`/lesson/${continueTarget}`} className="w-full">
+            <Card className="flex flex-col gap-2">
+              <p className="text-[11px] font-bold uppercase tracking-wide text-muted">
+                Continue · Lesson {continueMeta.index + 1} · ~
+                {continueMeta.estMinutes} min
+              </p>
+              <p
+                className="text-[17px] font-bold text-ink"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {continueMeta.title}
+              </p>
+              <ProgressDots
+                total={lessons.length}
+                current={continueMeta.index}
+              />
+            </Card>
+          </Link>
+        )}
 
-          <StreakRow streak={streak} xp={xp} />
-        </div>
+        <StreakRow streak={streak} xp={xp} />
       </div>
-
-      {/* Condensed bar: only present once collapsed, pins above the
-          sub-tabs so the two form one sticky header together. */}
-      {collapsed && (
-        <div className="flex items-center gap-3 px-6 pb-3 pt-1">
-          <ConfidenceGauge variant="chip" value={confidence} />
-          <span className="ml-auto text-[12px] font-bold text-muted">
-            {streak}d · {xp} XP
-          </span>
-        </div>
-      )}
 
       {dueFollowUp && (
         <div className="px-6 pb-2">
@@ -127,21 +109,36 @@ export function LearnHome({
         </div>
       )}
 
-      {/* Sticky sub-tab switch — always sticky; pins to the very top once
-          the hero above it has collapsed out of flow. */}
-      <div className="sticky top-0 z-10 flex gap-1 border-b border-line bg-paper/95 px-6 py-2 backdrop-blur">
-        <SubTabButton
-          active={tab === "journey"}
-          onClick={() => setTab("journey")}
+      {/* Sticky bar: sub-tabs are always pinned; the condensed chip row
+          fades/grows in above them only once the hero has scrolled past
+          view (driven by window scroll position, not a fake toggle). */}
+      <div className="sticky top-0 z-10 flex flex-col gap-2 border-b border-line bg-paper/95 px-6 py-2 backdrop-blur">
+        <div
+          className={`flex items-center gap-3 overflow-hidden transition-[max-height,opacity] duration-300 ease-out motion-reduce:transition-none ${
+            collapsed ? "max-h-20 opacity-100" : "max-h-0 opacity-0"
+          }`}
+          aria-hidden={!collapsed}
         >
-          Your Journey
-        </SubTabButton>
-        <SubTabButton
-          active={tab === "explore"}
-          onClick={() => setTab("explore")}
-        >
-          Explore Learning
-        </SubTabButton>
+          <ConfidenceGauge variant="chip" value={confidence} />
+          <span className="ml-auto text-[12px] font-bold text-muted">
+            {streak}d · {xp} XP
+          </span>
+        </div>
+
+        <div className="flex gap-1">
+          <SubTabButton
+            active={tab === "journey"}
+            onClick={() => setTab("journey")}
+          >
+            Your Journey
+          </SubTabButton>
+          <SubTabButton
+            active={tab === "explore"}
+            onClick={() => setTab("explore")}
+          >
+            Explore Learning
+          </SubTabButton>
+        </div>
       </div>
 
       <div className="px-6 py-4">
