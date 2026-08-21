@@ -11,7 +11,7 @@ export default async function OnboardingPage() {
   if (!user) redirect("/login");
 
   const profile = await getProfile(user.id);
-  if (isOnboardingComplete(profile)) redirect("/path");
+  if (isOnboardingComplete(profile)) redirect("/learn");
 
   const firstName = user.name?.split(" ")[0] ?? null;
   return <OnboardingFlow firstName={firstName} />;

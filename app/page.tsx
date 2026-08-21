@@ -13,5 +13,5 @@ export default async function Home() {
   const profile = await getProfile(user.id);
   if (!isOnboardingComplete(profile)) redirect("/onboarding");
 
-  redirect("/path");
+  redirect("/learn");
 }

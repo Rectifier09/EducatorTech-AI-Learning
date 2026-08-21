@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { clampScore, gaugeDash } from "@/lib/ui/gauge";
+import { useCountUp } from "@/hooks/useCountUp";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 interface Props {
   value: number;
@@ -27,29 +29,24 @@ export function ConfidenceGauge({
   const dash = gaugeDash(target);
   const s = SIZES[variant];
 
-  const prefersReduced =
-    typeof window !== "undefined" &&
-    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  // usePrefersReducedMotion starts `false` on both server and first client
+  // render, so the initial markup always matches (no hydration mismatch);
+  // it settles to the real preference in an effect after mount.
+  const prefersReduced = usePrefersReducedMotion();
   const shouldAnimate = animate && !prefersReduced;
 
-  const [shown, setShown] = useState(shouldAnimate ? 0 : target);
+  const shown = useCountUp(target, { enabled: shouldAnimate });
   const [offset, setOffset] = useState(shouldAnimate ? dash.valueLen : 0);
-  const started = useRef(false);
 
   useEffect(() => {
-    if (!shouldAnimate || started.current) return;
-    started.current = true;
-    const id = requestAnimationFrame(() => setOffset(0));
-    const t0 = performance.now();
-    const dur = 1400;
-    function tick(now: number) {
-      const p = Math.min((now - t0) / dur, 1);
-      setShown(Math.round((1 - Math.pow(1 - p, 3)) * target));
-      if (p < 1) requestAnimationFrame(tick);
+    if (!shouldAnimate) {
+      setOffset(0);
+      return;
     }
-    requestAnimationFrame(tick);
+    setOffset(dash.valueLen);
+    const id = requestAnimationFrame(() => setOffset(0));
     return () => cancelAnimationFrame(id);
-  }, [shouldAnimate, target, dash.valueLen]);
+  }, [shouldAnimate, dash.valueLen]);
 
   const showChip = variant === "chip";
 
@@ -63,9 +60,13 @@ export function ConfidenceGauge({
         className="relative"
         style={{ width: s.box, height: s.box }}
         role="img"
-        aria-label={`AI confidence: ${target} out of 100`}
+        aria-label={`${label}: ${target} out of 100`}
       >
-        <svg viewBox="0 0 300 300" className="h-full w-full">
+        <svg
+          viewBox="0 0 300 300"
+          className="h-full w-full"
+          aria-hidden="true"
+        >
           <defs>
             <linearGradient id="cg-arc" x1="0" y1="1" x2="1" y2="0">
               <stop offset="0%" stopColor="var(--gold)" />
@@ -98,7 +99,7 @@ export function ConfidenceGauge({
             strokeDashoffset={offset}
             transform="rotate(135 150 150)"
             style={{
-              filter: "drop-shadow(0 0 10px rgba(234,181,77,.42))",
+              filter: "drop-shadow(var(--glow-gold))",
               transition: shouldAnimate
                 ? "stroke-dashoffset 1.4s cubic-bezier(.22,1,.36,1)"
                 : "none",

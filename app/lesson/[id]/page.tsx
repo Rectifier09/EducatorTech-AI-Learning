@@ -25,7 +25,7 @@ export default async function LessonPage({
   const progress = await getAllProgress(user.id);
   const states = deriveLessonStates(getTrack().lessonIds, progress);
   const state = states.find((s) => s.lessonId === id)?.state;
-  if (state === "locked") redirect("/path");
+  if (state === "locked") redirect("/learn");
 
   const lesson = getLesson(id);
   const profile = await getProfile(user.id);

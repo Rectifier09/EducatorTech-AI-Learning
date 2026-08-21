@@ -5,7 +5,7 @@ import Link from "next/link";
 import { requestNotify } from "@/app/actions/notify";
 import type { SkillTreeData } from "@/lib/content/skilltree";
 
-export function SkillTree({
+export function ExploreList({
   tree,
   notified,
 }: {
@@ -28,28 +28,28 @@ export function SkillTree({
 
       <Link
         href="/learn"
-        className="rounded-2xl border-2 border-success bg-success-soft p-4"
+        className="rounded-2xl border border-brand/40 bg-brand-soft p-4"
       >
-        <p className="text-[11px] font-bold uppercase tracking-wide text-success-ink">
+        <p className="text-[11px] font-bold uppercase tracking-wide text-brand-ink">
           You&apos;re here
         </p>
-        <p className="font-bold" style={{ fontFamily: "var(--font-display)" }}>
+        <p className="font-bold text-ink" style={{ fontFamily: "var(--font-display)" }}>
           {tree.gateway.label}
         </p>
       </Link>
 
       {tree.branches.map((b) => (
         <div key={b.id} className="flex flex-col gap-2">
-          <p className="text-[13px] font-bold">
+          <p className="text-[13px] font-bold text-ink">
             {b.emoji} {b.label}
           </p>
           {b.nodes.map((n) => (
             <div
               key={n.id}
-              className="flex items-center justify-between gap-2 rounded-xl border border-dashed border-line-2 bg-surface px-3 py-2.5"
+              className="flex items-center justify-between gap-2 rounded-2xl border border-line bg-surface px-4 py-3"
             >
               <div>
-                <p className="text-[14px] font-bold text-muted">🔒 {n.label}</p>
+                <p className="text-[14px] font-bold text-ink">{n.label}</p>
                 <p className="text-[11px] text-muted">In development</p>
               </div>
               <button
