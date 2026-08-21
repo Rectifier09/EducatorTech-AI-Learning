@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/auth";
 import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
@@ -49,6 +50,15 @@ export default async function LoginPage() {
         <GoogleSignInButton />
         <p className="mt-2.5 text-center text-[12px] text-muted">
           Takes about 15 minutes · free · your first worksheet&apos;s on us
+        </p>
+        <p className="mt-2 text-center text-[11px] text-muted">
+          <Link href="/privacy" className="underline">
+            Privacy
+          </Link>{" "}
+          ·{" "}
+          <Link href="/terms" className="underline">
+            Terms
+          </Link>
         </p>
       </div>
     </main>
