@@ -85,7 +85,7 @@ export function PromptWriteBlockView({
         </Button>
       ) : (
         <Button
-          variant="indigo"
+          variant="primary"
           onClick={submit}
           disabled={busy || !submission.trim()}
           className="w-full"

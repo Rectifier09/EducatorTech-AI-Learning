@@ -94,7 +94,7 @@ export function FillBlankBlockView({
         </Button>
       ) : (
         <Button
-          variant="indigo"
+          variant="primary"
           onClick={check}
           disabled={!allChosen}
           className="w-full"

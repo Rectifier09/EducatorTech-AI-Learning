@@ -82,7 +82,7 @@ export function Playground({
         className="rounded-xl border-[1.5px] border-line-2 bg-surface p-3 text-[14px] leading-relaxed focus-visible:border-brand focus-visible:outline-none"
       />
       <Button
-        variant="indigo"
+        variant="primary"
         onClick={run}
         disabled={busy || !prompt.trim()}
         className="w-full"
