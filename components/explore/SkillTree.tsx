@@ -27,7 +27,7 @@ export function SkillTree({
       </p>
 
       <Link
-        href="/path"
+        href="/learn"
         className="rounded-2xl border-2 border-success bg-success-soft p-4"
       >
         <p className="text-[11px] font-bold uppercase tracking-wide text-success-ink">

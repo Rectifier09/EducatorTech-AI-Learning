@@ -40,10 +40,10 @@ export function LessonComplete({
         )}
         <Button
           variant={nextId ? "ghost" : "primary"}
-          onClick={() => router.push("/path")}
+          onClick={() => router.push("/learn")}
           className="w-full"
         >
-          Back to path
+          Back to Learn
         </Button>
       </div>
     </main>

@@ -27,7 +27,7 @@ export function ExploreList({
       </p>
 
       <Link
-        href="/path"
+        href="/learn"
         className="rounded-2xl border border-brand/40 bg-brand-soft p-4"
       >
         <p className="text-[11px] font-bold uppercase tracking-wide text-brand-ink">

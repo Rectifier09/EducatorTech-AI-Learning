@@ -42,7 +42,7 @@ export function StepTaste({
     if (busy) return;
     setBusy(true);
     await completeOnboarding();
-    router.push("/path");
+    router.push("/learn");
   }
 
   return (
