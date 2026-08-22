@@ -11,6 +11,7 @@ import type { Profile } from "@/lib/data/types";
 export function PlaygroundBlockView({
   block,
   profile,
+  trackId,
   lessonId,
   spineArtifact,
   onArtifact,
@@ -18,6 +19,7 @@ export function PlaygroundBlockView({
 }: {
   block: PlaygroundBlock;
   profile: Pick<Profile, "subject" | "gradeBand">;
+  trackId: string;
   lessonId: string;
   spineArtifact?: string;
   onArtifact: (text: string) => void;
@@ -106,6 +108,7 @@ export function PlaygroundBlockView({
               prompt,
               output: text,
               artifactType: choice || null,
+              trackId,
               lessonId,
             });
           }

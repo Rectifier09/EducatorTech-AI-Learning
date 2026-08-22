@@ -60,10 +60,19 @@ export async function finishLesson(
   return { newBadges: newlyEarnedBadges(badgesBefore, badgesAfter) };
 }
 
+/** Fire-and-forget drop-off signal: emitted once when a lesson opens. */
+export async function logLessonStarted(
+  trackId: string,
+  lessonId: string,
+): Promise<void> {
+  await logEvent("lesson_started", { trackId, lessonId });
+}
+
 export async function logConfidenceCheck(
+  trackId: string,
   lessonId: string,
   blockId: string,
   value: number,
 ): Promise<void> {
-  await logEvent("confidence_check", { lessonId, blockId, value });
+  await logEvent("confidence_check", { trackId, lessonId, blockId, value });
 }

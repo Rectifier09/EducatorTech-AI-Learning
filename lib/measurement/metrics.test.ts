@@ -1,9 +1,16 @@
 import { describe, it, expect } from "vitest";
-import { activationCounts, avgConfidenceDelta, notifyDemand } from "./metrics";
+import {
+  activationCounts,
+  avgConfidenceDelta,
+  notifyDemand,
+  journeyFunnel,
+  reflectionValueByLesson,
+  lessonHealthRanking,
+} from "./metrics";
 import { isAdmin } from "@/lib/admin";
 
 describe("measurement metrics", () => {
-  it("activationCounts computes the funnel", () => {
+  it("activationCounts uses namespaced foundations ids", () => {
     const c = activationCounts({
       profiles: [
         { user_id: "a", onboarded_at: "now" },
@@ -11,8 +18,10 @@ describe("measurement metrics", () => {
         { user_id: "c", onboarded_at: null },
       ],
       progress: [
-        { user_id: "a", lesson_id: "l1", status: "completed" },
-        { user_id: "a", lesson_id: "l7", status: "completed" },
+        // namespaced "<trackId>:<lessonId>" keys (Phase-2). Bare "l1" must NOT count.
+        { user_id: "a", lesson_id: "ai-foundations:l1", status: "completed" },
+        { user_id: "a", lesson_id: "ai-foundations:l7", status: "completed" },
+        { user_id: "b", lesson_id: "ai-foundations:l1", status: "completed" },
         { user_id: "b", lesson_id: "l1", status: "completed" },
       ],
       events: [{ user_id: "a", name: "artifact_saved", created_at: "now" }],
@@ -42,6 +51,75 @@ describe("measurement metrics", () => {
       { node_id: "privacy" },
     ]);
     expect(d[0]).toEqual({ nodeId: "grading", count: 2 });
+  });
+
+  it("journeyFunnel dedupes started by user and reads namespaced completion", () => {
+    const tracks = [
+      { trackId: "ai-foundations", title: "Foundations", lessonIds: ["l1", "l2"] },
+    ];
+    const [j] = journeyFunnel({
+      tracks,
+      progress: [
+        // user a completed the LAST lesson (l2) → track-complete
+        { user_id: "a", lesson_id: "ai-foundations:l1", status: "completed" },
+        { user_id: "a", lesson_id: "ai-foundations:l2", status: "completed" },
+        { user_id: "b", lesson_id: "ai-foundations:l1", status: "completed" },
+      ],
+      events: [
+        // a starts twice → deduped to one distinct user
+        { user_id: "a", name: "lesson_started", created_at: "t", props: { trackId: "ai-foundations", lessonId: "l1" } },
+        { user_id: "a", name: "lesson_started", created_at: "t", props: { trackId: "ai-foundations", lessonId: "l1" } },
+        { user_id: "b", name: "lesson_started", created_at: "t", props: { trackId: "ai-foundations", lessonId: "l1" } },
+        { user_id: "a", name: "lesson_started", created_at: "t", props: { trackId: "ai-foundations", lessonId: "l2" } },
+        // different track — must be ignored here
+        { user_id: "c", name: "lesson_started", created_at: "t", props: { trackId: "grading", lessonId: "l1" } },
+      ],
+    });
+    expect(j.started).toBe(2); // a, b
+    expect(j.completed).toBe(1); // only a finished l2
+    expect(j.completionPct).toBe(50);
+    const l1 = j.lessons.find((l) => l.lessonId === "l1")!;
+    expect(l1).toEqual({ lessonId: "l1", started: 2, completed: 2, dropoffPct: 0 });
+    const l2 = j.lessons.find((l) => l.lessonId === "l2")!;
+    // 1 started l2, 1 completed → 0% drop
+    expect(l2).toEqual({ lessonId: "l2", started: 1, completed: 1, dropoffPct: 0 });
+  });
+
+  it("reflectionValueByLesson averages props.value per track:lesson", () => {
+    const m = reflectionValueByLesson([
+      { user_id: "a", name: "confidence_check", created_at: "t", props: { trackId: "ai-foundations", lessonId: "l3", value: 2 } },
+      { user_id: "b", name: "confidence_check", created_at: "t", props: { trackId: "ai-foundations", lessonId: "l3", value: 4 } },
+      { user_id: "c", name: "confidence_check", created_at: "t", props: { trackId: "ai-foundations", lessonId: "l3", value: 3 } },
+      // unrelated event ignored
+      { user_id: "d", name: "artifact_saved", created_at: "t", props: {} },
+    ]);
+    expect(m.get("ai-foundations:l3")).toEqual({ avg: 3, n: 3 });
+  });
+
+  it("lessonHealthRanking ranks by traffic-weighted drop-off + low reflection", () => {
+    const journeys = [
+      {
+        trackId: "ai-foundations",
+        title: "Foundations",
+        started: 10,
+        completed: 4,
+        completionPct: 40,
+        lessons: [
+          { lessonId: "l1", started: 10, completed: 5, dropoffPct: 50 }, // heavy drop
+          { lessonId: "l2", started: 8, completed: 8, dropoffPct: 0 }, // healthy but low reflection
+          { lessonId: "l3", started: 6, completed: 6, dropoffPct: 0 }, // clean
+        ],
+      },
+    ];
+    const reflection = new Map([
+      ["ai-foundations:l2", { avg: 2, n: 5 }], // confusing
+      ["ai-foundations:l3", { avg: 4.5, n: 4 }], // fine
+    ]);
+    const ranked = lessonHealthRanking({ journeys, reflection });
+    // l1 concern = 10*50/100 = 5 ; l2 concern = (3-2)*5 = 5 ; l3 = 0 (dropped)
+    expect(ranked.map((r) => r.lessonId)).toEqual(["l1", "l2"]);
+    expect(ranked.every((r) => r.concern > 0)).toBe(true);
+    expect(ranked.find((r) => r.lessonId === "l2")!.reason).toContain("low reflection");
   });
 
   it("isAdmin gates by the allow-list", () => {

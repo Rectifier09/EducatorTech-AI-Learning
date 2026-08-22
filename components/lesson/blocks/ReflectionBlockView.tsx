@@ -6,10 +6,12 @@ import type { ReflectionBlock } from "@/lib/content/types";
 
 export function ReflectionBlockView({
   block,
+  trackId,
   lessonId,
   onNext,
 }: {
   block: ReflectionBlock;
+  trackId: string;
   lessonId: string;
   onNext: () => void;
 }) {
@@ -20,7 +22,7 @@ export function ReflectionBlockView({
     if (busy) return;
     setBusy(true);
     // fire-and-forget: analytics must never block progress
-    void logConfidenceCheck(lessonId, block.id, value);
+    void logConfidenceCheck(trackId, lessonId, block.id, value);
     onNext();
   }
 
