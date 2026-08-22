@@ -31,11 +31,15 @@ describe("skill tree", () => {
     expect(t.branches.some((b) => b.id === "tech-basics")).toBe(false);
   });
 
-  it("branch nodes are not live yet (live flag is optional)", () => {
+  it("only the deliberately-launched nodes are live (live flag is optional)", () => {
+    // Nodes go live only after human content review — update this set when a
+    // node is intentionally launched. Guards against an authoring agent (or a
+    // stray edit) flipping `live` by accident, in either direction.
+    const LIVE = new Set(["grading", "differentiation"]);
     const t = getSkillTree();
     for (const b of t.branches) {
       for (const n of b.nodes) {
-        expect(n.live ?? false).toBe(false);
+        expect(Boolean(n.live)).toBe(LIVE.has(n.id));
       }
     }
   });
