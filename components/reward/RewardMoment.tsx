@@ -44,7 +44,11 @@ export function RewardMoment({
   }, []);
 
   return (
-    <main className="relative flex min-h-full flex-col items-center justify-center gap-6 overflow-hidden p-6 text-center">
+    <section
+      role="status"
+      aria-live="polite"
+      className="relative flex min-h-full flex-col items-center justify-center gap-6 overflow-hidden p-6 text-center"
+    >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 flex justify-center"
@@ -88,6 +92,6 @@ export function RewardMoment({
           </Button>
         )}
       </div>
-    </main>
+    </section>
   );
 }
