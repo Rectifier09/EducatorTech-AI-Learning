@@ -4,13 +4,13 @@ import { useState } from "react";
 import { useFormStatus } from "react-dom";
 import { Button } from "@/components/ui/Button";
 
-function ConfirmButton() {
+function ConfirmButton({ disabled }: { disabled: boolean }) {
   const { pending } = useFormStatus();
   return (
     <button
       type="submit"
-      disabled={pending}
-      className="inline-flex min-h-[44px] flex-1 items-center justify-center rounded-full bg-coral px-5 py-3 text-[15px] font-extrabold tracking-tight text-paper transition hover:brightness-105 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+      disabled={disabled || pending}
+      className="inline-flex min-h-[44px] flex-1 items-center justify-center rounded-full bg-coral px-5 py-3 text-[15px] font-extrabold tracking-tight text-paper transition hover:brightness-105 disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
     >
       {pending ? "Deleting…" : "Delete my account"}
     </button>
@@ -29,6 +29,13 @@ export function DeleteAccount({
   deleteAccount: () => Promise<void>;
 }) {
   const [confirming, setConfirming] = useState(false);
+  const [confirmText, setConfirmText] = useState("");
+  const canDelete = confirmText.trim().toUpperCase() === "DELETE";
+
+  function cancel() {
+    setConfirming(false);
+    setConfirmText("");
+  }
 
   if (!confirming) {
     return (
@@ -50,15 +57,26 @@ export function DeleteAccount({
         every record we hold about you.{" "}
         <span className="font-bold text-coral">This cannot be undone.</span>
       </p>
+      <label className="flex flex-col gap-1.5">
+        <span className="text-[12px] font-bold text-muted">
+          Type <span className="text-coral">DELETE</span> to confirm
+        </span>
+        <input
+          value={confirmText}
+          onChange={(e) => setConfirmText(e.target.value)}
+          autoComplete="off"
+          autoCapitalize="characters"
+          spellCheck={false}
+          placeholder="DELETE"
+          aria-label="Type DELETE to confirm account deletion"
+          className="rounded-xl border-[1.5px] border-line-2 bg-surface px-3.5 py-2.5 text-[14px] tracking-wide text-ink placeholder:text-faint focus-visible:border-coral focus-visible:outline-none"
+        />
+      </label>
       <div className="flex gap-2">
         <form action={deleteAccount} className="flex-1">
-          <ConfirmButton />
+          <ConfirmButton disabled={!canDelete} />
         </form>
-        <Button
-          variant="ghost"
-          type="button"
-          onClick={() => setConfirming(false)}
-        >
+        <Button variant="ghost" type="button" onClick={cancel}>
           Cancel
         </Button>
       </div>

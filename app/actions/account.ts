@@ -12,8 +12,9 @@ import { createServerClient } from "@/lib/supabase/server";
  *
  * Deleting the auth user cascades every personal table (profiles,
  * survey_responses, progress, playground_sessions, notify_requests,
- * class_commitments — all ON DELETE CASCADE). `events` are ON DELETE SET NULL,
- * so we remove them explicitly first for a complete erasure.
+ * class_commitments — all ON DELETE CASCADE). Analytics `events` are
+ * ON DELETE SET NULL, so they are intentionally RETAINED but de-identified
+ * (user_id nulled) — no personal link remains, and the pilot funnel is kept.
  */
 export async function deleteAccount(): Promise<void> {
   const user = await getSessionUser();
@@ -21,16 +22,8 @@ export async function deleteAccount(): Promise<void> {
 
   const admin = createAdminClient();
 
-  // Erase analytics events while the user_id link still exists.
-  const { error: eventsError } = await admin
-    .from("events")
-    .delete()
-    .eq("user_id", user.id);
-  if (eventsError) {
-    throw new Error(`Account deletion failed (events): ${eventsError.message}`);
-  }
-
-  // Delete the auth user — cascades all remaining personal tables.
+  // Delete the auth user — cascades all personal tables; events are
+  // de-identified (user_id set to null) rather than deleted.
   const { error } = await admin.auth.admin.deleteUser(user.id);
   if (error) {
     throw new Error(`Account deletion failed: ${error.message}`);

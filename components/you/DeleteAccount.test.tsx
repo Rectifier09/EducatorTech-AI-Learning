@@ -26,13 +26,31 @@ describe("DeleteAccount", () => {
     ).toBeInTheDocument();
   });
 
-  it("cancel backs out without deleting", () => {
+  it("keeps the destructive button disabled until DELETE is typed", () => {
     render(<DeleteAccount deleteAccount={vi.fn()} />);
     fireEvent.click(screen.getByRole("button", { name: "Delete profile" }));
+    const confirm = screen.getByRole("button", { name: /delete my account/i });
+    const input = screen.getByLabelText(/type delete to confirm/i);
+
+    expect(confirm).toBeDisabled();
+    fireEvent.change(input, { target: { value: "nope" } });
+    expect(confirm).toBeDisabled();
+    fireEvent.change(input, { target: { value: "delete" } });
+    expect(confirm).toBeEnabled(); // case-insensitive, trimmed
+  });
+
+  it("cancel backs out without deleting and clears the typed text", () => {
+    render(<DeleteAccount deleteAccount={vi.fn()} />);
+    fireEvent.click(screen.getByRole("button", { name: "Delete profile" }));
+    fireEvent.change(screen.getByLabelText(/type delete to confirm/i), {
+      target: { value: "DELETE" },
+    });
     fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(screen.queryByText(/cannot be undone/i)).not.toBeInTheDocument();
+    // reopening starts fresh (button disabled again)
+    fireEvent.click(screen.getByRole("button", { name: "Delete profile" }));
     expect(
-      screen.getByRole("button", { name: "Delete profile" }),
-    ).toBeInTheDocument();
+      screen.getByRole("button", { name: /delete my account/i }),
+    ).toBeDisabled();
   });
 });
