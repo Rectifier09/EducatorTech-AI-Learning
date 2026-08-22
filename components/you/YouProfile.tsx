@@ -8,7 +8,6 @@ import type { Badge } from "@/lib/gamification/badges";
 interface YouProfileProps {
   firstName: string;
   confidence: number;
-  deltaThisWeek?: number;
   xp: number;
   streak: number;
   badges: Badge[];
@@ -27,7 +26,6 @@ interface YouProfileProps {
 export function YouProfile({
   firstName,
   confidence,
-  deltaThisWeek,
   xp,
   streak,
   badges,
@@ -42,7 +40,7 @@ export function YouProfile({
         <p className="text-[0.95rem] font-semibold text-muted">
           {firstName}&apos;s standing
         </p>
-        <ConfidenceGauge value={confidence} deltaThisWeek={deltaThisWeek} />
+        <ConfidenceGauge value={confidence} />
       </div>
 
       <div className="flex gap-3">
@@ -69,9 +67,9 @@ export function YouProfile({
             effort, not scores.
           </p>
         </div>
-        <Card className="p-2">
+        <div className="rounded-3xl border border-line bg-surface shadow-[var(--elev-1)] p-2">
           <LeagueBoard members={league} />
-        </Card>
+        </div>
       </section>
 
       <form action={setAlias} className="flex gap-2">
@@ -116,7 +114,7 @@ function StatTile({
   ember?: boolean;
 }) {
   return (
-    <Card className="flex flex-1 flex-col items-center gap-1 p-4">
+    <div className="rounded-3xl border border-line bg-surface shadow-[var(--elev-1)] flex flex-1 flex-col items-center gap-1 p-4">
       <span
         className="flex items-center gap-1.5 font-semibold tabular-nums leading-none text-[1.9rem]"
         style={{ fontFamily: "var(--font-display)" }}
@@ -132,7 +130,7 @@ function StatTile({
       <span className="text-[0.7rem] font-bold uppercase tracking-[0.12em] text-muted">
         {label}
       </span>
-    </Card>
+    </div>
   );
 }
 
