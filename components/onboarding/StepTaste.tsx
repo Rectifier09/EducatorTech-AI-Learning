@@ -50,17 +50,27 @@ export function StepTaste({
       <div className="flex flex-col gap-4">
         <MascotGuide
           mood="cheer"
-          caption="Before anything else — watch this. I'll ask AI for something for your class."
+          caption="Before anything else — a small demonstration. Watch what AI does with one line of instruction."
         />
-        <div className="rounded-xl border border-line bg-sunk p-3.5">
-          <p className="text-[13px] font-bold text-brand-ink">{promptShown}</p>
+        <div className="flex flex-col gap-1.5">
+          <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-muted">
+            What we asked
+          </p>
+          <div className="rounded-2xl border border-line bg-sunk p-3.5 shadow-[var(--elev-1)]">
+            <p className="text-[13px] font-bold text-brand-ink">{promptShown}</p>
+          </div>
         </div>
-        <div className="rounded-xl border border-line bg-surface p-3.5 text-[14px] leading-relaxed">
-          {live ?? sampleOutput}
+        <div className="flex flex-col gap-1.5">
+          <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-muted">
+            What it wrote
+          </p>
+          <div className="rounded-2xl border border-line bg-surface p-3.5 text-[14px] leading-relaxed text-ink shadow-[var(--elev-1)]">
+            {live ?? sampleOutput}
+          </div>
         </div>
         <p className="text-[14px] text-muted">
           That took seconds. Next, you&apos;ll do it yourself — and learn how to
-          make sure it&apos;s actually good.
+          tell when it&apos;s actually good.
         </p>
       </div>
       <Button

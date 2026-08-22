@@ -12,14 +12,14 @@ export function StepWelcome({
 }) {
   return (
     <div className="flex flex-1 flex-col justify-between gap-6">
-      <div className="flex flex-1 flex-col justify-center gap-5">
+      <div className="flex flex-1 flex-col justify-center gap-6">
         <MascotGuide
           mood="welcome"
           size={64}
-          caption={`Welcome${firstName ? `, ${firstName}` : ""} 👋 I'm Ravi — a teacher, like you.`}
+          caption={`Welcome${firstName ? `, ${firstName}` : ""}. I'm Ravi — a teacher, like you.`}
         />
         <h1
-          className="text-[26px] font-semibold text-balance"
+          className="text-[28px] leading-tight font-semibold text-balance"
           style={{ fontFamily: "var(--font-display)" }}
         >
           Let&apos;s set this up around what you teach — takes a minute.
