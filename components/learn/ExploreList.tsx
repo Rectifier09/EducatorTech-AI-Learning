@@ -5,6 +5,7 @@ import Link from "next/link";
 import { requestNotify } from "@/app/actions/notify";
 import { Card } from "@/components/ui/Card";
 import { ProgressDots } from "@/components/ui/ProgressDots";
+import { CollapsibleSection } from "./CollapsibleSection";
 import type { SkillTreeData, SkillNode } from "@/lib/content/skilltree";
 import type { ExploreNodeStatus } from "./LearnHome";
 
@@ -44,34 +45,33 @@ export function ExploreList({
       </Link>
 
       {tree.branches.map((b) => (
-        <div key={b.id} className="flex flex-col gap-2">
-          <p className="text-[13px] font-bold text-ink">
-            {b.emoji} {b.label}
-          </p>
-          {b.nodes.map((n) => {
-            const status = exploreStatus[n.id];
-            return status?.live && status.href ? (
-              <LiveNodeCard key={n.id} node={n} status={status} />
-            ) : (
-              <div
-                key={n.id}
-                className="flex items-center justify-between gap-2 rounded-2xl border border-line bg-surface px-4 py-3"
-              >
-                <div>
-                  <p className="text-[14px] font-bold text-ink">{n.label}</p>
-                  <p className="text-[11px] text-muted">In development</p>
-                </div>
-                <button
-                  onClick={() => notify(n.id)}
-                  disabled={done.has(n.id)}
-                  className="shrink-0 rounded-full border-[1.5px] border-brand px-3 py-1.5 text-[12px] font-bold text-brand-ink transition disabled:border-success disabled:text-success-ink"
+        <CollapsibleSection key={b.id} title={b.label} emoji={b.emoji}>
+          <div className="flex flex-col gap-2">
+            {b.nodes.map((n) => {
+              const status = exploreStatus[n.id];
+              return status?.live && status.href ? (
+                <LiveNodeCard key={n.id} node={n} status={status} />
+              ) : (
+                <div
+                  key={n.id}
+                  className="flex items-center justify-between gap-2 rounded-2xl border border-line bg-surface px-4 py-3"
                 >
-                  {done.has(n.id) ? "Notified ✓" : "Notify me"}
-                </button>
-              </div>
-            );
-          })}
-        </div>
+                  <div>
+                    <p className="text-[14px] font-bold text-ink">{n.label}</p>
+                    <p className="text-[11px] text-muted">In development</p>
+                  </div>
+                  <button
+                    onClick={() => notify(n.id)}
+                    disabled={done.has(n.id)}
+                    className="shrink-0 rounded-full border-[1.5px] border-brand px-3 py-1.5 text-[12px] font-bold text-brand-ink transition disabled:border-success disabled:text-success-ink"
+                  >
+                    {done.has(n.id) ? "Notified ✓" : "Notify me"}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </CollapsibleSection>
       ))}
 
       <p className="text-[12px] text-muted">

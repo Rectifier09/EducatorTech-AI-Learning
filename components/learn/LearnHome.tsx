@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/Card";
 import { ProgressDots } from "@/components/ui/ProgressDots";
 import { JourneyList } from "@/components/learn/JourneyList";
 import { ExploreList } from "@/components/learn/ExploreList";
+import { CollapsibleSection } from "@/components/learn/CollapsibleSection";
 import type { Lesson } from "@/lib/content/types";
 import type { ProgressStatus } from "@/lib/data/types";
 import type { SkillTreeData } from "@/lib/content/skilltree";
@@ -168,7 +169,13 @@ export function LearnHome({
 
       <div className="px-6 py-4">
         {tab === "journey" ? (
-          <JourneyList trackId={trackId} lessons={lessons} states={states} />
+          <CollapsibleSection
+            title={tree.gateway.label}
+            subtitle={`${states.filter((s) => s.state === "completed").length} / ${states.length} lessons`}
+            titleClassName="text-[15px] font-[family-name:var(--font-display)]"
+          >
+            <JourneyList trackId={trackId} lessons={lessons} states={states} />
+          </CollapsibleSection>
         ) : (
           <ExploreList
             tree={tree}
