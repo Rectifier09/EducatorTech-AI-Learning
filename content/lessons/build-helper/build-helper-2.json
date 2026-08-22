@@ -1,0 +1,40 @@
+{
+  "id": "build-helper-2",
+  "title": "Make your mini-assistant",
+  "estMinutes": 7,
+  "goal": "Build and save a reusable AI helper for a job you do every week — you stay in charge of what it does.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "build-helper-2-hook",
+      "title": "Let's bottle a weekly job",
+      "body": "Pick one thing you do every single week — the Friday quiz, quick feedback lines, a worksheet starter. We're going to turn it into an assistant you keep.\n\nFirst you'll write its instructions. Then you'll test it on a real topic. If it works, save it — and next week becomes a ten-second job."
+    },
+    {
+      "type": "promptWrite",
+      "id": "build-helper-2-compose",
+      "brief": "Write the instructions for your mini-assistant — the part you'll save and reuse. Pick one weekly job (say, a Class 7 Science quiz-maker). Give it a role, your class context, and 2–3 rules it must always follow. End with a slot for the topic that changes each week. Keep students' names and personal details out.",
+      "rubric": [
+        "Names a clear role, e.g. \"You are a quiz-maker for my class\".",
+        "Includes your class context — grade level, subject, and board.",
+        "Lists at least two \"always\" rules (e.g. add an answer key, use simple English, use ₹ not $).",
+        "Leaves a slot for the part that changes each week — the topic or the text to work on.",
+        "Keeps real student names and personal details out of the prompt."
+      ]
+    },
+    {
+      "type": "playground",
+      "id": "build-helper-2-make",
+      "mode": "make",
+      "artifactChoices": ["Quiz-maker assistant", "Feedback assistant", "Explainer assistant", "Custom"],
+      "scaffold": "Create a reusable assistant prompt I can save and reuse: role = a {{artifact}} for my {{gradeBand}} {{subject}} class; always follow these rules: [your 2–3 rules]; then I'll paste this week's topic. Show me the finished assistant, then test it once on this topic: [a real topic you're teaching this week].",
+      "saveToToolkit": true
+    },
+    {
+      "type": "reflection",
+      "id": "build-helper-2-reflect",
+      "question": "You just built and tested a helper. How usable is the assistant you saved — ready for next week?"
+    }
+  ]
+}

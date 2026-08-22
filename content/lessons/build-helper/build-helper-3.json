@@ -1,0 +1,39 @@
+{
+  "id": "build-helper-3",
+  "title": "Tune your assistant",
+  "estMinutes": 5,
+  "goal": "Improve your saved assistant by editing its rules — fix what it gets wrong without starting over.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "build-helper-3-teach",
+      "title": "Edit the rules, don't restart",
+      "body": "You've used your assistant a few times, and one thing keeps bugging you — maybe the quiz questions come out too hard, or the feedback sounds stiff.\n\nDon't scrap it and start over. An assistant improves the way a good routine does: you edit its rules. Add one line, and it fixes that every time from now on:\n• \"Always include an answer key.\"\n• \"Keep questions at Class 6 level.\"\n• \"Never use $ — use ₹.\"\n• \"Give one warm sentence before any correction.\"\n\nSmall rule, permanent fix."
+    },
+    {
+      "type": "mcq",
+      "id": "build-helper-3-followup",
+      "question": "Your quiz-maker assistant keeps producing questions that are too hard for your class. What's the best way to tune it?",
+      "options": [
+        { "id": "a", "text": "Start a fresh chat and rewrite the whole assistant from scratch" },
+        { "id": "b", "text": "Add one rule: \"Keep every question at Class 6 level — simple wording, one step to solve\"" },
+        { "id": "c", "text": "Just type \"make it better\" each time you use it" }
+      ],
+      "correctIds": ["b"],
+      "explanation": "Editing one rule fixes the problem for every future use — that's the whole power of a saved assistant. Starting over throws away what already worked, and \"make it better\" only fixes it this once. You're maintaining a tool now, colleague."
+    },
+    {
+      "type": "playground",
+      "id": "build-helper-3-refine",
+      "mode": "refine",
+      "scaffold": "Here's my saved assistant. Add one rule to fix a failure I keep seeing — for example \"Always keep questions at {{gradeBand}} level\" or \"Always add an answer key\". Keep everything else exactly the same, then show me the updated assistant so I can re-save it.",
+      "saveToToolkit": true
+    },
+    {
+      "type": "reflection",
+      "id": "build-helper-3-reflect",
+      "question": "How confident do you feel maintaining your own AI helper — tuning its rules as you go?"
+    }
+  ]
+}
