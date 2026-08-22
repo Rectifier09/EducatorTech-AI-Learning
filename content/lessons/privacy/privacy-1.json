@@ -1,0 +1,42 @@
+{
+  "id": "privacy-1",
+  "title": "What not to put in the box",
+  "estMinutes": 4,
+  "goal": "Know exactly what student information must stay out of AI tools — and why free tools aren't private.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "privacy-1-hook",
+      "title": "The paste you almost made",
+      "body": "It's report-card week. You've got 40 students' names, roll numbers, marks, and a few notes about who's struggling at home. To save time, you open a free AI tool and your cursor hovers over 'paste'.\n\nStop there — that instinct to pause is exactly right. In about 4 minutes, let's make it a habit."
+    },
+    {
+      "type": "theory",
+      "id": "privacy-1-teach",
+      "title": "What counts as student PII",
+      "body": "PII means personal, identifying information — anything that could point to a real child. Keep all of it out of AI tools:\n\n• Names, roll numbers, admission IDs\n• Photos, home address, phone numbers\n• Health, family or behaviour notes\n• Marks or grades sitting next to names\n\nThe safe move is simple: de-identify first. Describe the situation, not the student — 'a Class 6 student who struggles to focus', never 'Aarav from 6-B'.",
+      "goDeeper": "Where does your prompt go? Most free AI tools may store what you type and use it to improve future versions. Once you hit enter, that text can leave your control. Treat the box like a postcard anyone might read — not a locked drawer."
+    },
+    {
+      "type": "mcq",
+      "id": "privacy-1-check",
+      "question": "Tap everything that is unsafe to paste into a free AI tool.",
+      "multi": true,
+      "options": [
+        { "id": "roster", "text": "Your class roster with names and roll numbers" },
+        { "id": "health", "text": "A note that 'Aarav has epilepsy'" },
+        { "id": "marks", "text": "A marks sheet with student names next to scores" },
+        { "id": "topic", "text": "The topic 'fractions for Class 5'" },
+        { "id": "generic", "text": "'Ideas to support a student who finds it hard to focus'" }
+      ],
+      "correctIds": ["roster", "health", "marks"],
+      "explanation": "Anything that identifies a real child — names, roll numbers, health notes, or marks tied to names — stays out. A topic or a de-identified question is perfectly safe. You spotted the difference; that judgement keeps your students protected."
+    },
+    {
+      "type": "reflection",
+      "id": "privacy-1-reflect",
+      "question": "How clear are you on what should stay out of AI tools?"
+    }
+  ]
+}

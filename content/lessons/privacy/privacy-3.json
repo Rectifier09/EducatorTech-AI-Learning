@@ -1,0 +1,40 @@
+{
+  "id": "privacy-3",
+  "title": "Make your class AI ground-rules",
+  "estMinutes": 6,
+  "goal": "Make a one-page AI ground-rules sheet your class or staffroom will actually use.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "privacy-3-hook",
+      "title": "One page beats a policy binder",
+      "body": "A 20-page policy nobody reads changes nothing. One clear page — on the staffroom wall, or shared with your class — changes how everyone uses AI.\n\nLet's make yours in a few minutes. You decide what goes on it; AI just drafts the wording."
+    },
+    {
+      "type": "mcq",
+      "id": "privacy-3-check",
+      "question": "Which ground-rule is most useful on a shared one-pager?",
+      "options": [
+        { "id": "vague", "text": "\"Use AI responsibly.\"" },
+        { "id": "clear", "text": "\"Keep students' names and personal details out of AI — de-identify first.\"" },
+        { "id": "ban", "text": "\"Nobody may use AI.\"" }
+      ],
+      "correctIds": ["clear"],
+      "explanation": "A rule people can actually follow beats one that's vague or fearful. 'Keep names out, de-identify first' tells a colleague exactly what to do on Monday morning — that's what makes a one-pager work."
+    },
+    {
+      "type": "playground",
+      "id": "privacy-3-make",
+      "mode": "make",
+      "artifactChoices": ["AI ground-rules one-pager", "Student AI-use guidelines", "De-identify checklist"],
+      "scaffold": "Draft a one-page AI ground-rules sheet for a {{gradeBand}} class. Cover three things in short, friendly points: privacy (no student names or personal details, de-identify first), honesty (say when AI helped), and always-check (a human checks facts, bias and local fit before using anything).",
+      "saveToToolkit": true
+    },
+    {
+      "type": "reflection",
+      "id": "privacy-3-reflect",
+      "question": "How usable is the ground-rules one-pager you just made — would you put it up this week?"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "id": "privacy-2",
+  "title": "Spot the leak and the bias",
+  "estMinutes": 6,
+  "goal": "Catch a prompt that leaks student data and an output that carries bias — de-identify before you send.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "privacy-2-hook",
+      "title": "Two risks, hiding together",
+      "body": "Every time you use AI, two risks sit side by side.\n\nOne is what you put in — a prompt can quietly leak a child's private details. The other is what it gives back — the output can carry bias you didn't ask for.\n\nCatching both, before you use anything, is the skill this lesson builds."
+    },
+    {
+      "type": "fillBlank",
+      "id": "privacy-2-fill",
+      "template": "Same need, safe prompt. De-identify it: \"Suggest a gentle support plan for {{who}} who {{detail}}.\"",
+      "blanks": [
+        {
+          "id": "who",
+          "options": ["Riya from 6-B, roll no. 14", "a Class 6 student"],
+          "correctIndex": 1
+        },
+        {
+          "id": "detail",
+          "options": ["was diagnosed with dyslexia and lives with her grandmother", "finds reading long passages difficult"],
+          "correctIndex": 1
+        }
+      ]
+    },
+    {
+      "type": "mcq",
+      "id": "privacy-2-bias",
+      "question": "You ask AI for 10 example word problems about jobs. Every doctor and engineer in the list is a boy; every nurse and cook is a girl. What's going on?",
+      "options": [
+        { "id": "bias", "text": "Bias — it's stereotyping jobs by gender; ask it to mix the roles" },
+        { "id": "fine", "text": "Nothing — that's just how the examples came out" },
+        { "id": "fact", "text": "A factual error in the maths" }
+      ],
+      "correctIds": ["bias"],
+      "explanation": "Caught it. 👏 AI learns from patterns in old text, so it can quietly repeat stereotypes — by gender, region, caste or religion. Noticing it and asking for balance keeps your classroom fair. That eye is yours, not the tool's."
+    },
+    {
+      "type": "playground",
+      "id": "privacy-2-verify",
+      "mode": "verify",
+      "scaffold": "",
+      "saveToToolkit": false
+    },
+    {
+      "type": "reflection",
+      "id": "privacy-2-reflect",
+      "question": "How ready do you feel to catch a data leak and a biased output before you use them?"
+    }
+  ]
+}
