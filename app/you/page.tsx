@@ -13,6 +13,7 @@ import { earnedBadges } from "@/lib/gamification/badges";
 import { getMyLeague } from "@/lib/data/leaderboard";
 import { weekStart } from "@/lib/gamification/leagues";
 import { setAlias } from "@/app/actions/leaderboard";
+import { deleteAccount } from "@/app/actions/account";
 import { YouProfile } from "@/components/you/YouProfile";
 
 export const dynamic = "force-dynamic";
@@ -72,6 +73,7 @@ export default async function YouPage() {
       daysLeft={daysLeft}
       setAlias={setAlias}
       signOut={signOut}
+      deleteAccount={deleteAccount}
     />
   );
 }

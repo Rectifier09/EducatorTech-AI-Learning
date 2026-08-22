@@ -1,5 +1,6 @@
 import { ConfidenceGauge } from "@/components/gamification/ConfidenceGauge";
 import { LeagueBoard } from "@/components/gamification/LeagueBoard";
+import { DeleteAccount } from "@/components/you/DeleteAccount";
 import { Button } from "@/components/ui/Button";
 import type { LeagueMember } from "@/lib/data/leaderboard";
 import type { Badge } from "@/lib/gamification/badges";
@@ -14,6 +15,7 @@ interface YouProfileProps {
   daysLeft: number;
   setAlias: (formData: FormData) => Promise<void>;
   signOut: () => Promise<void>;
+  deleteAccount: () => Promise<void>;
 }
 
 /**
@@ -32,6 +34,7 @@ export function YouProfile({
   daysLeft,
   setAlias,
   signOut,
+  deleteAccount,
 }: YouProfileProps) {
   return (
     <main className="flex min-h-full flex-col gap-8 px-6 pb-10 pt-8">
@@ -92,6 +95,10 @@ export function YouProfile({
           Sign out
         </Button>
       </form>
+
+      <div className="flex flex-col pt-1">
+        <DeleteAccount deleteAccount={deleteAccount} />
+      </div>
     </main>
   );
 }
