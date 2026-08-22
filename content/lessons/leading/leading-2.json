@@ -1,0 +1,28 @@
+{
+  "id": "leading-2",
+  "title": "Make a 1-page staff guidance",
+  "estMinutes": 6,
+  "goal": "Draft one encouraging page your colleagues will actually read — you stay the author.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "leading-2-hook",
+      "title": "One page, not a policy binder",
+      "body": "Nobody in your staffroom will read a twelve-page AI policy. They will read one warm page.\n\nSo let's make that page. Something you could pin on the staffroom board or share in the next meeting: what AI is good for, the few things to always check, and a clear \"you stay in charge\" line.\n\nPick the shape that fits your school. You draft it, you edit it — it should sound like you, not like a circular from the office."
+    },
+    {
+      "type": "playground",
+      "id": "leading-2-make",
+      "mode": "make",
+      "artifactChoices": ["Staff AI guidance one-pager", "15-min mini-PD outline", "Do/Don't starter list"],
+      "scaffold": "Draft a one-page, encouraging staff guidance for teachers on using AI responsibly in a {{gradeBand}} school. Keep the tone peer-to-peer, not top-down. Cover three things simply: protect student privacy (no real names or personal details in AI tools), be honest and always check facts and level, and keep the teacher in charge as the final judge. End with one line that reassures a nervous colleague.",
+      "saveToToolkit": true
+    },
+    {
+      "type": "reflection",
+      "id": "leading-2-reflect",
+      "question": "How ready is this page to share with a colleague tomorrow?"
+    }
+  ]
+}
