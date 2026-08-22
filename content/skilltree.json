@@ -10,8 +10,8 @@
       "label": "Classroom Craft",
       "emoji": "🎓",
       "nodes": [
-        { "id": "grading", "label": "AI for grading & feedback" },
-        { "id": "differentiation", "label": "Differentiation & worksheets" },
+        { "id": "grading", "label": "AI for grading & feedback", "live": true },
+        { "id": "differentiation", "label": "Differentiation & worksheets", "live": true },
         { "id": "parent-comms", "label": "Parent & admin communication" }
       ]
     },
