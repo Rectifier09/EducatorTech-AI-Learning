@@ -1,0 +1,34 @@
+{
+  "id": "differentiation-5",
+  "title": "Capstone: differentiate next week's lesson",
+  "estMinutes": 8,
+  "goal": "Make and check a 3-tier worksheet for a real lesson you're teaching next week.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "differentiation-5-hook",
+      "title": "Bring it all together",
+      "body": "Last one. Think of a real topic you're actually teaching next week.\n\nMake the tiers, then check them like the expert you now are — do they truly differ, are they levelled right, do they fit your class? That whole loop, on your own, is the skill you came for."
+    },
+    {
+      "type": "playground",
+      "id": "differentiation-5-make",
+      "mode": "make",
+      "artifactChoices": ["3-tier worksheet", "Tiered question bank", "Exit-ticket set", "Tiered homework"],
+      "scaffold": "Make a {{artifact}} on [next week's topic] for my {{gradeBand}} {{subject}} class, in 3 tiers (support, core, stretch) with an answer key.",
+      "saveToToolkit": true
+    },
+    {
+      "type": "playground",
+      "id": "differentiation-5-verify",
+      "mode": "verify",
+      "scaffold": "",
+      "saveToToolkit": false
+    },
+    {
+      "type": "postSurvey",
+      "id": "differentiation-5-postsurvey"
+    }
+  ]
+}

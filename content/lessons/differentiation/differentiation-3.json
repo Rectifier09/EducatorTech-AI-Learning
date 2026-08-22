@@ -1,0 +1,43 @@
+{
+  "id": "differentiation-3",
+  "title": "Add the support layer",
+  "estMinutes": 5,
+  "goal": "Refine your worksheet with small follow-ups — add real scaffolds and a true stretch.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "differentiation-3-teach",
+      "title": "The first draft is a starting point",
+      "body": "Your 3-tier worksheet is a good draft. Now make it yours — not by starting over, but with small, specific follow-ups.\n\nThe support tier is where a draft usually needs the most love. Ask for: \"add sentence starters to tier 1\", \"put a worked example at the top of the support tier\", \"break question 3 into smaller steps\". And push the top end: \"make the stretch task ask them to explain their reasoning\"."
+    },
+    {
+      "type": "fillBlank",
+      "id": "differentiation-3-fill",
+      "template": "Your support tier is still too hard for the students who stall. The follow-up that helps most: {{move}}.",
+      "blanks": [
+        {
+          "id": "move",
+          "options": [
+            "add sentence starters and one worked example to tier 1",
+            "add five more questions at the same difficulty",
+            "swap in longer, more advanced vocabulary"
+          ],
+          "correctIndex": 0
+        }
+      ]
+    },
+    {
+      "type": "playground",
+      "id": "differentiation-3-refine",
+      "mode": "refine",
+      "scaffold": "Improve this — add sentence starters and a worked example to the support tier, and add a genuine extension task to the stretch tier that asks students to explain their reasoning.",
+      "saveToToolkit": true
+    },
+    {
+      "type": "reflection",
+      "id": "differentiation-3-reflect",
+      "question": "How confident do you feel adding support and stretch to a draft now?"
+    }
+  ]
+}
