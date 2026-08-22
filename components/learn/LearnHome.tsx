@@ -10,7 +10,7 @@ import { ProgressDots } from "@/components/ui/ProgressDots";
 import { JourneyList } from "@/components/learn/JourneyList";
 import { ExploreList } from "@/components/learn/ExploreList";
 import type { Lesson } from "@/lib/content/types";
-import type { LessonProgress } from "@/lib/data/types";
+import type { ProgressStatus } from "@/lib/data/types";
 import type { SkillTreeData } from "@/lib/content/skilltree";
 import type { DayActivity } from "@/lib/gamification/streak";
 
@@ -21,6 +21,20 @@ export interface ContinueMeta {
   /** 0-indexed position of this lesson in the journey. */
   index: number;
   estMinutes: number;
+}
+
+/** Precomputed unlock state for one lesson (bare, un-namespaced id). */
+export interface LessonState {
+  lessonId: string;
+  state: ProgressStatus;
+}
+
+/** Server-computed liveness/progress for one Explore branch node. */
+export interface ExploreNodeStatus {
+  live: boolean;
+  completed: number;
+  total: number;
+  href: string | null;
 }
 
 interface DueFollowUp {
@@ -39,10 +53,12 @@ interface LearnHomeProps {
   xp: number;
   continueTarget: string | null;
   continueMeta: ContinueMeta | null;
+  trackId: string;
   lessons: Lesson[];
-  progress: Record<string, LessonProgress>;
+  states: LessonState[];
   tree: SkillTreeData;
   notified: string[];
+  exploreStatus: Record<string, ExploreNodeStatus>;
   dueFollowUp: DueFollowUp | null;
 }
 
@@ -56,10 +72,12 @@ export function LearnHome({
   xp,
   continueTarget,
   continueMeta,
+  trackId,
   lessons,
-  progress,
+  states,
   tree,
   notified,
+  exploreStatus,
   dueFollowUp,
 }: LearnHomeProps) {
   // The Learn route has no bounded/overflow-hidden scroll ancestor, so the
@@ -84,7 +102,7 @@ export function LearnHome({
         />
 
         {continueTarget && continueMeta && (
-          <Link href={`/lesson/${continueTarget}`} className="w-full">
+          <Link href={`/lesson/${trackId}/${continueTarget}`} className="w-full">
             <Card className="flex flex-col gap-2">
               <p className="text-[11px] font-bold uppercase tracking-wide text-muted">
                 Continue · Lesson {continueMeta.index + 1} · ~
@@ -150,9 +168,13 @@ export function LearnHome({
 
       <div className="px-6 py-4">
         {tab === "journey" ? (
-          <JourneyList lessons={lessons} progress={progress} />
+          <JourneyList trackId={trackId} lessons={lessons} states={states} />
         ) : (
-          <ExploreList tree={tree} notified={notified} />
+          <ExploreList
+            tree={tree}
+            notified={notified}
+            exploreStatus={exploreStatus}
+          />
         )}
       </div>
     </div>

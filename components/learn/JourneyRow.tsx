@@ -20,11 +20,13 @@ function Marker({ state }: { state: ProgressStatus }) {
 }
 
 export function JourneyRow({
+  trackId,
   id,
   title,
   estMinutes,
   state,
 }: {
+  trackId: string;
   id: string;
   title: string;
   estMinutes: number;
@@ -62,7 +64,7 @@ export function JourneyRow({
 
   return (
     <Link
-      href={`/lesson/${id}`}
+      href={`/lesson/${trackId}/${id}`}
       className="block rounded-2xl transition hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
     >
       {inner}

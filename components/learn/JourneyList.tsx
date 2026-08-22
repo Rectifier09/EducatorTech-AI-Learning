@@ -1,19 +1,17 @@
-import { deriveLessonStates } from "@/lib/progress/unlock";
 import { JourneyRow } from "./JourneyRow";
 import type { Lesson } from "@/lib/content/types";
-import type { LessonProgress } from "@/lib/data/types";
+import type { LessonState } from "./LearnHome";
 
 export function JourneyList({
+  trackId,
   lessons,
-  progress,
+  states,
 }: {
+  trackId: string;
   lessons: Lesson[];
-  progress: Record<string, LessonProgress>;
+  /** Precomputed (in the server page) track-aware unlock states. */
+  states: LessonState[];
 }) {
-  const states = deriveLessonStates(
-    lessons.map((l) => l.id),
-    progress,
-  );
   const byId = new Map(lessons.map((l) => [l.id, l]));
 
   return (
@@ -24,6 +22,7 @@ export function JourneyList({
         return (
           <JourneyRow
             key={s.lessonId}
+            trackId={trackId}
             id={s.lessonId}
             title={lesson.title}
             estMinutes={lesson.estMinutes}

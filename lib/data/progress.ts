@@ -1,4 +1,5 @@
 import { createServerClient } from "@/lib/supabase/server";
+import { progressKey } from "@/lib/progress/unlock";
 import type { LessonProgress, ProgressStatus } from "./types";
 
 interface ProgressRow {
@@ -38,21 +39,23 @@ export async function getAllProgress(
 
 export async function completeLesson(
   userId: string,
+  trackId: string,
   lessonId: string,
   score: number,
 ): Promise<void> {
   const supabase = await createServerClient();
+  const key = progressKey(trackId, lessonId);
   const { data: existing } = await supabase
     .from("progress")
     .select("attempts")
     .eq("user_id", userId)
-    .eq("lesson_id", lessonId)
+    .eq("lesson_id", key)
     .maybeSingle();
   const attempts = ((existing?.attempts as number | undefined) ?? 0) + 1;
 
   const { error } = await supabase.from("progress").upsert({
     user_id: userId,
-    lesson_id: lessonId,
+    lesson_id: key,
     status: "completed",
     score,
     attempts,

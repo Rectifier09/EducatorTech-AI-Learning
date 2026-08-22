@@ -4,6 +4,7 @@ import path from "node:path";
 export interface SkillNode {
   id: string;
   label: string;
+  live?: boolean;
 }
 export interface SkillBranch {
   id: string;

@@ -26,12 +26,12 @@
       ]
     },
     {
-      "id": "tech-basics",
-      "label": "Tech Basics",
+      "id": "reclaim-your-time",
+      "label": "Reclaim Your Time",
       "emoji": "🛠️",
       "nodes": [
-        { "id": "tools", "label": "Everyday digital-tool fluency" },
-        { "id": "automation", "label": "Docs & sheets automation" }
+        { "id": "automation", "label": "Docs & sheets automation" },
+        { "id": "admin-time", "label": "Everyday admin time-savers" }
       ]
     },
     {
