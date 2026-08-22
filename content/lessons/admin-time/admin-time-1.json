@@ -1,0 +1,39 @@
+{
+  "id": "admin-time-1",
+  "title": "Where your admin hours go",
+  "estMinutes": 4,
+  "goal": "Spot the repeat admin tasks worth templating — so you write once and reuse in seconds.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "admin-time-1-hook",
+      "title": "The email you keep retyping",
+      "body": "It's the third \"please submit the fee form by Friday\" message this month, and you're typing it from scratch again.\n\nParent notices, reminder emails, meeting notes, permission forms — small tasks, but they quietly eat your evenings. Let's take some of that time back. About 4 minutes."
+    },
+    {
+      "type": "theory",
+      "id": "admin-time-1-teach",
+      "title": "Write it once, reuse it forever",
+      "body": "Here's the shift: instead of writing the same message fresh each time, you write it once as a template with [blanks] — the bits that change.\n\n\"Dear parents of Class [class], please submit [item] by [date]. Kindly [action].\"\n\nNext time, you fill the blanks in seconds and send. AI is brilliant at drafting these templates for you — you paste the result into your email, WhatsApp, or a Google Doc and it's ready to reuse. You stay in charge of the wording; AI just saves you the retyping.",
+      "goDeeper": "A good template isn't only for you. Shared with a colleague, one clean notice format saves the whole staffroom from reinventing the same message."
+    },
+    {
+      "type": "mcq",
+      "id": "admin-time-1-check",
+      "question": "Which admin task gives you the biggest time-back from a template?",
+      "options": [
+        { "id": "a", "text": "A one-off email to a single parent about a unique, sensitive situation" },
+        { "id": "b", "text": "The weekly fee-and-forms reminder you send to every class, every term" },
+        { "id": "c", "text": "Deciding which student should receive the class prize this year" }
+      ],
+      "correctIds": ["b"],
+      "explanation": "The big wins are the messages you send again and again with only small changes — that's exactly what a fill-in-the-blanks template is for. One-off sensitive notes deserve your personal touch, and real judgement calls always stay with you."
+    },
+    {
+      "type": "reflection",
+      "id": "admin-time-1-reflect",
+      "question": "How clear are you now on which admin tasks are worth templating?"
+    }
+  ]
+}

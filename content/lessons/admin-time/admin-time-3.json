@@ -1,0 +1,43 @@
+{
+  "id": "admin-time-3",
+  "title": "Refine it into a pack you'll reuse",
+  "estMinutes": 5,
+  "goal": "Refine your template into a small, reusable pack — tighter tone and ready-made variants — with small follow-ups, not a restart.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "admin-time-3-teach",
+      "title": "A template gets better with use",
+      "body": "Your saved template already works. Now make it a pack that covers more situations — not by starting over, but with small, specific follow-ups.\n\nAsk AI things like: \"add a gentle-reminder version for parents who missed the first message\", \"add a short WhatsApp version under 40 words\", \"give me a warmer and a more formal opening line\". One template quietly becomes three, and you paste whichever one fits the day."
+    },
+    {
+      "type": "fillBlank",
+      "id": "admin-time-3-fill",
+      "template": "You want one notice template to serve first-time, reminder, and last-call situations. The follow-up that gets you there: {{move}}.",
+      "blanks": [
+        {
+          "id": "move",
+          "options": [
+            "add a gentle-reminder variant and a final-reminder variant, keeping the same blanks",
+            "rewrite the whole notice from scratch with a completely new tone",
+            "make the single notice much longer so it covers everything at once"
+          ],
+          "correctIndex": 0
+        }
+      ]
+    },
+    {
+      "type": "playground",
+      "id": "admin-time-3-refine",
+      "mode": "refine",
+      "scaffold": "Improve this template into a small reusable pack: add a gentle-reminder variant and a short WhatsApp version (under 40 words), keep the same [blanks] across all versions, and offer one warmer and one more formal opening line.",
+      "saveToToolkit": true
+    },
+    {
+      "type": "reflection",
+      "id": "admin-time-3-reflect",
+      "question": "How confident are you that you'll actually reuse this template pack next week?"
+    }
+  ]
+}

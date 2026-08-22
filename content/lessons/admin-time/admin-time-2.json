@@ -1,0 +1,28 @@
+{
+  "id": "admin-time-2",
+  "title": "Make a reusable template",
+  "estMinutes": 6,
+  "goal": "Make one strong admin template with clear blanks — saved and ready to reuse next week.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "admin-time-2-hook",
+      "title": "Let's build your first template",
+      "body": "Pick one message you send over and over — a fee reminder, a class notice, your meeting-notes format, a permission form.\n\nDescribe it once. AI drafts a clean template with clear [blanks] you fill each time. Copy it into your email or a Google Doc, and it's yours to reuse. You stay the editor — tweak any line that doesn't sound like you."
+    },
+    {
+      "type": "playground",
+      "id": "admin-time-2-make",
+      "mode": "make",
+      "artifactChoices": ["Email template", "Notice template", "Meeting-notes format", "Permission form"],
+      "scaffold": "Make a reusable {{artifact}} for a {{gradeBand}} school about [recurring situation]. Use clear [blanks] for the details that change each time (like class, date, item), keep the tone warm and clear, and keep it short enough to reuse quickly. No student names.",
+      "saveToToolkit": true
+    },
+    {
+      "type": "reflection",
+      "id": "admin-time-2-reflect",
+      "question": "How usable is the template you just saved — would you send it after a quick edit?"
+    }
+  ]
+}
