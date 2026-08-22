@@ -1,0 +1,39 @@
+{
+  "id": "misuse-1",
+  "title": "What AI'd work looks like",
+  "estMinutes": 4,
+  "goal": "Read the signals of AI'd student work fairly — as clues to a conversation, never as proof.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "misuse-1-hook",
+      "title": "The essay that's too clean",
+      "body": "You know the one. It's 9pm, you're marking, and a submission stops you: flawless grammar, tidy paragraphs, not a single crossing-out.\n\nBut read it again and it says almost nothing. No mention of the debate you had in class. No sign of the child you know. Just... polished, and empty.\n\nThis takes about 4 minutes. No detective work — just your teacher's eye, made a little sharper."
+    },
+    {
+      "type": "theory",
+      "id": "misuse-1-teach",
+      "title": "Tells, not proof",
+      "body": "AI'd work often shares a few tells:\n\n• Over-generic — could have been written about any topic, for any class.\n• Too-perfect — polished in a way that doesn't match the student's usual work.\n• No personal voice — none of the examples, opinions, or classroom moments you'd expect.\n• Invented specifics — confident 'facts' or citations that don't check out.\n\nHere's the part that matters most: these are signals, not verdicts. A quiet student can write beautifully. A strong writer can sound formal. The fair move is never to accuse — it's to notice, then talk to the student: 'Walk me through how you got here.'",
+      "goDeeper": "Detectors and 'gut feeling' both produce false positives — flagging honest work as AI'd. That mistake is costly: it can wrong a hard-working child. So a signal opens a conversation; it never closes the case on its own."
+    },
+    {
+      "type": "mcq",
+      "id": "misuse-1-check",
+      "question": "Two submissions land on your desk. Which is the stronger, fairer reason to gently check in with the student?",
+      "options": [
+        { "id": "a", "text": "The writing uses a few words the student doesn't usually use." },
+        { "id": "b", "text": "It's polished but generic — no personal voice, vague on the specifics you taught, and unlike their other work." },
+        { "id": "c", "text": "The student is usually quiet in class." }
+      ],
+      "correctIds": ["b"],
+      "explanation": "Good judgement, colleague. A cluster of signals — generic, no voice, unlike their other work — is worth a kind conversation. A new word, or a quiet nature, proves nothing on its own and can unfairly single a child out."
+    },
+    {
+      "type": "reflection",
+      "id": "misuse-1-reflect",
+      "question": "How clear do you feel about reading these signals fairly — as a nudge to talk, not to accuse?"
+    }
+  ]
+}

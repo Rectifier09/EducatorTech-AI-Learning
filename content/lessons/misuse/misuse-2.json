@@ -1,0 +1,28 @@
+{
+  "id": "misuse-2",
+  "title": "Redesign a task to be AI-resilient",
+  "estMinutes": 7,
+  "goal": "Make a redesigned assignment AI can't quietly do for the student — you stay the designer.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "misuse-2-hook",
+      "title": "Design smarter, not stricter",
+      "body": "You could police harder — ban phones, hover, run every essay through a detector. It's exhausting, and it treats every child as a suspect.\n\nThere's a kinder, stronger move: design the task so AI simply can't do the interesting part. Anchor it to something only your student has — this class, their own thinking, their voice, their process.\n\nLet's redesign one real task you set. Pick what fits, and you stay the designer."
+    },
+    {
+      "type": "playground",
+      "id": "misuse-2-make",
+      "mode": "make",
+      "artifactChoices": ["AI-resilient assignment", "Process checklist", "Oral-defence prompts"],
+      "scaffold": "Redesign this {{gradeBand}} {{subject}} [task] so it needs the student's own thinking, voice, or process. Anchor it to something AI can't supply — for example: an in-class writing step, a link to a specific lesson or local example we discussed, a draft-then-reflect stage, or a short oral 'walk me through it'. Keep it fair and doable in our classroom.",
+      "saveToToolkit": true
+    },
+    {
+      "type": "reflection",
+      "id": "misuse-2-reflect",
+      "question": "How usable is your redesigned task — could you set it next week?"
+    }
+  ]
+}
