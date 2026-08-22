@@ -1,4 +1,5 @@
 import { confidenceDelta } from "./delta";
+import { FOUNDATIONS_TRACK_ID } from "@/lib/content/loader";
 import type { Attitude } from "@/lib/data/types";
 
 export interface ProfileRow {
@@ -14,6 +15,9 @@ export interface EventRow {
   user_id: string;
   name: string;
   created_at: string;
+  /** jsonb payload — trackId/lessonId/value etc. Optional so callers that only
+   *  need name/user_id (e.g. activationCounts) can omit it. */
+  props?: Record<string, unknown>;
 }
 export interface SurveyRow {
   user_id: string;
@@ -41,16 +45,21 @@ export function activationCounts(input: {
         .map((p) => p.user_id),
     );
 
+  // Phase-2 namespaced progress ids to "<trackId>:<lessonId>", so the funnel
+  // must match the foundations track's namespaced keys (previously bare "l1"
+  // etc., which undercounted to zero).
+  const ns = (lessonId: string) => `${FOUNDATIONS_TRACK_ID}:${lessonId}`;
+
   const smallWinUsers = new Set<string>([
-    ...completedFor("l4"),
+    ...completedFor(ns("l4")),
     ...input.events.filter((e) => e.name === "artifact_saved").map((e) => e.user_id),
   ]);
 
   return {
     onboarded: input.profiles.filter((p) => p.onboarded_at).length,
-    completedL1: completedFor("l1").size,
+    completedL1: completedFor(ns("l1")).size,
     smallWin: smallWinUsers.size,
-    completedTrack: completedFor("l7").size,
+    completedTrack: completedFor(ns("l7")).size,
   };
 }
 
@@ -91,6 +100,218 @@ export function avgConfidenceDelta(rows: SurveyRow[]): {
     avgUsingDelta: Math.round((sum((d) => d.usingDelta) / n) * 10) / 10,
     avgTrustDelta: Math.round((sum((d) => d.trustDelta) / n) * 10) / 10,
   };
+}
+
+// ---------------------------------------------------------------------------
+// A — Pilot success (journey-aware)
+// ---------------------------------------------------------------------------
+
+/** A live track fed into the journey funnel. */
+export interface TrackInput {
+  trackId: string;
+  title: string;
+  lessonIds: string[];
+}
+
+export interface LessonFunnel {
+  lessonId: string;
+  started: number;
+  completed: number;
+  /** % of this lesson's starters who did NOT complete it. */
+  dropoffPct: number;
+}
+
+export interface JourneyFunnel {
+  trackId: string;
+  title: string;
+  started: number;
+  completed: number;
+  /** % of track starters who completed the LAST lesson. */
+  completionPct: number;
+  lessons: LessonFunnel[];
+}
+
+const pct = (num: number, den: number) =>
+  den > 0 ? Math.round((num / den) * 100) : 0;
+
+/**
+ * Per-journey started → completed funnel, distinct users at each step.
+ *
+ * - `started` (track & per-lesson) = distinct users with a `lesson_started`
+ *   event carrying the matching `props.trackId` (+ `props.lessonId` per lesson).
+ * - `completed` (track) = distinct users who completed the track's LAST lesson,
+ *   read from `progress` at the namespaced key `"<trackId>:<lastLessonId>"`.
+ * - `completed` (per-lesson) = distinct users with that lesson's namespaced
+ *   progress row at status "completed".
+ *
+ * Pure: derives everything from the passed rows; no I/O.
+ */
+export function journeyFunnel(input: {
+  tracks: TrackInput[];
+  progress: ProgressRow[];
+  events: EventRow[];
+}): JourneyFunnel[] {
+  // completed-users set per namespaced progress key
+  const completedByKey = new Map<string, Set<string>>();
+  for (const p of input.progress) {
+    if (p.status !== "completed") continue;
+    let s = completedByKey.get(p.lesson_id);
+    if (!s) completedByKey.set(p.lesson_id, (s = new Set()));
+    s.add(p.user_id);
+  }
+
+  // started-users set per "trackId" and per "trackId::lessonId" from events
+  const startedByTrack = new Map<string, Set<string>>();
+  const startedByLesson = new Map<string, Set<string>>();
+  for (const e of input.events) {
+    if (e.name !== "lesson_started") continue;
+    const trackId = e.props?.trackId as string | undefined;
+    const lessonId = e.props?.lessonId as string | undefined;
+    if (!trackId) continue;
+    let t = startedByTrack.get(trackId);
+    if (!t) startedByTrack.set(trackId, (t = new Set()));
+    t.add(e.user_id);
+    if (lessonId) {
+      const k = `${trackId}::${lessonId}`;
+      let l = startedByLesson.get(k);
+      if (!l) startedByLesson.set(k, (l = new Set()));
+      l.add(e.user_id);
+    }
+  }
+
+  return input.tracks.map((track) => {
+    const lastLessonId = track.lessonIds[track.lessonIds.length - 1];
+    const started = startedByTrack.get(track.trackId)?.size ?? 0;
+    const completed =
+      completedByKey.get(`${track.trackId}:${lastLessonId}`)?.size ?? 0;
+
+    const lessons: LessonFunnel[] = track.lessonIds.map((lessonId) => {
+      const ls = startedByLesson.get(`${track.trackId}::${lessonId}`)?.size ?? 0;
+      const lc =
+        completedByKey.get(`${track.trackId}:${lessonId}`)?.size ?? 0;
+      return {
+        lessonId,
+        started: ls,
+        completed: lc,
+        dropoffPct: pct(Math.max(ls - lc, 0), ls),
+      };
+    });
+
+    return {
+      trackId: track.trackId,
+      title: track.title,
+      started,
+      completed,
+      completionPct: pct(completed, started),
+      lessons,
+    };
+  });
+}
+
+// ---------------------------------------------------------------------------
+// B — Content quality
+// ---------------------------------------------------------------------------
+
+export interface ReflectionStat {
+  avg: number;
+  n: number;
+}
+
+/** Below this (of 5) a lesson's reflection reads as "confusing". */
+export const LOW_REFLECTION_THRESHOLD = 3;
+
+/**
+ * Mean of `confidence_check.props.value` (1–5) per lesson, keyed
+ * `"<trackId>:<lessonId>"` to line up with the journey funnel. Events that
+ * predate trackId instrumentation (no `props.trackId`) fall back to a bare
+ * `"<lessonId>"` key so they still surface, just un-joined to a track.
+ */
+export function reflectionValueByLesson(
+  events: EventRow[],
+): Map<string, ReflectionStat> {
+  const sums = new Map<string, { sum: number; n: number }>();
+  for (const e of events) {
+    if (e.name !== "confidence_check") continue;
+    const value = e.props?.value;
+    if (typeof value !== "number") continue;
+    const lessonId = e.props?.lessonId as string | undefined;
+    if (!lessonId) continue;
+    const trackId = e.props?.trackId as string | undefined;
+    const key = trackId ? `${trackId}:${lessonId}` : lessonId;
+    const cur = sums.get(key) ?? { sum: 0, n: 0 };
+    cur.sum += value;
+    cur.n += 1;
+    sums.set(key, cur);
+  }
+  const out = new Map<string, ReflectionStat>();
+  for (const [key, { sum, n }] of sums) {
+    out.set(key, { avg: Math.round((sum / n) * 10) / 10, n });
+  }
+  return out;
+}
+
+export interface LessonHealth {
+  trackId: string;
+  lessonId: string;
+  /** Higher = more in need of review. */
+  concern: number;
+  started: number;
+  dropoffPct: number;
+  reflectionAvg: number | null;
+  reflectionN: number;
+  reason: string;
+}
+
+/**
+ * Ranked "review next" list. Concern combines:
+ *  - traffic-weighted drop-off = users lost = started * dropoffPct/100, and
+ *  - low reflection = (threshold - avg) * n when avg is below the threshold.
+ * Lessons with zero concern are dropped; the top `limit` (default 8) remain.
+ * Pure: derives from the journey funnel + reflection map only.
+ */
+export function lessonHealthRanking(input: {
+  journeys: JourneyFunnel[];
+  reflection: Map<string, ReflectionStat>;
+  limit?: number;
+}): LessonHealth[] {
+  const limit = input.limit ?? 8;
+  const rows: LessonHealth[] = [];
+
+  for (const j of input.journeys) {
+    for (const l of j.lessons) {
+      const key = `${j.trackId}:${l.lessonId}`;
+      const r = input.reflection.get(key) ?? null;
+
+      const usersLost = (l.started * l.dropoffPct) / 100;
+      const lowReflection =
+        r && r.avg < LOW_REFLECTION_THRESHOLD
+          ? (LOW_REFLECTION_THRESHOLD - r.avg) * r.n
+          : 0;
+      const concern = Math.round((usersLost + lowReflection) * 10) / 10;
+      if (concern <= 0) continue;
+
+      const reasons: string[] = [];
+      if (usersLost > 0) {
+        reasons.push(`${l.dropoffPct}% drop-off of ${l.started} starters`);
+      }
+      if (lowReflection > 0 && r) {
+        reasons.push(`low reflection ${r.avg}/5 (n=${r.n})`);
+      }
+
+      rows.push({
+        trackId: j.trackId,
+        lessonId: l.lessonId,
+        concern,
+        started: l.started,
+        dropoffPct: l.dropoffPct,
+        reflectionAvg: r?.avg ?? null,
+        reflectionN: r?.n ?? 0,
+        reason: reasons.join(" · "),
+      });
+    }
+  }
+
+  return rows.sort((a, b) => b.concern - a.concern).slice(0, limit);
 }
 
 /** "Notify me" taps per skill-tree node, most-wanted first. */

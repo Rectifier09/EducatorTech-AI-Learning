@@ -5,6 +5,7 @@ import { saveArtifact } from "@/lib/data/toolkit";
 import { logEvent } from "@/lib/data/events";
 
 export async function saveToToolkit(input: {
+  trackId?: string | null;
   lessonId?: string | null;
   artifactType?: string | null;
   prompt: string;
@@ -15,6 +16,7 @@ export async function saveToToolkit(input: {
   await saveArtifact(user.id, input);
   await logEvent("artifact_saved", {
     artifactType: input.artifactType ?? null,
+    trackId: input.trackId ?? null,
     lessonId: input.lessonId ?? null,
   });
 }

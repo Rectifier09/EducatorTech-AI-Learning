@@ -19,7 +19,7 @@ import { PromptWriteBlockView } from "./blocks/PromptWriteBlockView";
 import { PlaygroundBlockView } from "./blocks/PlaygroundBlockView";
 import { PostSurvey } from "@/components/capstone/PostSurvey";
 import { LessonComplete } from "./LessonComplete";
-import { finishLesson } from "@/app/actions/lesson";
+import { finishLesson, logLessonStarted } from "@/app/actions/lesson";
 import type { Lesson, Block } from "@/lib/content/types";
 import type { Profile } from "@/lib/data/types";
 import type { Badge } from "@/lib/gamification/badges";
@@ -48,9 +48,18 @@ export function LessonPlayer({
   const total = lesson.blocks.length;
   const score = computeScore(session.results);
   const finished = useRef(false);
+  const started = useRef(false);
   const [completion, setCompletion] = useState<{
     newBadges: Badge[];
   } | null>(null);
+
+  // Emit `lesson_started` once when the lesson opens (drop-off signal).
+  // Fire-and-forget: logEvent never throws, and analytics must not block play.
+  useEffect(() => {
+    if (started.current) return;
+    started.current = true;
+    void logLessonStarted(trackId, lesson.id);
+  }, [trackId, lesson.id]);
 
   useEffect(() => {
     if (session.done && !finished.current) {
@@ -109,6 +118,7 @@ export function LessonPlayer({
           key={block.id}
           block={block}
           profile={profile}
+          trackId={trackId}
           lessonId={lesson.id}
           spineArtifact={session.spineArtifact}
           onArtifact={(t) => setSession((s) => setSpineArtifact(s, t))}
@@ -143,6 +153,7 @@ function ProgressBar({ current, total }: { current: number; total: number }) {
 function BlockRenderer({
   block,
   profile,
+  trackId,
   lessonId,
   spineArtifact,
   onArtifact,
@@ -152,6 +163,7 @@ function BlockRenderer({
 }: {
   block: Block;
   profile: ProfileCtx;
+  trackId: string;
   lessonId: string;
   spineArtifact?: string;
   onArtifact: (text: string) => void;
@@ -173,6 +185,7 @@ function BlockRenderer({
       return (
         <ReflectionBlockView
           block={block}
+          trackId={trackId}
           lessonId={lessonId}
           onNext={onNext}
         />
@@ -202,6 +215,7 @@ function BlockRenderer({
         <PlaygroundBlockView
           block={block}
           profile={profile}
+          trackId={trackId}
           lessonId={lessonId}
           spineArtifact={spineArtifact}
           onArtifact={onArtifact}
