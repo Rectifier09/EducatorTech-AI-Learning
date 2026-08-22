@@ -12,7 +12,7 @@
       "nodes": [
         { "id": "grading", "label": "AI for grading & feedback", "live": true },
         { "id": "differentiation", "label": "Differentiation & worksheets", "live": true },
-        { "id": "parent-comms", "label": "Parent & admin communication" }
+        { "id": "parent-comms", "label": "Parent & admin communication", "live": true }
       ]
     },
     {
@@ -20,9 +20,9 @@
       "label": "Responsible & Critical AI",
       "emoji": "🧭",
       "nodes": [
-        { "id": "scepticism", "label": "Constructive scepticism deep-dive" },
-        { "id": "misuse", "label": "Spotting AI misuse in student work" },
-        { "id": "privacy", "label": "Bias, privacy & safety" }
+        { "id": "scepticism", "label": "Constructive scepticism deep-dive", "live": true },
+        { "id": "misuse", "label": "Spotting AI misuse in student work", "live": true },
+        { "id": "privacy", "label": "Bias, privacy & safety", "live": true }
       ]
     },
     {
@@ -30,8 +30,8 @@
       "label": "Reclaim Your Time",
       "emoji": "🛠️",
       "nodes": [
-        { "id": "automation", "label": "Docs & sheets automation" },
-        { "id": "admin-time", "label": "Everyday admin time-savers" }
+        { "id": "automation", "label": "Docs & sheets automation", "live": true },
+        { "id": "admin-time", "label": "Everyday admin time-savers", "live": true }
       ]
     },
     {
@@ -39,8 +39,8 @@
       "label": "Going Further",
       "emoji": "🚀",
       "nodes": [
-        { "id": "build-helper", "label": "Build your own AI helper" },
-        { "id": "leading", "label": "Leading AI in your school" }
+        { "id": "build-helper", "label": "Build your own AI helper", "live": true },
+        { "id": "leading", "label": "Leading AI in your school", "live": true }
       ]
     }
   ]

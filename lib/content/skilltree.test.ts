@@ -35,7 +35,18 @@ describe("skill tree", () => {
     // Nodes go live only after human content review — update this set when a
     // node is intentionally launched. Guards against an authoring agent (or a
     // stray edit) flipping `live` by accident, in either direction.
-    const LIVE = new Set(["grading", "differentiation"]);
+    const LIVE = new Set([
+      "grading",
+      "differentiation",
+      "parent-comms",
+      "scepticism",
+      "misuse",
+      "privacy",
+      "automation",
+      "admin-time",
+      "build-helper",
+      "leading",
+    ]);
     const t = getSkillTree();
     for (const b of t.branches) {
       for (const n of b.nodes) {
