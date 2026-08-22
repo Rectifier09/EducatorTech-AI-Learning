@@ -29,16 +29,6 @@
 
   --skin: #d8a882;
   --hair: #b8aec4;
-
-  /* back-compat aliases: retired indigo/amber names still referenced by
-     not-yet-restyled components (LessonNode, ConfidenceMeter, MascotGuide).
-     Removed as those components are restyled/retired in later redesign phases. */
-  --indigo: var(--gold);
-  --indigo-ink: var(--gold-ink);
-  --indigo-soft: var(--surface-2);
-  --amber: var(--gold);
-  --amber-ink: var(--gold-ink);
-  --amber-soft: rgba(234, 181, 77, 0.22);
 }
 
 @theme inline {
