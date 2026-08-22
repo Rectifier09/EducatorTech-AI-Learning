@@ -18,12 +18,12 @@ export function StepTrust({
       <div className="flex flex-1 flex-col justify-center gap-5">
         <MascotGuide mood={m.mascotMood} size={64} />
         <h1
-          className="text-[26px] font-semibold text-balance"
+          className="text-[28px] leading-tight font-semibold text-balance"
           style={{ fontFamily: "var(--font-display)" }}
         >
           {m.headline}
         </h1>
-        <p className="text-[15px] leading-relaxed text-ink">{m.body}</p>
+        <p className="text-[15px] leading-relaxed text-muted">{m.body}</p>
       </div>
       <Button variant="primary" onClick={onNext} className="w-full">
         Let&apos;s go

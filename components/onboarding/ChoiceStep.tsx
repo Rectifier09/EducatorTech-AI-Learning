@@ -24,10 +24,10 @@ export function ChoiceStep({
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-5">
+    <div className="flex flex-1 flex-col gap-6">
       {caption ? <MascotGuide mood="welcome" caption={caption} /> : null}
       <h1
-        className="text-[26px] font-semibold text-balance"
+        className="text-[28px] leading-tight font-semibold text-balance"
         style={{ fontFamily: "var(--font-display)" }}
       >
         {prompt}
@@ -38,7 +38,7 @@ export function ChoiceStep({
             key={o}
             disabled={busy}
             onClick={() => pick(o)}
-            className="flex min-h-[48px] items-center rounded-xl border-[1.5px] border-line-2 bg-surface px-4 py-3 text-left text-[15px] font-bold transition hover:border-brand disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            className="flex min-h-[48px] items-center rounded-2xl border-[1.5px] border-line-2 bg-surface px-4 py-3.5 text-left text-[15px] font-bold text-ink shadow-[var(--elev-1)] transition hover:border-brand hover:shadow-[var(--glow-gold)] disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
             {o}
           </button>

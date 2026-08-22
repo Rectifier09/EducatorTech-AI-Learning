@@ -35,7 +35,7 @@ export function StepSurvey({
     <div className="flex flex-1 flex-col justify-between gap-6">
       <div className="flex flex-col gap-6">
         <h1
-          className="text-[22px] font-semibold text-balance"
+          className="text-[24px] leading-tight font-semibold text-balance"
           style={{ fontFamily: "var(--font-display)" }}
         >
           How do you feel about AI in your teaching today?
@@ -65,8 +65,8 @@ export function StepSurvey({
                 onClick={() => setAttitude(a.value)}
                 className={`rounded-xl border-[1.5px] px-3 py-2.5 text-sm font-bold transition ${
                   attitude === a.value
-                    ? "border-brand bg-brand-soft text-brand-ink"
-                    : "border-line-2 bg-surface hover:border-brand"
+                    ? "border-brand bg-brand-soft text-brand-ink shadow-[var(--glow-gold)]"
+                    : "border-line-2 bg-surface text-ink hover:border-brand"
                 }`}
               >
                 {a.label}
@@ -112,8 +112,8 @@ function Scale({
             aria-pressed={value === n}
             className={`flex-1 rounded-lg border-[1.5px] py-2.5 text-sm font-bold transition ${
               value === n
-                ? "border-brand bg-brand-soft text-brand-ink"
-                : "border-line-2 bg-surface hover:border-brand"
+                ? "border-brand bg-brand-soft text-brand-ink shadow-[var(--glow-gold)]"
+                : "border-line-2 bg-surface text-ink hover:border-brand"
             }`}
           >
             {n}
