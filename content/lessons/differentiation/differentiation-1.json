@@ -1,0 +1,39 @@
+{
+  "id": "differentiation-1",
+  "title": "One worksheet, three levels",
+  "estMinutes": 4,
+  "goal": "See differentiation as tiers from one core — not three times the marking.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "differentiation-1-hook",
+      "title": "The class that moves at three speeds",
+      "body": "You know the moment. Two students finished the worksheet five minutes ago and are getting restless. Three others are still stuck on question one. And the middle of the room is somewhere in between.\n\nOne sheet can't be right for all of them. But making three separate sheets? Who has that time. Let's find a middle way — in about 4 minutes."
+    },
+    {
+      "type": "theory",
+      "id": "differentiation-1-teach",
+      "title": "Three tiers, one core idea",
+      "body": "Differentiation isn't three different lessons. It's one topic, offered at three rungs of the same ladder:\n\n• Support — the same task with a way in: a sentence starter, a worked example, smaller steps.\n• Core — the task as you'd normally set it.\n• Stretch — the same task, pushed further: explain why, apply it somewhere new.\n\nSame topic, same objective. You scaffold down for the students who stall, and extend up for the ones who race ahead.",
+      "goDeeper": "Tiering isn't about labelling children 'weak' or 'strong'. A student might need support in fractions and stretch in geometry the same week. The tiers describe the task, not the child."
+    },
+    {
+      "type": "order",
+      "id": "differentiation-1-order",
+      "prompt": "Here are four versions of the same fractions task. Put them in order from easiest (support) to hardest (stretch).",
+      "items": [
+        { "id": "starter", "text": "Colour in 1/2 of the shape (the halves are already drawn for you)." },
+        { "id": "core1", "text": "Shade 3/4 of this rectangle." },
+        { "id": "core2", "text": "Find 3/4 of 20 sweets and show your working." },
+        { "id": "stretch", "text": "Two friends share 3/4 of a pizza equally. What fraction does each get? Explain how you know." }
+      ],
+      "correctOrder": ["starter", "core1", "core2", "stretch"]
+    },
+    {
+      "type": "reflection",
+      "id": "differentiation-1-reflect",
+      "question": "How clear does 'one topic, three tiers' feel to you now?"
+    }
+  ]
+}

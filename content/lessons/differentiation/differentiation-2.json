@@ -1,0 +1,28 @@
+{
+  "id": "differentiation-2",
+  "title": "Make a 3-tier worksheet",
+  "estMinutes": 7,
+  "goal": "Make a real support/core/stretch worksheet with AI — you stay the editor.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "differentiation-2-hook",
+      "title": "Let's make all three at once",
+      "body": "Here's where the time comes back. Give AI your topic and a sense of your class's spread, and ask for all three tiers in one go — support, core, stretch — with an answer key.\n\nWhat would've been three sheets and an evening becomes one draft you edit. Pick what you need below, add your topic, and you stay in charge of the final call."
+    },
+    {
+      "type": "playground",
+      "id": "differentiation-2-make",
+      "mode": "make",
+      "artifactChoices": ["3-tier worksheet", "Tiered question bank", "Exit-ticket set"],
+      "scaffold": "Make a {{artifact}} on [topic] for a {{gradeBand}} {{subject}} class, in 3 tiers — support (with sentence starters or a worked example), core, and stretch (extension) — and include an answer key for all three.",
+      "saveToToolkit": true
+    },
+    {
+      "type": "reflection",
+      "id": "differentiation-2-reflect",
+      "question": "How usable were the three tiers — and how long would that have taken you by hand?"
+    }
+  ]
+}

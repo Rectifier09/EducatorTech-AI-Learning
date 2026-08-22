@@ -1,0 +1,51 @@
+{
+  "id": "differentiation-4",
+  "title": "Check every tier actually fits",
+  "estMinutes": 6,
+  "goal": "Catch tiers that don't truly differ, are mis-levelled, or don't fit your class.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "differentiation-4-hook",
+      "title": "Differentiated in name isn't differentiated in fact",
+      "body": "AI will happily label three sections 'support', 'core' and 'stretch' — and sometimes that's all the difference is: the labels.\n\nBefore you print, check three things. Do the tiers genuinely differ in demand, not just in length? Is each one pitched at the right level? And do the examples fit your class — Indian names, ₹, familiar contexts?"
+    },
+    {
+      "type": "mcq",
+      "id": "differentiation-4-slip",
+      "question": "The 'stretch' tier is the exact same questions as 'core' — just ten of them instead of five. Your move?",
+      "options": [
+        { "id": "a", "text": "Fine — more questions means it's harder" },
+        { "id": "b", "text": "Catch it — that's more work, not deeper work; ask for a task that applies or explains the idea" },
+        { "id": "c", "text": "Leave it; the AI labelled it 'stretch', so it must be" }
+      ],
+      "correctIds": ["b"],
+      "explanation": "Caught it. 👏 More of the same isn't a stretch — your fast finishers will be bored, not challenged. Real stretch asks them to explain, apply, or extend. Spotting the difference is exactly the judgement no tool has."
+    },
+    {
+      "type": "mcq",
+      "id": "differentiation-4-fit",
+      "question": "The word problems are all about baseball scores and dollars at a mall. For your Class 6 in Pune, that's a problem of…",
+      "options": [
+        { "id": "a", "text": "Cultural / local fit" },
+        { "id": "b", "text": "A factual error" },
+        { "id": "c", "text": "Nothing — a sum is a sum" }
+      ],
+      "correctIds": ["a"],
+      "explanation": "Right — the maths isn't wrong, it just won't land. Ask for cricket scores, ₹, and familiar names so students spend their energy on the learning, not on decoding the context."
+    },
+    {
+      "type": "playground",
+      "id": "differentiation-4-verify",
+      "mode": "verify",
+      "scaffold": "",
+      "saveToToolkit": false
+    },
+    {
+      "type": "reflection",
+      "id": "differentiation-4-reflect",
+      "question": "How ready do you feel to check that your tiers genuinely differ and fit your class?"
+    }
+  ]
+}
