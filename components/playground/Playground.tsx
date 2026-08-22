@@ -118,7 +118,7 @@ export function Playground({
       )}
 
       {output && (
-        <div className="whitespace-pre-wrap rounded-2xl border border-line bg-surface p-4 text-[14px] leading-relaxed text-ink shadow-[var(--elev-1)]">
+        <div className="whitespace-pre-wrap rounded-2xl border border-line bg-sunk p-4 text-[14px] leading-relaxed text-ink">
           {output}
         </div>
       )}
