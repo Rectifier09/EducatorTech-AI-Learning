@@ -7,18 +7,18 @@ import type { Badge } from "@/lib/gamification/badges";
 
 export function LessonComplete({
   score,
-  nextId,
+  nextHref,
   newBadges = [],
 }: {
   score: number;
-  nextId: string | null;
+  nextHref: string | null;
   newBadges?: Badge[];
 }) {
   const router = useRouter();
   // Any newly-earned badges get a brief unlock moment first; the standard
   // lesson-complete moment always shows last.
   const [badgeIndex, setBadgeIndex] = useState(0);
-  const goNext = () => router.push(nextId ? `/lesson/${nextId}` : "/learn");
+  const goNext = () => router.push(nextHref ?? "/learn");
 
   if (badgeIndex < newBadges.length) {
     const badge = newBadges[badgeIndex];
@@ -44,10 +44,10 @@ export function LessonComplete({
       <RewardMoment
         kicker="Lesson complete"
         title="That's another one down."
-        primaryLabel={nextId ? "Next lesson" : "Back to Learn"}
+        primaryLabel={nextHref ? "Next lesson" : "Back to Learn"}
         onPrimary={goNext}
-        secondaryLabel={nextId ? "Back to Learn" : undefined}
-        onSecondary={nextId ? () => router.push("/learn") : undefined}
+        secondaryLabel={nextHref ? "Back to Learn" : undefined}
+        onSecondary={nextHref ? () => router.push("/learn") : undefined}
       >
         {score < 100
           ? "Nice work — review anytime to sharpen up."

@@ -9,8 +9,10 @@ import {
 } from "@/lib/gamification/streak";
 import { earnedBadges, type Badge } from "@/lib/gamification/badges";
 import { newlyEarnedBadges } from "@/lib/gamification/celebrate";
+import { progressKey } from "@/lib/progress/unlock";
 
 export async function finishLesson(
+  trackId: string,
   lessonId: string,
   score: number,
 ): Promise<{ newBadges: Badge[] }> {
@@ -33,15 +35,16 @@ export async function finishLesson(
     streakCurrent: streakBefore.current,
   });
 
-  await completeLesson(user.id, lessonId, score);
-  await logEvent("lesson_completed", { lessonId, score });
+  await completeLesson(user.id, trackId, lessonId, score);
+  await logEvent("lesson_completed", { trackId, lessonId, score });
 
   // Recompute the same values with this lesson's completion applied, without
   // a second round-trip: completeLesson always sets status "completed", and
   // the event we just logged is the only new one.
+  const key = progressKey(trackId, lessonId);
   const progressAfter = {
     ...progressBefore,
-    [lessonId]: { ...progressBefore[lessonId], status: "completed" as const },
+    [key]: { ...progressBefore[key], status: "completed" as const },
   };
   const eventsAfter: { name: string; createdAt: string }[] = [
     ...eventsBefore.map((e) => ({ name: e.name, createdAt: e.createdAt })),

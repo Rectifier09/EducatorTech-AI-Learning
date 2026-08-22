@@ -1,46 +1,80 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
-import {
-  mkdtempSync,
-  mkdirSync,
-  writeFileSync,
-  rmSync,
-} from "node:fs";
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { getAllLessons, nextLessonId, prevLessonId } from "./loader";
+import {
+  getTrack,
+  getLesson,
+  getTrackLessons,
+  nextLessonId,
+  prevLessonId,
+  trackExists,
+  getAllTrackIds,
+} from "./loader";
 
 let root: string;
 
 beforeAll(() => {
   root = mkdtempSync(path.join(tmpdir(), "sav-content-"));
+  mkdirSync(path.join(root, "tracks"));
   mkdirSync(path.join(root, "lessons"));
-  writeFileSync(
-    path.join(root, "track.json"),
-    JSON.stringify({ id: "t", title: "T", lessonIds: ["a", "b"] }),
-  );
-  const lesson = (id: string) =>
-    JSON.stringify({
-      id,
-      title: id,
-      estMinutes: 4,
-      goal: "g",
-      blocks: [{ type: "theory", id: "x", body: "b" }],
-    });
-  writeFileSync(path.join(root, "lessons", "a.json"), lesson("a"));
-  writeFileSync(path.join(root, "lessons", "b.json"), lesson("b"));
+
+  const writeTrack = (id: string, lessonIds: string[]) => {
+    writeFileSync(
+      path.join(root, "tracks", `${id}.json`),
+      JSON.stringify({ id, title: id.toUpperCase(), lessonIds }),
+    );
+    mkdirSync(path.join(root, "lessons", id));
+    for (const lid of lessonIds) {
+      writeFileSync(
+        path.join(root, "lessons", id, `${lid}.json`),
+        JSON.stringify({
+          id: lid,
+          title: lid,
+          estMinutes: 4,
+          goal: "g",
+          blocks: [{ type: "theory", id: "x", body: "b" }],
+        }),
+      );
+    }
+  };
+
+  // Two independent tracks — proves the loader is track-scoped.
+  writeTrack("alpha", ["a", "b"]);
+  writeTrack("beta", ["p", "q", "r"]);
 });
 
 afterAll(() => rmSync(root, { recursive: true, force: true }));
 
 describe("content loader", () => {
-  it("returns lessons in track order", () => {
-    expect(getAllLessons(root).map((l) => l.id)).toEqual(["a", "b"]);
+  it("getAllTrackIds lists every track (sorted)", () => {
+    expect(getAllTrackIds(root)).toEqual(["alpha", "beta"]);
   });
 
-  it("nextLessonId / prevLessonId navigate and terminate", () => {
-    expect(nextLessonId("a", root)).toBe("b");
-    expect(nextLessonId("b", root)).toBeNull();
-    expect(prevLessonId("a", root)).toBeNull();
-    expect(prevLessonId("b", root)).toBe("a");
+  it("trackExists reflects presence", () => {
+    expect(trackExists("alpha", root)).toBe(true);
+    expect(trackExists("nope", root)).toBe(false);
+  });
+
+  it("getTrack / getTrackLessons return per-track content", () => {
+    expect(getTrack("alpha", root).lessonIds).toEqual(["a", "b"]);
+    expect(getTrackLessons("beta", root).map((l) => l.id)).toEqual([
+      "p",
+      "q",
+      "r",
+    ]);
+  });
+
+  it("getLesson loads a lesson from its track directory", () => {
+    expect(getLesson("beta", "q", root).id).toBe("q");
+  });
+
+  it("nextLessonId / prevLessonId navigate within a track and terminate", () => {
+    expect(nextLessonId("alpha", "a", root)).toBe("b");
+    expect(nextLessonId("alpha", "b", root)).toBeNull();
+    expect(prevLessonId("alpha", "a", root)).toBeNull();
+    expect(prevLessonId("beta", "r", root)).toBe("q");
+    // ids are scoped to their track — "a" is not part of beta
+    expect(nextLessonId("beta", "a", root)).toBeNull();
   });
 });

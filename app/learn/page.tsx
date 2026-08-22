@@ -1,6 +1,11 @@
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/auth";
-import { getAllLessons } from "@/lib/content/loader";
+import {
+  getTrack,
+  getTrackLessons,
+  trackExists,
+  FOUNDATIONS_TRACK_ID,
+} from "@/lib/content/loader";
 import { getAllProgress } from "@/lib/data/progress";
 import { getUserEvents } from "@/lib/data/events";
 import { getSurveys } from "@/lib/data/survey";
@@ -16,7 +21,7 @@ import { getSkillTree } from "@/lib/content/skilltree";
 import { getNotifiedNodes } from "@/lib/data/notify";
 import { deriveLessonStates } from "@/lib/progress/unlock";
 import { nextLessonTarget } from "@/lib/lesson/continue";
-import { LearnHome } from "@/components/learn/LearnHome";
+import { LearnHome, type ExploreNodeStatus } from "@/components/learn/LearnHome";
 
 export const dynamic = "force-dynamic";
 
@@ -43,7 +48,7 @@ export default async function LearnPage() {
   if (!user) redirect("/login");
 
   const first = user.name?.split(" ")[0] ?? "there";
-  const lessons = getAllLessons();
+  const lessons = getTrackLessons(FOUNDATIONS_TRACK_ID);
   const progress = await getAllProgress(user.id);
   const events = await getUserEvents(user.id);
   const surveys = await getSurveys(user.id);
@@ -70,7 +75,46 @@ export default async function LearnPage() {
   const dueFollowUp = await getDueFollowUp(user.id, today);
   const greeting = timeOfDayGreeting(new Date());
 
+  // Per-node liveness/progress for Explore. A branch node is enterable iff a
+  // track exists for its id AND the skilltree marks it live; ExploreList is a
+  // client component so the (fs-backed) computation happens here on the server.
+  // No branch node is live yet, so today every node resolves to non-live and
+  // Explore renders its existing Notify-me cards — the wiring is in place for
+  // when a branch track ships.
+  const exploreStatus: Record<string, ExploreNodeStatus> = {};
+  for (const branch of tree.branches) {
+    for (const node of branch.nodes) {
+      const live = !!node.live && trackExists(node.id);
+      if (!live) {
+        exploreStatus[node.id] = {
+          live: false,
+          completed: 0,
+          total: 0,
+          href: null,
+        };
+        continue;
+      }
+      const nodeTrack = getTrack(node.id);
+      const nodeProgress = deriveLessonStates(
+        node.id,
+        nodeTrack.lessonIds,
+        progress,
+      );
+      const nodeCompleted = nodeProgress.filter(
+        (s) => s.state === "completed",
+      ).length;
+      const entry = nextLessonTarget(nodeProgress) ?? nodeTrack.lessonIds[0];
+      exploreStatus[node.id] = {
+        live: true,
+        completed: nodeCompleted,
+        total: nodeTrack.lessonIds.length,
+        href: entry ? `/lesson/${node.id}/${entry}` : null,
+      };
+    }
+  }
+
   const states = deriveLessonStates(
+    FOUNDATIONS_TRACK_ID,
     lessons.map((l) => l.id),
     progress,
   );
@@ -98,10 +142,12 @@ export default async function LearnPage() {
       xp={xp}
       continueTarget={continueTarget}
       continueMeta={continueMeta}
+      trackId={FOUNDATIONS_TRACK_ID}
       lessons={lessons}
-      progress={progress}
+      states={states}
       tree={tree}
       notified={notified}
+      exploreStatus={exploreStatus}
       dueFollowUp={dueFollowUp}
     />
   );

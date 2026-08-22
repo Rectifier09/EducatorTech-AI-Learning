@@ -28,14 +28,16 @@ type ProfileCtx = Pick<Profile, "subject" | "gradeBand">;
 
 export function LessonPlayer({
   lesson,
+  trackId,
   profile,
-  nextId,
+  nextHref,
   initialSpine,
   showGoDeeper = false,
 }: {
   lesson: Lesson;
+  trackId: string;
   profile: ProfileCtx;
-  nextId: string | null;
+  nextHref: string | null;
   initialSpine?: string;
   showGoDeeper?: boolean;
 }) {
@@ -53,11 +55,11 @@ export function LessonPlayer({
   useEffect(() => {
     if (session.done && !finished.current) {
       finished.current = true;
-      finishLesson(lesson.id, score)
+      finishLesson(trackId, lesson.id, score)
         .then((res) => setCompletion(res))
         .catch(() => setCompletion({ newBadges: [] }));
     }
-  }, [session.done, lesson.id, score]);
+  }, [session.done, trackId, lesson.id, score]);
 
   if (session.done) {
     if (completion === null) {
@@ -75,7 +77,7 @@ export function LessonPlayer({
     return (
       <LessonComplete
         score={score}
-        nextId={nextId}
+        nextHref={nextHref}
         newBadges={completion.newBadges}
       />
     );

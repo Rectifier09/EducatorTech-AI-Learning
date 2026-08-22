@@ -1,27 +1,44 @@
 import { describe, it, expect } from "vitest";
-import { getTrack, getAllLessons } from "./loader";
+import { getAllTrackIds, getTrack, getTrackLessons } from "./loader";
 
-// Validates the REAL authored content — every lesson in the track parses
-// against the schema (getLesson calls validateLesson), ids are unique,
-// and block ids are unique within each lesson.
+// Validates the REAL authored content across every track: each track loads,
+// every lesson parses against the schema (getLesson calls validateLesson),
+// lesson ids are unique within a track and match the track order, and block
+// ids are unique within each lesson.
 describe("authored content", () => {
-  it("every lesson in the track loads + validates", () => {
-    const lessons = getAllLessons();
-    expect(lessons.length).toBe(getTrack().lessonIds.length);
+  const trackIds = getAllTrackIds();
+
+  it("has at least one track (incl. ai-foundations)", () => {
+    expect(trackIds.length).toBeGreaterThan(0);
+    expect(trackIds).toContain("ai-foundations");
   });
 
-  it("lesson ids are unique and match the track order", () => {
-    const ids = getAllLessons().map((l) => l.id);
-    expect(new Set(ids).size).toBe(ids.length);
-    expect(ids).toEqual(getTrack().lessonIds);
+  it.each(trackIds)("track %s loads + every lesson validates", (trackId) => {
+    const track = getTrack(trackId);
+    const lessons = getTrackLessons(trackId);
+    expect(lessons.length).toBe(track.lessonIds.length);
   });
 
-  it("block ids are unique within each lesson", () => {
-    for (const lesson of getAllLessons()) {
-      const blockIds = lesson.blocks.map((b) => b.id);
-      expect(new Set(blockIds).size, `duplicate block id in ${lesson.id}`).toBe(
-        blockIds.length,
-      );
-    }
-  });
+  it.each(trackIds)(
+    "track %s: lesson ids are unique and match track order",
+    (trackId) => {
+      const track = getTrack(trackId);
+      const ids = getTrackLessons(trackId).map((l) => l.id);
+      expect(new Set(ids).size).toBe(ids.length);
+      expect(ids).toEqual(track.lessonIds);
+    },
+  );
+
+  it.each(trackIds)(
+    "track %s: block ids are unique within each lesson",
+    (trackId) => {
+      for (const lesson of getTrackLessons(trackId)) {
+        const blockIds = lesson.blocks.map((b) => b.id);
+        expect(
+          new Set(blockIds).size,
+          `duplicate block id in ${trackId}/${lesson.id}`,
+        ).toBe(blockIds.length);
+      }
+    },
+  );
 });
