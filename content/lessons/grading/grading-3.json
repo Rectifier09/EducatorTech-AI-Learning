@@ -1,0 +1,51 @@
+{
+  "id": "grading-3",
+  "title": "Don't trust the grade it implies",
+  "estMinutes": 6,
+  "goal": "Catch AI feedback that's generic, off-rubric, harsh, or mis-levelled — before it reaches a child.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "grading-3-hook",
+      "title": "It sounds fair — is it?",
+      "body": "AI feedback almost always *sounds* fair and professional. That's exactly why you check it.\n\nBefore any comment goes on a script, run four quick reads: does it match the rubric, is the level right for this child, is the tone kind, and is it fair? A confident comment can still be flat wrong."
+    },
+    {
+      "type": "mcq",
+      "id": "grading-3-slip",
+      "question": "Your rubric says a Level 4 answer \"uses evidence to support each point.\" The AI wrote: \"Excellent, well-argued work — clearly Level 4!\" But the essay makes claims with no evidence at all. What do you do?",
+      "options": [
+        { "id": "a", "text": "Keep it — the comment sounds confident and encouraging" },
+        { "id": "b", "text": "Catch it — the praise doesn't match the rubric; rewrite it to name the missing evidence" },
+        { "id": "c", "text": "Trust the AI's Level 4 call" }
+      ],
+      "correctIds": ["b"],
+      "explanation": "Caught it. 👏 The comment praised something the rubric doesn't see in this work. Off-rubric praise feels kind but misleads the child. You read the criteria against the script — the AI only guessed."
+    },
+    {
+      "type": "mcq",
+      "id": "grading-3-fit",
+      "question": "For a struggling Class 6 student, the AI wrote: \"This is careless and well below the expected standard. You clearly did not try.\" The facts may be right, but what's the problem?",
+      "options": [
+        { "id": "a", "text": "Tone and level — it's harsh and demotivating for this child" },
+        { "id": "b", "text": "A factual error" },
+        { "id": "c", "text": "Nothing — students need the hard truth" }
+      ],
+      "correctIds": ["a"],
+      "explanation": "Right. It's not factually wrong — it's just unkind and pitched to crush, not lift. You know this child. Ask AI to keep it honest but warm, name one strength, and give one doable next step."
+    },
+    {
+      "type": "playground",
+      "id": "grading-3-verify",
+      "mode": "verify",
+      "scaffold": "",
+      "saveToToolkit": false
+    },
+    {
+      "type": "reflection",
+      "id": "grading-3-reflect",
+      "question": "How ready do you feel to catch unfair or off-rubric AI feedback?"
+    }
+  ]
+}

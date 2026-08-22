@@ -1,0 +1,52 @@
+{
+  "id": "grading-4",
+  "title": "Make it kinder, sharper, yours",
+  "estMinutes": 5,
+  "goal": "AI feedback is a conversation — refine your saved set with small follow-ups so it sounds like you.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "grading-4-teach",
+      "title": "Feedback is a conversation",
+      "body": "The feedback set you saved is a solid first draft. Now make it *yours* — don't start over, just nudge it.\n\nSmall follow-ups do the work: \"make this warmer\", \"add one concrete next step\", \"cite the exact line you mean\", \"sound less like a report, more like me\". Each one keeps what's good and fixes one thing."
+    },
+    {
+      "type": "fillBlank",
+      "id": "grading-4-followup",
+      "template": "A weak student's essay missed the main argument. The kindest, most useful follow-up asks AI to {{tone}} and {{next}}.",
+      "blanks": [
+        {
+          "id": "tone",
+          "options": [
+            "keep the tone warm and name one real strength first",
+            "list everything that's wrong",
+            "just make the comment shorter"
+          ],
+          "correctIndex": 0
+        },
+        {
+          "id": "next",
+          "options": [
+            "add one concrete next step the child can actually act on",
+            "compare them to the top of the class",
+            "remove the specific examples"
+          ],
+          "correctIndex": 0
+        }
+      ]
+    },
+    {
+      "type": "playground",
+      "id": "grading-4-refine",
+      "mode": "refine",
+      "scaffold": "Improve this feedback set — keep it warm, name one real strength in each comment, and add one growth-oriented next step the {{gradeBand}} student can act on. Make it sound like a {{subject}} teacher who knows them.",
+      "saveToToolkit": true
+    },
+    {
+      "type": "reflection",
+      "id": "grading-4-reflect",
+      "question": "How confident do you feel refining AI feedback so it sounds like you?"
+    }
+  ]
+}

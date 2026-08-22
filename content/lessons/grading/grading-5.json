@@ -1,0 +1,34 @@
+{
+  "id": "grading-5",
+  "title": "Capstone: grade a real set this week",
+  "estMinutes": 8,
+  "goal": "Put it all together — make and check a feedback set for a stack you actually owe this week.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "grading-5-hook",
+      "title": "Bring it all together",
+      "body": "Last one — and this time it's a real stack you owe this week.\n\nMake the feedback set, then check it like the expert you now are: fair, on-rubric, right level, warm tone. Make it, check it, use it."
+    },
+    {
+      "type": "playground",
+      "id": "grading-5-make",
+      "mode": "make",
+      "artifactChoices": ["Feedback comments", "Comment bank", "Rubric", "Whole-class feedback summary"],
+      "scaffold": "Write rubric-aligned feedback for my {{gradeBand}} {{subject}} {{artifact}} against these criteria: [paste your rubric]. Warm and specific, one strength and one next step each, no student names.",
+      "saveToToolkit": true
+    },
+    {
+      "type": "playground",
+      "id": "grading-5-verify",
+      "mode": "verify",
+      "scaffold": "",
+      "saveToToolkit": false
+    },
+    {
+      "type": "postSurvey",
+      "id": "grading-5-postsurvey"
+    }
+  ]
+}
