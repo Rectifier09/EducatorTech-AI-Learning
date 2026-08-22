@@ -1,8 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/Button";
-import { MascotGuide } from "@/components/brand/MascotGuide";
+import { RewardMoment } from "@/components/reward/RewardMoment";
 
 export function LessonComplete({
   score,
@@ -12,40 +11,23 @@ export function LessonComplete({
   nextId: string | null;
 }) {
   const router = useRouter();
+  const goNext = () =>
+    router.push(nextId ? `/lesson/${nextId}` : "/learn");
+
   return (
-    <main className="flex min-h-full flex-col items-center justify-center gap-5 p-6 text-center">
-      <span className="text-5xl" aria-hidden="true">
-        🎉
-      </span>
-      <h1
-        className="text-2xl font-semibold"
-        style={{ fontFamily: "var(--font-display)" }}
+    <main className="flex min-h-full flex-col p-6">
+      <RewardMoment
+        kicker="Lesson complete"
+        title="That's another one down."
+        primaryLabel={nextId ? "Next lesson" : "Back to Learn"}
+        onPrimary={goNext}
+        secondaryLabel={nextId ? "Back to Learn" : undefined}
+        onSecondary={nextId ? () => router.push("/learn") : undefined}
       >
-        Lesson complete!
-      </h1>
-      <MascotGuide mood="cheer" size={64} />
-      <p className="text-muted">
-        Nice work — that&apos;s another one down.
-        {score < 100 ? " Review anytime to sharpen up." : ""}
-      </p>
-      <div className="flex w-full flex-col gap-2 pt-2">
-        {nextId && (
-          <Button
-            variant="primary"
-            onClick={() => router.push(`/lesson/${nextId}`)}
-            className="w-full"
-          >
-            Next lesson
-          </Button>
-        )}
-        <Button
-          variant={nextId ? "ghost" : "primary"}
-          onClick={() => router.push("/learn")}
-          className="w-full"
-        >
-          Back to Learn
-        </Button>
-      </div>
+        {score < 100
+          ? "Nice work — review anytime to sharpen up."
+          : "Nice work — perfect run."}
+      </RewardMoment>
     </main>
   );
 }
