@@ -1,0 +1,40 @@
+{
+  "id": "automation-2",
+  "title": "Make an automated tracker",
+  "estMinutes": 7,
+  "goal": "Get ready-to-paste formulas and steps for a real class tracker — you stay the checker.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "automation-2-hook",
+      "title": "Tell it your columns, get your formulas",
+      "body": "Let's build something you'll use this week. Think of one tracker you keep — marks, attendance, a watch-list of who's falling behind.\n\nYou tell AI what your columns hold and what you want computed. It hands back the exact formula plus a plain how-to. You paste it into your own Google Sheet, and check it on one row you already know. Nothing here lives inside the app — the win lands in your real sheet."
+    },
+    {
+      "type": "order",
+      "id": "automation-2-recipe",
+      "prompt": "Put the request in the order that gets you a formula you can actually paste and trust.",
+      "items": [
+        { "id": "columns", "text": "Name your columns and what each holds (e.g. \"marks in C2:C41\")" },
+        { "id": "compute", "text": "Say plainly what you want computed (total, %, a flag)" },
+        { "id": "ask", "text": "Ask for the formula plus step-by-step how-to" },
+        { "id": "example", "text": "Ask it to show the answer on one example row so you can check it" }
+      ],
+      "correctOrder": ["columns", "compute", "ask", "example"]
+    },
+    {
+      "type": "playground",
+      "id": "automation-2-make",
+      "mode": "make",
+      "artifactChoices": ["Gradebook formula set", "Attendance tracker steps", "Progress-flag rules"],
+      "scaffold": "Give me the Google Sheets formulas and a plain step-by-step for a {{artifact}} for my {{gradeBand}} {{subject}} class. Compute [what you want, e.g. attendance % or total marks] from these columns [name them and where they are, e.g. present count in C2:C41, total classes in D2:D41]. Show the result on one example row so I can check it, and keep student names out.",
+      "saveToToolkit": true
+    },
+    {
+      "type": "reflection",
+      "id": "automation-2-reflect",
+      "question": "How usable were those formulas and steps when you pasted them into your own sheet?"
+    }
+  ]
+}

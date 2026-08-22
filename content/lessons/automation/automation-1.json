@@ -1,0 +1,42 @@
+{
+  "id": "automation-1",
+  "title": "Let the sheet do the maths",
+  "estMinutes": 4,
+  "goal": "Spot the repetitive sheet work you can safely hand to a formula — and the judgement you keep.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "automation-1-hook",
+      "title": "The gradebook that never ends",
+      "body": "It's the end of term. You're re-totalling the same gradebook by hand, cell by cell, checking attendance percentages on a calculator.\n\nHere's the quiet truth: the maths part isn't your job. A sheet can do it in one line — and it never makes an arithmetic slip. Let's take that work off your plate in about 4 minutes."
+    },
+    {
+      "type": "theory",
+      "id": "automation-1-teach",
+      "title": "Say it in plain words, get a formula",
+      "body": "You don't need to know spreadsheet syntax. You describe the task in plain words — \"add up columns B to F for each student and give a percentage\" — and AI writes the formula and the step-by-step for you.\n\nYou then paste it into your own Google Sheet or Excel and check it on one row you already know the answer to. AI does the typing; you stay the checker.",
+      "goDeeper": "AI can't see your live sheet, so it works from what you tell it: your column letters and what each holds. The clearer you name your columns, the better the formula — and you always verify it on a known row before trusting the whole sheet."
+    },
+    {
+      "type": "mcq",
+      "id": "automation-1-check",
+      "question": "Tap every task that's safe to hand to a formula (and leave the ones that need your judgement).",
+      "multi": true,
+      "options": [
+        { "id": "total", "text": "Add up marks across five tests into a total" },
+        { "id": "percent", "text": "Turn attendance counts into a percentage" },
+        { "id": "grade", "text": "Decide whether a borderline 79% becomes a B+ or an A" },
+        { "id": "flag", "text": "Flag any student scoring below 40%" },
+        { "id": "reason", "text": "Judge why a bright student suddenly dropped marks" }
+      ],
+      "correctIds": ["total", "percent", "flag"],
+      "explanation": "Totals, percentages and pass/fail flags are pure maths — hand them over gladly. But a borderline grade or the reason behind a dip needs your knowledge of the child. Automate the arithmetic; keep the judgement."
+    },
+    {
+      "type": "reflection",
+      "id": "automation-1-reflect",
+      "question": "How clear are you now on what's safe to automate and what to keep?"
+    }
+  ]
+}
