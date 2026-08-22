@@ -1,0 +1,51 @@
+{
+  "id": "scepticism-2",
+  "title": "The expert's checking routine",
+  "estMinutes": 6,
+  "goal": "Run a fast, repeatable check on any AI output — spot the claim, decide if it's checkable, check it, then use, fix or drop it.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "scepticism-2-hook",
+      "title": "Check the right things, fast",
+      "body": "Here's what surprises people: experts don't distrust everything. That would be exhausting, and you'd never finish a worksheet.\n\nWhat they do is triage. They glance at an output and instantly sort it: this bit is opinion or phrasing — fine. This bit is a factual claim someone could be misled by — that one gets checked. The skill isn't suspicion. It's knowing which few things to check, and doing it in seconds."
+    },
+    {
+      "type": "order",
+      "id": "scepticism-2-order",
+      "prompt": "Put the checking routine in order — the four moves an expert makes on a fresh AI answer:",
+      "items": [
+        { "id": "check", "text": "Check the checkable ones — quick search, trusted source, or your own knowledge" },
+        { "id": "spot", "text": "Spot the claim — what here is stated as a fact?" },
+        { "id": "decide", "text": "Decide — use it, fix it, or drop it" },
+        { "id": "ask", "text": "Ask — can this actually be checked, or is it just phrasing?" }
+      ],
+      "correctOrder": ["spot", "ask", "check", "decide"]
+    },
+    {
+      "type": "mcq",
+      "id": "scepticism-2-slip",
+      "question": "You ask AI for a worksheet fact and it writes: \"According to a 2021 Cambridge study, students who chew gum score 15% higher in exams.\" You like it. What do you do?",
+      "options": [
+        { "id": "a", "text": "Include it — Cambridge is a trusted name and 15% is specific" },
+        { "id": "b", "text": "Catch it — that's an unverifiable claim; find the real study first, or drop the line entirely" },
+        { "id": "c", "text": "Bump it to 20% so it lands harder with the class" }
+      ],
+      "correctIds": ["b"],
+      "explanation": "Caught it. 👏 A famous name and a neat percentage are exactly the costume a made-up claim wears. No verifiable source, no place in your worksheet — you just protected your class from a myth."
+    },
+    {
+      "type": "playground",
+      "id": "scepticism-2-verify",
+      "mode": "verify",
+      "scaffold": "",
+      "saveToToolkit": false
+    },
+    {
+      "type": "reflection",
+      "id": "scepticism-2-reflect",
+      "question": "How ready do you feel to run a quick check on any AI output?"
+    }
+  ]
+}

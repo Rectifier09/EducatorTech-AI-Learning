@@ -1,0 +1,62 @@
+{
+  "id": "scepticism-3",
+  "title": "Your personal AI-check checklist",
+  "estMinutes": 5,
+  "goal": "Assemble a short AI-check card in your own words — five quick checks you'll actually run before trusting any AI output.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "scepticism-3-teach",
+      "title": "Five checks, one card",
+      "body": "You've done the hard part across the last two lessons. Now let's bottle it — into one small card you keep beside your desk.\n\nThe five-point AI check:\n\n• Facts — can I confirm each one from a source I trust?\n• Level — is it right for my students, not too hard or too easy?\n• Bias — does it stereotype, or quietly leave anyone out?\n• Source — if it cites something, does that source truly exist and say this?\n• Fit — does it suit my class: the board, ₹ and Celsius, familiar examples?\n\nRun these and you're checking like an expert — in under a minute."
+    },
+    {
+      "type": "fillBlank",
+      "id": "scepticism-3-fill",
+      "template": "Build your card — pick the wording that will actually make you stop and check:\n\n\"Facts: {{facts}}\nSource: {{source}}\nFit: {{fit}}\"",
+      "blanks": [
+        {
+          "id": "facts",
+          "options": [
+            "Does it look about right?",
+            "Can I confirm each fact from a source I trust?",
+            "Is there enough here to use?"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "source",
+          "options": [
+            "Did it mention a source?",
+            "If it cites a source, does that source actually exist and say this?",
+            "Is the source a big, famous name?"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "fit",
+          "options": [
+            "Does it read nicely?",
+            "Does it fit my class — the board, level, ₹ and Celsius, familiar examples?",
+            "Is it written in clear English?"
+          ],
+          "correctIndex": 1
+        }
+      ]
+    },
+    {
+      "type": "playground",
+      "id": "scepticism-3-make",
+      "mode": "make",
+      "artifactChoices": ["My AI-check checklist"],
+      "scaffold": "Turn these five checks — facts, level, bias, source, and local fit — into a short, plain-language AI-check card I can keep beside my desk as a {{gradeBand}} {{subject}} teacher. One line per check, phrased as a quick question I ask before trusting any AI output.",
+      "saveToToolkit": true
+    },
+    {
+      "type": "reflection",
+      "id": "scepticism-3-reflect",
+      "question": "How likely are you to actually run this checklist before trusting AI?"
+    }
+  ]
+}
