@@ -1,23 +1,56 @@
 import { redirect } from "next/navigation";
 import { getSessionUser, signOut } from "@/lib/auth";
+import { getAllProgress } from "@/lib/data/progress";
+import { getUserEvents } from "@/lib/data/events";
+import { getSurveys } from "@/lib/data/survey";
+import { computeXp } from "@/lib/gamification/xp";
+import {
+  computeStreak,
+  activeDatesFromEvents,
+} from "@/lib/gamification/streak";
+import { computeConfidence } from "@/lib/gamification/confidence";
+import { earnedBadges } from "@/lib/gamification/badges";
 import { getMyLeague } from "@/lib/data/leaderboard";
 import { weekStart } from "@/lib/gamification/leagues";
-import { LeagueBoard } from "@/components/gamification/LeagueBoard";
 import { setAlias } from "@/app/actions/leaderboard";
-import { Button } from "@/components/ui/Button";
+import { YouProfile } from "@/components/you/YouProfile";
 
 export const dynamic = "force-dynamic";
 
-// Thin host for the You tab: carries over the old /leaderboard content
-// plus sign-out (which used to live on the /path footer) so the new
-// 3-tab IA (Learn·Create·You) is navigable end-to-end.
-// Phase 5 replaces this with the full profile.
+// Full profile host for the You tab: your identity — the signature gauge,
+// XP/streak, badges, and the weekly league — composed from the same
+// loaders the old /path and /leaderboard pages used. Sign-out (formerly on
+// the /path footer) lives here for good, alongside the alias form.
 export default async function YouPage() {
   const user = await getSessionUser();
   if (!user) redirect("/login");
 
-  const members = await getMyLeague(user.id);
+  const progress = await getAllProgress(user.id);
+  const events = await getUserEvents(user.id);
+  const surveys = await getSurveys(user.id);
 
+  const completed = Object.values(progress).filter(
+    (p) => p.status === "completed",
+  ).length;
+  const xp = computeXp(events);
+  const today = new Date().toISOString().slice(0, 10);
+  const streak = computeStreak(activeDatesFromEvents(events), today);
+  const confidenceChecks = events.filter(
+    (e) => e.name === "confidence_check",
+  ).length;
+  const confidence = computeConfidence({
+    preSurvey: surveys.pre,
+    postSurvey: surveys.post,
+    lessonsCompleted: completed,
+    confidenceChecks,
+  });
+  const badges = earnedBadges({
+    progress,
+    events,
+    streakCurrent: streak.current,
+  });
+
+  const members = await getMyLeague(user.id);
   const ws = weekStart(new Date());
   const nextReset = new Date(ws);
   nextReset.setDate(ws.getDate() + 7);
@@ -26,49 +59,19 @@ export default async function YouPage() {
     Math.ceil((nextReset.getTime() - Date.now()) / 86_400_000),
   );
 
+  const first = user.name?.split(" ")[0] ?? "there";
+
   return (
-    <main className="flex min-h-full flex-col gap-4 p-6">
-      <h1
-        className="text-xl font-semibold"
-        style={{ fontFamily: "var(--font-display)" }}
-      >
-        You
-      </h1>
-
-      <h2
-        className="text-[15px] font-bold text-ink"
-        style={{ fontFamily: "var(--font-display)" }}
-      >
-        This week&apos;s league
-      </h2>
-      <p className="-mt-2 text-sm text-muted">
-        Resets in {daysLeft} day{daysLeft === 1 ? "" : "s"} · ranked on effort,
-        not scores.
-      </p>
-
-      <LeagueBoard members={members} />
-
-      <p className="rounded-xl border border-success bg-success-soft p-3 text-[13px] font-bold text-success-ink">
-        Every lesson counts — you&apos;re moving. Keep it up. 🌱
-      </p>
-
-      <form action={setAlias} className="flex gap-2">
-        <input
-          name="alias"
-          maxLength={20}
-          placeholder="Display name (optional)"
-          className="flex-1 rounded-xl border-[1.5px] border-line-2 bg-surface px-3 py-2 text-[14px]"
-        />
-        <Button variant="ghost" type="submit">
-          Save
-        </Button>
-      </form>
-
-      <form action={signOut} className="mt-auto pt-4">
-        <Button variant="ghost" type="submit" className="w-full">
-          Sign out
-        </Button>
-      </form>
-    </main>
+    <YouProfile
+      firstName={first}
+      confidence={confidence}
+      streak={streak.current}
+      xp={xp}
+      badges={badges}
+      league={members}
+      daysLeft={daysLeft}
+      setAlias={setAlias}
+      signOut={signOut}
+    />
   );
 }

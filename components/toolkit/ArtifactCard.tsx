@@ -25,29 +25,34 @@ export function ArtifactCard({
   }
 
   return (
-    <div className="rounded-2xl border border-line bg-surface p-4">
-      <div className="flex items-start justify-between gap-2">
-        <div>
-          <p className="text-[15px] font-bold">{title}</p>
-          <p className="text-[12px] text-muted">
+    <div className="rounded-3xl border border-line bg-surface p-5 shadow-[var(--elev-1)] transition hover:shadow-[var(--elev-2)]">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-col gap-0.5">
+          <p
+            className="text-[16px] font-semibold text-ink"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            {title}
+          </p>
+          <p className="text-[12px] text-faint">
             {new Date(createdAt).toLocaleDateString()}
           </p>
         </div>
         <button
           onClick={() => setOpen((o) => !o)}
-          className="shrink-0 text-[13px] font-extrabold text-brand-ink"
+          className="shrink-0 rounded-full border border-line-2 px-3.5 py-1.5 text-[12px] font-extrabold text-brand-ink transition hover:border-brand"
         >
           {open ? "Hide" : "View"}
         </button>
       </div>
       {open && (
         <>
-          <div className="mt-3 whitespace-pre-wrap rounded-xl border border-line bg-paper p-3 text-[13px] leading-relaxed">
+          <div className="mt-4 max-h-64 overflow-auto whitespace-pre-wrap rounded-2xl border border-line-2 bg-sunk p-4 text-[13px] leading-relaxed text-muted">
             {output}
           </div>
           <button
             onClick={copy}
-            className="mt-2 text-[13px] font-extrabold text-brand-ink underline"
+            className="mt-3 text-[13px] font-extrabold text-brand-ink underline underline-offset-2"
           >
             {copied ? "Copied ✓" : "Copy"}
           </button>

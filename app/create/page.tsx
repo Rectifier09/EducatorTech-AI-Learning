@@ -5,12 +5,13 @@ import { listArtifacts, artifactTitle } from "@/lib/data/toolkit";
 import { totalMinutesSaved, formatHoursSaved } from "@/lib/toolkit/timeSaved";
 import { Playground } from "@/components/playground/Playground";
 import { ArtifactCard } from "@/components/toolkit/ArtifactCard";
+import { Card } from "@/components/ui/Card";
 
 export const dynamic = "force-dynamic";
 
-// Thin host for the Create tab: combines the old /playground + /toolkit
-// pages so the new 3-tab IA (Learn·Create·You) is navigable end-to-end.
-// Phase 5 replaces this with the full studio experience.
+// The Create tab: a premium studio built on the existing Playground +
+// Toolkit logic (reused as-is) — an editorial frame around a guided
+// starting point, and a collection of what's been made with it.
 export default async function CreatePage() {
   const user = await getSessionUser();
   if (!user) redirect("/login");
@@ -23,48 +24,53 @@ export default async function CreatePage() {
   const artifacts = await listArtifacts(user.id);
 
   return (
-    <main className="flex min-h-full flex-col gap-8 p-6">
-      <h1
-        className="text-xl font-semibold"
-        style={{ fontFamily: "var(--font-display)" }}
-      >
-        Create
-      </h1>
+    <main className="flex min-h-full flex-col gap-10 p-6 pb-10">
+      <header className="flex flex-col gap-2">
+        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-faint">
+          The studio
+        </p>
+        <h1
+          className="text-[26px] leading-tight font-semibold text-balance"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          Make something real for tomorrow&apos;s class.
+        </h1>
+        <p className="text-[15px] text-muted">
+          Start from a crafted prompt, not a blank chatbox. What comes back
+          is a draft you own and review — never a final answer.
+        </p>
+      </header>
 
-      <section className="flex flex-col gap-4">
+      <Card className="flex flex-col gap-4">
         <h2
-          className="text-[15px] font-bold text-ink"
+          className="text-[13px] font-bold uppercase tracking-wide text-brand-ink"
           style={{ fontFamily: "var(--font-display)" }}
         >
           Playground
         </h2>
-        <p className="text-sm text-muted">
-          Practice with real AI — edit the prompt (swap <code>[topic]</code>)
-          and generate.
-        </p>
         <Playground scaffold={scaffold} mode="playground" />
-      </section>
+      </Card>
 
       <section className="flex flex-col gap-4">
-        <h2
-          className="text-[15px] font-bold text-ink"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          My Toolkit
-        </h2>
-
-        {artifacts.length > 0 && (
-          <p className="text-sm font-bold text-success-ink">
-            SahajAiVidya has saved you about{" "}
-            {formatHoursSaved(totalMinutesSaved(artifacts))} so far.{" "}
-            <span className="font-normal text-muted">(estimated)</span>
-          </p>
-        )}
+        <div className="flex items-baseline justify-between gap-3">
+          <h2
+            className="text-[19px] font-semibold"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            My Toolkit
+          </h2>
+          {artifacts.length > 0 && (
+            <p className="text-right text-[13px] font-bold text-success-ink">
+              {formatHoursSaved(totalMinutesSaved(artifacts))} saved
+              <span className="ml-1 font-normal text-faint">(est.)</span>
+            </p>
+          )}
+        </div>
 
         {artifacts.length === 0 ? (
           <p className="text-muted">
             Your first creation will live here. Make something in the
-            playground above and it&apos;s yours to keep.
+            studio above and it&apos;s yours to keep.
           </p>
         ) : (
           <div className="flex flex-col gap-3">

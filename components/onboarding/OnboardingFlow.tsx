@@ -25,7 +25,7 @@ export function OnboardingFlow({ firstName }: { firstName: string | null }) {
   }
 
   return (
-    <main className="flex min-h-full flex-col gap-6 p-6">
+    <main className="flex min-h-full flex-col gap-7 p-6 pt-8">
       <ProgressDots total={ONBOARDING_STEPS.length} current={index} />
 
       <div className="flex flex-1 flex-col">

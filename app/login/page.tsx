@@ -12,15 +12,15 @@ export default async function LoginPage() {
 
   return (
     <main className="flex min-h-full flex-col justify-between gap-8 p-6">
-      <div className="pt-4">
-        <div className="mb-8 flex items-center gap-2.5">
+      <div className="pt-6">
+        <div className="mb-9 flex items-center gap-2.5">
           <span className="text-xl font-semibold" style={{ fontFamily: "var(--font-display)" }}>
             Sahaj<span className="text-[color:var(--green-ink)]">AiVidya</span>
           </span>
         </div>
 
         <h1
-          className="text-[28px] leading-tight font-semibold text-balance"
+          className="text-[30px] leading-tight font-semibold text-balance"
           style={{ fontFamily: "var(--font-display)" }}
         >
           Make tomorrow&apos;s lesson in 5 minutes — and understand the AI doing it.
@@ -29,14 +29,14 @@ export default async function LoginPage() {
           Short, friendly lessons built for teachers. No tech background needed. Free.
         </p>
 
-        <ul className="mt-6 flex flex-col gap-2.5 text-[14px] font-semibold">
-          <li className="flex items-center gap-2.5 rounded-xl border border-line bg-surface px-3.5 py-3">
+        <ul className="mt-7 flex flex-col gap-2.5 text-[14px] font-semibold text-ink">
+          <li className="flex items-center gap-2.5 rounded-2xl border border-line bg-surface px-3.5 py-3 shadow-[var(--elev-1)]">
             <Pill className="bg-brand-soft text-brand-ink">Learn</Pill> how AI really works
           </li>
-          <li className="flex items-center gap-2.5 rounded-xl border border-line bg-surface px-3.5 py-3">
+          <li className="flex items-center gap-2.5 rounded-2xl border border-line bg-surface px-3.5 py-3 shadow-[var(--elev-1)]">
             <Pill className="bg-accent-soft text-accent-ink">Make</Pill> real classroom material
           </li>
-          <li className="flex items-center gap-2.5 rounded-xl border border-line bg-surface px-3.5 py-3">
+          <li className="flex items-center gap-2.5 rounded-2xl border border-line bg-surface px-3.5 py-3 shadow-[var(--elev-1)]">
             <Pill className="bg-success-soft text-success-ink">Keep</Pill> everything you create
           </li>
         </ul>
@@ -67,7 +67,7 @@ export default async function LoginPage() {
 
 function Pill({ children, className }: { children: React.ReactNode; className: string }) {
   return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-[12px] font-bold ${className}`}>
+    <span className={`inline-flex items-center rounded-full px-3 py-1 text-[12px] font-bold tracking-wide ${className}`}>
       {children}
     </span>
   );

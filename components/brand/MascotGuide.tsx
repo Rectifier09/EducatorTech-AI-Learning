@@ -1,8 +1,9 @@
 type Mood = "welcome" | "cheer" | "reassure";
 
 /**
- * Ravi — the pilot's single educator-guide. Placeholder SVG portrait;
- * real animated art is a later design task (see public/mascots/README.md).
+ * Ravi — the pilot's single educator-guide. A restrained, tokenized inline
+ * SVG portrait (skin/hair map to --skin/--hair); real illustrated art is a
+ * later, post-approval design task (see public/mascots/README.md).
  */
 export function MascotGuide({
   mood = "welcome",
@@ -14,10 +15,10 @@ export function MascotGuide({
   size?: number;
 }) {
   return (
-    <div className="flex items-end gap-2.5">
+    <div className="flex items-end gap-3">
       <RaviPortrait size={size} title={`Ravi (${mood})`} />
       {caption ? (
-        <p className="max-w-[16rem] rounded-2xl rounded-bl-sm border border-line bg-surface px-3.5 py-2.5 text-sm leading-snug text-ink">
+        <p className="max-w-[16rem] rounded-2xl rounded-bl-sm border border-line bg-surface px-4 py-3 text-sm leading-snug text-ink shadow-[var(--elev-1)]">
           {caption}
         </p>
       ) : null}
@@ -33,12 +34,20 @@ function RaviPortrait({ size, title }: { size: number; title: string }) {
       viewBox="0 0 96 96"
       role="img"
       aria-label={title}
-      className="shrink-0"
+      className="shrink-0 rounded-full"
     >
-      <circle cx="48" cy="48" r="48" fill="var(--indigo-soft)" />
+      <circle
+        cx="48"
+        cy="48"
+        r="46.5"
+        fill="var(--surface-2)"
+        stroke="var(--gold)"
+        strokeOpacity="0.3"
+        strokeWidth="1.5"
+      />
       <path
         d="M22 96c2-17 12-27 26-27s24 10 26 27H22Z"
-        fill="var(--indigo)"
+        fill="var(--sunk)"
       />
       <path d="M40 62h16v10a8 8 0 0 1-16 0V62Z" fill="var(--skin)" />
       <circle cx="48" cy="46" r="21" fill="var(--skin)" />
