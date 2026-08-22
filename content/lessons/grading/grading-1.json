@@ -1,0 +1,39 @@
+{
+  "id": "grading-1",
+  "title": "AI drafts feedback, you stay the judge",
+  "estMinutes": 4,
+  "goal": "Believe AI can speed up your feedback comments while the grading decision stays yours.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "grading-1-hook",
+      "title": "The Sunday stack",
+      "body": "It's Sunday evening and 40 scripts are staring at you. Putting the marks in isn't what takes the time — writing something kind and useful on each one is.\n\nThat's the part AI can help with. Not the judging. The typing. Let's see how — in about 4 minutes."
+    },
+    {
+      "type": "theory",
+      "id": "grading-1-teach",
+      "title": "Draft is not decision",
+      "body": "Here's the split that keeps you in charge:\n\nAI drafts the comment — warm, specific, in your rubric's language. You decide the grade.\n\nYou read the work, you know the child, you own the mark. AI just saves you from typing \"good effort, but check your working\" for the fortieth time.",
+      "goDeeper": "You can even paste your own rubric and ask AI to write comments \"against these criteria\". It borrows your standards — it never sets them. The grade always comes from your read of the script."
+    },
+    {
+      "type": "mcq",
+      "id": "grading-1-check",
+      "question": "Your AI feedback draft ends with: \"Suggested grade: B+.\" What's your move?",
+      "options": [
+        { "id": "a", "text": "Enter B+ — the AI weighed it all up" },
+        { "id": "b", "text": "Treat it as a draft — you read the script and decide the grade" },
+        { "id": "c", "text": "Split the difference and give a B" }
+      ],
+      "correctIds": ["b"],
+      "explanation": "Exactly. AI can draft the words, but a grade is a professional judgement only you can stand behind. It hasn't read the child's whole year — you have. Draft ≠ decision."
+    },
+    {
+      "type": "reflection",
+      "id": "grading-1-reflect",
+      "question": "How comfortable do you feel letting AI draft feedback while you keep the grade?"
+    }
+  ]
+}

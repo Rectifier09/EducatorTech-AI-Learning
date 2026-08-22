@@ -1,0 +1,28 @@
+{
+  "id": "grading-2",
+  "title": "Make a feedback set",
+  "estMinutes": 7,
+  "goal": "Make a real, usable set of rubric-aligned feedback comments for one assignment — you stay the editor.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "grading-2-hook",
+      "title": "Let's make one for real",
+      "body": "Enough about the idea — let's build a feedback set you can use on your next stack.\n\nGive AI your rubric and the gist of one student's work, and it drafts warm, specific comments tied to your criteria. Pick what you need below. You stay the editor — nothing goes to a child until you say so."
+    },
+    {
+      "type": "playground",
+      "id": "grading-2-make",
+      "mode": "make",
+      "artifactChoices": ["Feedback comments", "Rubric", "Comment bank"],
+      "scaffold": "Write rubric-aligned feedback for a {{gradeBand}} {{subject}} {{artifact}} against these criteria: [paste your rubric or 3-4 criteria]. Keep it warm and specific, name one real strength and one clear next step, and don't use any student's name.",
+      "saveToToolkit": true
+    },
+    {
+      "type": "reflection",
+      "id": "grading-2-reflect",
+      "question": "How usable was that feedback set — and how long would it have taken you by hand?"
+    }
+  ]
+}
