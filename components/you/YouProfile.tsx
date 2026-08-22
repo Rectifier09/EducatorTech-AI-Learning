@@ -1,6 +1,5 @@
 import { ConfidenceGauge } from "@/components/gamification/ConfidenceGauge";
 import { LeagueBoard } from "@/components/gamification/LeagueBoard";
-import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import type { LeagueMember } from "@/lib/data/leaderboard";
 import type { Badge } from "@/lib/gamification/badges";
