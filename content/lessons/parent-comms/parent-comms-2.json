@@ -1,0 +1,39 @@
+{
+  "id": "parent-comms-2",
+  "title": "Draft the email + a reusable notice",
+  "estMinutes": 7,
+  "goal": "Make a real parent email and a reusable notice template with AI — described safely, edited by you.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "parent-comms-2-hook",
+      "title": "Describe it once, reuse it forever",
+      "body": "Let's make two things you'll actually use: a warm email for the parent in front of you today, and a notice template you can reuse every time a similar situation comes up.\n\nRemember the one rule — describe the situation without naming the child. You bring the situation and the tone; AI brings the calm first draft; you stay the editor who sends it."
+    },
+    {
+      "type": "promptWrite",
+      "id": "parent-comms-2-brief",
+      "brief": "Before we generate anything, write the short brief you'd hand AI. In 2–3 lines, describe the situation, the tone you want, and what you hope the parent does next — WITHOUT any student name or private detail. Example shape: \"A student in my class has been missing homework. I want a warm, non-blaming note that invites the parent to a quick chat.\"",
+      "rubric": [
+        "Describes the situation without naming the student or any private detail (health, family, marks-with-names)",
+        "Names the tone you want (e.g. warm, reassuring, firm-but-kind)",
+        "States the outcome — what you hope the parent does next",
+        "Reads like a note you'd actually send after a quick edit"
+      ]
+    },
+    {
+      "type": "playground",
+      "id": "parent-comms-2-make",
+      "mode": "make",
+      "artifactChoices": ["Parent email", "Class notice", "Permission-slip template"],
+      "scaffold": "Draft a warm, clear {{artifact}} to parents about [situation] for a {{gradeBand}} {{subject}} class. Describe the situation without naming any student or private detail, keep the tone respectful and non-blaming, and end with one clear next step. Leave [blanks] I can fill in each time so I can reuse it.",
+      "saveToToolkit": true
+    },
+    {
+      "type": "reflection",
+      "id": "parent-comms-2-reflect",
+      "question": "How usable was the draft — would you send it, or reuse the template, after a quick edit of your own?"
+    }
+  ]
+}

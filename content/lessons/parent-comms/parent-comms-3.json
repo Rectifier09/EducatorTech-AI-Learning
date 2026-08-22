@@ -1,0 +1,51 @@
+{
+  "id": "parent-comms-3",
+  "title": "Check tone and keep data safe",
+  "estMinutes": 6,
+  "goal": "Catch a parent message before you send it — spot leaked private details and a tone that blames.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "parent-comms-3-hook",
+      "title": "One last read before you hit send",
+      "body": "A parent message is high-stakes: the wrong word travels fast, and a leaked detail can't be unsent. So before it goes, you run a quick check — the same one an experienced colleague does by instinct.\n\nCheck three things: the tone (does it invite, or does it blame?), any over-promise you can't keep, and any private detail that slipped in. AI drafts fast — this 30-second check is where your judgement earns its keep."
+    },
+    {
+      "type": "mcq",
+      "id": "parent-comms-3-slip",
+      "question": "AI drafts this notice for you: \"Dear parents, please note that Aarav Sharma has been advised bed rest for his asthma and will miss the trip.\" You're about to paste it into the class group. What do you do?",
+      "options": [
+        { "id": "a", "text": "Send it — it's clear and informative" },
+        { "id": "b", "text": "Catch it — a child's name and a medical detail don't belong in a class-wide notice; rewrite it generally" },
+        { "id": "c", "text": "Send it, but add a line asking parents to keep it confidential" }
+      ],
+      "correctIds": ["b"],
+      "explanation": "Caught it. 👏 That's a real privacy leak — a named child's health broadcast to every parent. A general line (\"a few students will miss the trip; I've contacted their families directly\") does the job with none of the exposure. No confidentiality request undoes a detail already shared."
+    },
+    {
+      "type": "mcq",
+      "id": "parent-comms-3-tone",
+      "question": "AI drafts: \"Your daughter clearly hasn't been revising and her marks show she isn't taking my class seriously.\" The facts may be true — but what's the problem?",
+      "options": [
+        { "id": "a", "text": "The tone blames the child and the parent instead of opening a conversation" },
+        { "id": "b", "text": "Nothing — parents need the hard truth" },
+        { "id": "c", "text": "It's too short" }
+      ],
+      "correctIds": ["a"],
+      "explanation": "Right — even when the facts hold, blame makes a parent defensive, not helpful. Ask AI to \"make it warm and solution-focused\": share what you've noticed, then invite working together. You keep the honesty and lose the sting."
+    },
+    {
+      "type": "playground",
+      "id": "parent-comms-3-verify",
+      "mode": "verify",
+      "scaffold": "",
+      "saveToToolkit": false
+    },
+    {
+      "type": "reflection",
+      "id": "parent-comms-3-reflect",
+      "question": "How ready do you feel to sanity-check tone and privacy on any AI-drafted message before you hit send?"
+    }
+  ]
+}
