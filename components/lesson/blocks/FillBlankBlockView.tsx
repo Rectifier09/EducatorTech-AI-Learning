@@ -56,8 +56,6 @@ export function FillBlankBlockView({
               let cls = "border-line-2 text-muted";
               if (solved) {
                 cls = "border-[color:var(--green)] text-success-ink";
-              } else if (wrongTry) {
-                cls = "border-[color:var(--coral)] text-ink";
               } else if (chosen !== undefined) {
                 cls = "border-brand text-brand-ink";
               }
@@ -88,6 +86,11 @@ export function FillBlankBlockView({
         <AnswerFeedback
           state={solved ? "correct" : wrongTry ? "notyet" : null}
         />
+        {wrongTry && !solved && (
+          <p className="text-[13px] text-muted">
+            Not quite — adjust a choice and try again.
+          </p>
+        )}
       </div>
 
       {solved ? (

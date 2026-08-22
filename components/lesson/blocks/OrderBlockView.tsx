@@ -109,8 +109,6 @@ export function OrderBlockView({
               if (solved) {
                 cls =
                   "border-[color:var(--green)] bg-success-soft text-success-ink shadow-[var(--glow-green)]";
-              } else if (wrongTry) {
-                cls = "border-[color:var(--coral)] bg-surface";
               }
               return (
                 <button

@@ -83,14 +83,11 @@ export function McqBlockView({
             const sel = selected.includes(o.id);
             const isCorrectOption = block.correctIds.includes(o.id);
             const showCorrect = solved && sel;
-            const showWrong = wrongTry && !solved && sel;
 
             let cls = "border-line bg-surface";
             if (showCorrect) {
               cls =
                 "border-[color:var(--green)] bg-success-soft text-success-ink shadow-[var(--glow-green)]";
-            } else if (showWrong) {
-              cls = "border-[color:var(--coral)] bg-surface";
             } else if (sel) {
               cls =
                 "border-brand bg-brand-soft text-brand-ink shadow-[var(--glow-gold)]";
