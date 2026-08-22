@@ -1,0 +1,51 @@
+{
+  "id": "automation-3",
+  "title": "Check the formula before you trust it",
+  "estMinutes": 6,
+  "goal": "Catch a formula that's mis-ranged or fragile before it quietly corrupts your whole tracker.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "automation-3-hook",
+      "title": "A wrong total looks exactly like a right one",
+      "body": "Here's what makes sheet errors dangerous: a wrong number looks just as tidy as a right one. There's no red squiggle, no warning — just a total that's quietly off.\n\nSo you never trust a formula on faith. You test it on one row where you already know the answer. If AI's formula agrees with your hand-calculation on that row, it'll hold for the rest. Two things trip formulas most: the wrong range, and a blank cell."
+    },
+    {
+      "type": "mcq",
+      "id": "automation-3-slip",
+      "question": "Your marks sit in B2:B42 (41 students). The AI hands you =AVERAGE(B2:B41) for the class average. What do you do?",
+      "options": [
+        { "id": "use", "text": "Paste it — it's an AVERAGE formula, that's what you asked for" },
+        { "id": "catch", "text": "Catch it — the range stops at B41 and silently drops your last student; fix it to B2:B42" },
+        { "id": "trust", "text": "Assume the AI counted the rows correctly" }
+      ],
+      "correctIds": ["catch"],
+      "explanation": "Caught it. 👏 The formula runs fine and shows a clean number — but it's averaging 40 students, not 41. An off-by-one range is the classic silent slip. Checking the range is the skill no tool replaces."
+    },
+    {
+      "type": "mcq",
+      "id": "automation-3-fit",
+      "question": "For attendance %, the AI gives =C2/D2. One new student has a blank in D (total classes not entered yet). What happens?",
+      "options": [
+        { "id": "zero", "text": "Nothing — it just shows 0%" },
+        { "id": "error", "text": "It shows #DIV/0! — dividing by an empty cell breaks; wrap it, e.g. =IFERROR(C2/D2, \"\"), so blanks don't crash the column" },
+        { "id": "auto", "text": "The sheet fills in the missing number on its own" }
+      ],
+      "correctIds": ["error"],
+      "explanation": "Right — an empty cell reads as zero, and dividing by zero throws #DIV/0!, which can cascade down your whole tracker. A robust formula handles the blanks you'll inevitably have. That's thinking one step ahead of the sheet."
+    },
+    {
+      "type": "playground",
+      "id": "automation-3-verify",
+      "mode": "verify",
+      "scaffold": "",
+      "saveToToolkit": false
+    },
+    {
+      "type": "reflection",
+      "id": "automation-3-reflect",
+      "question": "How ready do you feel to sanity-check an AI formula on a known row before relying on it?"
+    }
+  ]
+}
