@@ -22,6 +22,7 @@ import { LessonComplete } from "./LessonComplete";
 import { finishLesson } from "@/app/actions/lesson";
 import type { Lesson, Block } from "@/lib/content/types";
 import type { Profile } from "@/lib/data/types";
+import type { Badge } from "@/lib/gamification/badges";
 
 type ProfileCtx = Pick<Profile, "subject" | "gradeBand">;
 
@@ -45,16 +46,39 @@ export function LessonPlayer({
   const total = lesson.blocks.length;
   const score = computeScore(session.results);
   const finished = useRef(false);
+  const [completion, setCompletion] = useState<{
+    newBadges: Badge[];
+  } | null>(null);
 
   useEffect(() => {
     if (session.done && !finished.current) {
       finished.current = true;
-      void finishLesson(lesson.id, score);
+      finishLesson(lesson.id, score)
+        .then((res) => setCompletion(res))
+        .catch(() => setCompletion({ newBadges: [] }));
     }
   }, [session.done, lesson.id, score]);
 
   if (session.done) {
-    return <LessonComplete score={score} nextId={nextId} />;
+    if (completion === null) {
+      return (
+        <main className="flex min-h-full flex-col items-center justify-center p-6">
+          <p
+            className="text-sm text-muted"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Wrapping up…
+          </p>
+        </main>
+      );
+    }
+    return (
+      <LessonComplete
+        score={score}
+        nextId={nextId}
+        newBadges={completion.newBadges}
+      />
+    );
   }
 
   const block = lesson.blocks[session.index];

@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { ConfidenceMeter } from "@/components/gamification/ConfidenceMeter";
+import { RewardMoment } from "@/components/reward/RewardMoment";
+import { ConfidenceGauge } from "@/components/gamification/ConfidenceGauge";
 import { savePostSurvey } from "@/app/actions/survey";
 import { commitToUse } from "@/app/actions/commitment";
 import type { Attitude } from "@/lib/data/types";
@@ -51,60 +52,59 @@ export function PostSurvey({ onNext }: { onNext: () => void }) {
 
   if (reveal) {
     return (
-      <div className="flex flex-1 flex-col justify-center gap-6 text-center">
-        <span className="text-4xl" aria-hidden="true">
-          🎓
-        </span>
-        <h1
-          className="text-[24px] font-semibold text-balance"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          Look how far you&apos;ve come.
-        </h1>
-        <div className="flex flex-col gap-4 text-left">
-          <ConfidenceMeter value={reveal.before} label="Day one" />
-          <ConfidenceMeter value={reveal.after} label="Now" />
-        </div>
-        {reveal.shift === "up" && (
-          <p className="text-[15px] font-bold text-success-ink">
-            You came in more unsure — look where you are now. That&apos;s real. 🎉
-          </p>
-        )}
-        <p className="text-sm text-muted">
-          You&apos;re now ahead of most teachers in the country. And this is just
-          the start.
-        </p>
-
-        {committed ? (
-          <p className="text-[14px] font-bold text-success-ink">
-            Great — we&apos;ll check in on how it went. ✅
-          </p>
-        ) : (
-          <div className="flex flex-col gap-2">
-            <p className="text-sm font-bold">
-              When will you use what you made in class?
-            </p>
-            <div className="flex gap-2">
-              <button
-                onClick={() => commit(1)}
-                className="flex-1 rounded-lg border-[1.5px] border-line-2 bg-surface py-2 text-[14px] font-bold hover:border-brand"
-              >
-                Tomorrow
-              </button>
-              <button
-                onClick={() => commit(3)}
-                className="flex-1 rounded-lg border-[1.5px] border-line-2 bg-surface py-2 text-[14px] font-bold hover:border-brand"
-              >
-                This week
-              </button>
-            </div>
+      <RewardMoment
+        kicker="Capstone"
+        title="Look how far you've come."
+        gauge={
+          <div className="flex items-center gap-5">
+            <ConfidenceGauge value={reveal.before} label="Day one" variant="chip" />
+            <span aria-hidden="true" className="text-lg text-faint">
+              →
+            </span>
+            <ConfidenceGauge value={reveal.after} label="Now" variant="chip" />
           </div>
-        )}
+        }
+        primaryLabel="See what's next"
+        onPrimary={onNext}
+      >
+        <div className="flex flex-col gap-4">
+          {reveal.shift === "up" && (
+            <p className="font-bold text-success-ink">
+              You came in more unsure — look where you are now. That&apos;s real. 🎉
+            </p>
+          )}
+          <p>
+            You&apos;re now ahead of most teachers in the country. And this is
+            just the start.
+          </p>
 
-        <Button variant="primary" onClick={onNext} className="w-full">
-          See what&apos;s next
-        </Button>
-      </div>
+          {committed ? (
+            <p className="font-bold text-success-ink">
+              Great — we&apos;ll check in on how it went. ✅
+            </p>
+          ) : (
+            <div className="flex flex-col gap-2 text-left">
+              <p className="font-bold text-ink">
+                When will you use what you made in class?
+              </p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => commit(1)}
+                  className="flex-1 rounded-lg border-[1.5px] border-line-2 bg-surface py-2 text-[14px] font-bold hover:border-brand"
+                >
+                  Tomorrow
+                </button>
+                <button
+                  onClick={() => commit(3)}
+                  className="flex-1 rounded-lg border-[1.5px] border-line-2 bg-surface py-2 text-[14px] font-bold hover:border-brand"
+                >
+                  This week
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </RewardMoment>
     );
   }
 
