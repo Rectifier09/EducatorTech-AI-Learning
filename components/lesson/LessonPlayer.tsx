@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import {
   initSession,
   advance,
@@ -37,6 +38,7 @@ export function LessonPlayer({
   initialSpine?: string;
   showGoDeeper?: boolean;
 }) {
+  const router = useRouter();
   const [session, setSession] = useState<SessionState>(() =>
     initSession(lesson, initialSpine),
   );
@@ -61,8 +63,19 @@ export function LessonPlayer({
     setSession((s) => recordResult(s, block.id, passed));
 
   return (
-    <main className="flex min-h-full flex-col gap-4 p-6">
-      <ProgressBar current={session.index} total={total} />
+    <main className="flex min-h-full flex-col gap-8 p-6">
+      <div className="flex items-center gap-3">
+        <button
+          onClick={() => router.push("/learn")}
+          aria-label="Close lesson"
+          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-line text-muted transition hover:border-line-2 hover:text-ink"
+        >
+          <span aria-hidden="true" className="text-base leading-none">
+            ×
+          </span>
+        </button>
+        <ProgressBar current={session.index} total={total} />
+      </div>
       <div className="flex flex-1 flex-col">
         {/* key per block id: remounts so per-block state (selection, solved)
             never leaks between consecutive blocks of the same type */}
@@ -86,13 +99,13 @@ function ProgressBar({ current, total }: { current: number; total: number }) {
   const pct = Math.round((current / total) * 100);
   return (
     <div
-      className="h-1.5 w-full rounded-full bg-sunk"
+      className="h-[5px] flex-1 overflow-hidden rounded-full bg-surface-2"
       role="progressbar"
       aria-valuenow={current + 1}
       aria-valuemax={total}
     >
       <div
-        className="h-full rounded-full bg-brand transition-all"
+        className="h-full rounded-full bg-gradient-to-r from-brand to-accent shadow-[var(--glow-gold)] transition-all"
         style={{ width: `${pct}%` }}
       />
     </div>

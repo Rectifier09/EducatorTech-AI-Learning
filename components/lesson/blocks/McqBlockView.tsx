@@ -1,7 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { AnswerFeedback } from "@/components/lesson/AnswerFeedback";
+import { GoldBurst } from "@/components/lesson/GoldBurst";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { gradeMcq } from "@/lib/lesson/grade";
 import type { McqBlock } from "@/lib/content/types";
 
@@ -19,6 +22,8 @@ export function McqBlockView({
   const [wrongTry, setWrongTry] = useState(false);
   const firstScored = useRef(false);
   const multi = block.multi ?? false;
+  const reduced = usePrefersReducedMotion();
+  const optionRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
   function toggle(id: string) {
     if (solved) return;
@@ -44,6 +49,23 @@ export function McqBlockView({
     else setWrongTry(true);
   }
 
+  // Tasteful delight: a brief spring settle on the option(s) that were
+  // correct, the moment the answer is confirmed.
+  useEffect(() => {
+    if (!solved || reduced) return;
+    for (const id of selected) {
+      const el = optionRefs.current.get(id);
+      el?.animate(
+        [
+          { transform: "scale(1)" },
+          { transform: "scale(1.03)" },
+          { transform: "scale(1)" },
+        ],
+        { duration: 420, easing: "cubic-bezier(.34,1.56,.64,1)" },
+      );
+    }
+  }, [solved, reduced, selected]);
+
   return (
     <div className="flex flex-1 flex-col justify-between gap-6">
       <div className="flex flex-col gap-4">
@@ -56,47 +78,57 @@ export function McqBlockView({
         {multi && (
           <p className="-mt-2 text-xs text-muted">Select all that apply.</p>
         )}
-        <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col gap-3">
           {block.options.map((o) => {
             const sel = selected.includes(o.id);
-            let cls = "border-line-2 bg-surface";
-            if (solved && sel) {
-              cls = "border-success bg-success-soft text-success-ink";
+            const isCorrectOption = block.correctIds.includes(o.id);
+            const showCorrect = solved && sel;
+
+            let cls = "border-line bg-surface";
+            if (showCorrect) {
+              cls =
+                "border-[color:var(--green)] bg-success-soft text-success-ink shadow-[var(--glow-green)]";
             } else if (sel) {
-              cls = "border-brand bg-brand-soft text-brand-ink";
+              cls =
+                "border-brand bg-brand-soft text-brand-ink shadow-[var(--glow-gold)]";
             }
+
             return (
-              <button
-                key={o.id}
-                onClick={() => toggle(o.id)}
-                disabled={solved}
-                aria-pressed={sel}
-                className={`flex items-center justify-between gap-3 rounded-xl border-[1.5px] px-4 py-3 text-left text-[15px] font-bold transition ${cls}`}
-              >
-                <span>{o.text}</span>
-                {solved && sel && (
-                  <span className="shrink-0 text-[13px]">✓</span>
-                )}
-              </button>
+              <div key={o.id} className="relative">
+                <button
+                  ref={(el) => {
+                    if (el) optionRefs.current.set(o.id, el);
+                    else optionRefs.current.delete(o.id);
+                  }}
+                  onClick={() => toggle(o.id)}
+                  disabled={solved}
+                  aria-pressed={sel}
+                  className={`flex min-h-[56px] w-full items-center justify-between gap-3 rounded-2xl border-[1.5px] px-5 py-4 text-left text-[15px] font-bold transition ${cls}`}
+                >
+                  <span>{o.text}</span>
+                  {showCorrect && (
+                    <span className="shrink-0 text-[13px]">✓</span>
+                  )}
+                </button>
+                {/* Mounted on every correct option; fires its burst only
+                    when that option is the one just confirmed correct. */}
+                {isCorrectOption && <GoldBurst trigger={solved && sel} />}
+              </div>
             );
           })}
         </div>
 
+        <AnswerFeedback state={solved ? "correct" : wrongTry ? "notyet" : null} />
+
         {solved && (
-          <div className="rounded-xl border border-success bg-success-soft p-3 text-[14px] leading-relaxed">
-            <p className="font-bold">Exactly. 👏</p>
-            <p className="mt-1">{block.explanation}</p>
-          </div>
+          <p className="text-[14px] leading-relaxed text-muted">
+            {block.explanation}
+          </p>
         )}
-        {wrongTry && !solved && (
-          <div className="rounded-xl border border-accent bg-accent-soft p-3 text-[14px]">
-            <p className="font-bold">Not quite — take another look.</p>
-            {multi && (
-              <p className="mt-1 text-muted">
-                Tip: it&apos;s more than one, and not all of them.
-              </p>
-            )}
-          </div>
+        {wrongTry && !solved && multi && (
+          <p className="text-[13px] text-muted">
+            Tip: it&apos;s more than one, and not all of them.
+          </p>
         )}
       </div>
 
