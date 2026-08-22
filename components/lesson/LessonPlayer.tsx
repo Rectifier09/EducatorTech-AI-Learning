@@ -22,6 +22,7 @@ import { LessonComplete } from "./LessonComplete";
 import { finishLesson } from "@/app/actions/lesson";
 import type { Lesson, Block } from "@/lib/content/types";
 import type { Profile } from "@/lib/data/types";
+import type { Badge } from "@/lib/gamification/badges";
 
 type ProfileCtx = Pick<Profile, "subject" | "gradeBand">;
 
@@ -45,16 +46,19 @@ export function LessonPlayer({
   const total = lesson.blocks.length;
   const score = computeScore(session.results);
   const finished = useRef(false);
+  const [newBadges, setNewBadges] = useState<Badge[]>([]);
 
   useEffect(() => {
     if (session.done && !finished.current) {
       finished.current = true;
-      void finishLesson(lesson.id, score);
+      finishLesson(lesson.id, score).then((res) => setNewBadges(res.newBadges));
     }
   }, [session.done, lesson.id, score]);
 
   if (session.done) {
-    return <LessonComplete score={score} nextId={nextId} />;
+    return (
+      <LessonComplete score={score} nextId={nextId} newBadges={newBadges} />
+    );
   }
 
   const block = lesson.blocks[session.index];
