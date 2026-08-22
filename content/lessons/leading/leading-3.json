@@ -1,0 +1,39 @@
+{
+  "id": "leading-3",
+  "title": "Ready to run your mini-PD",
+  "estMinutes": 5,
+  "goal": "Turn your one page into a short session you'll actually deliver — and handle pushback calmly.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "leading-3-hook",
+      "title": "From page to staffroom",
+      "body": "You've got your one-pager from the last lesson. Now the real step: getting it in front of colleagues.\n\nIt doesn't need a projector, a slide deck, or an hour. Fifteen minutes in a free period, four or five colleagues, and your page on the table is plenty. Let's get it ready."
+    },
+    {
+      "type": "theory",
+      "id": "leading-3-teach",
+      "title": "The whole recipe: demo, rule, question",
+      "body": "A mini-PD that lands is honestly just three moves:\n\n1. One live demo — make one real thing in front of them (a worksheet, a parent note). Seeing it beats hearing about it.\n2. One shared rule — agree on a single habit together, like \"keep student details out of the tool.\" One rule people remember beats ten they forget.\n3. One question invited — end by asking \"where would this actually save you time?\" You're starting a conversation, not giving a lecture.\n\nDemo, rule, question. That's the session.",
+      "goDeeper": "Keep your one-pager as the handout. The demo shows it's real, the rule makes it safe, the question makes it theirs — and the page means nobody has to remember it all."
+    },
+    {
+      "type": "mcq",
+      "id": "leading-3-check",
+      "question": "Mid-session, the staffroom skeptic folds their arms: \"I don't have time to learn another new tool.\" What's your best move?",
+      "options": [
+        { "id": "a", "text": "Explain all the features so they see how powerful it is." },
+        { "id": "b", "text": "Agree the time worry is fair, then show one two-minute thing that saves them time this week — and let the result speak." },
+        { "id": "c", "text": "Tell them the school expects everyone to try it." }
+      ],
+      "correctIds": ["b"],
+      "explanation": "You met the objection with respect, not a sales pitch. A skeptic is won by a small, real time-saving — shown, not argued — never by pressure or a feature dump. Their caution is reasonable; honour it."
+    },
+    {
+      "type": "reflection",
+      "id": "leading-3-reflect",
+      "question": "When, and with which colleagues, will you run your first fifteen-minute session? Name it — that's how it actually happens."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "id": "leading-1",
+  "title": "From user to guide",
+  "estMinutes": 4,
+  "goal": "Lead colleagues toward AI by lowering fear and sharing wins — never by mandating.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "leading-1-hook",
+      "title": "Look around the staffroom",
+      "body": "You've quietly become the teacher who \"gets\" AI. Colleagues are starting to ask you.\n\nGlance around the staffroom and you'll see three camps: the eager one already trying things, the anxious one who fears being replaced, and the skeptic who's seen \"the next big thing\" come and go. All three are being sensible in their own way.\n\nLeading here isn't about converting anyone. It's about making it safe to start. Four minutes on how."
+    },
+    {
+      "type": "theory",
+      "id": "leading-1-teach",
+      "title": "Lead like a colleague, not a boss",
+      "body": "You're not the IT department and you don't need to be. The three moves that actually work:\n\n1. Lower the fear — say plainly what AI is (a fast, fallible helper) and what it isn't (a replacement for their judgement).\n2. Share a real win — \"this saved me 20 minutes on Monday's worksheet\" lands harder than any pitch.\n3. Set light shared norms, together — a few agreed habits (check facts, keep students' details out), not a policy handed down.\n\nA mandate makes people defensive. An invitation makes them curious.",
+      "goDeeper": "Notice you're not asking anyone to be an expert — only to keep their teacher's judgement switched on. That framing is what turns an anxious colleague into a willing one."
+    },
+    {
+      "type": "mcq",
+      "id": "leading-1-check",
+      "question": "A colleague says, quietly: \"Honestly, I think this thing is going to replace us.\" What's the best response?",
+      "options": [
+        { "id": "a", "text": "\"You have to get on board or you'll be left behind.\"" },
+        { "id": "b", "text": "\"I felt that too. It drafts, but it can't read your class or make your calls — it saves me time so I can do more of the teaching only I can do.\"" },
+        { "id": "c", "text": "\"Don't worry about it, just don't use it then.\"" }
+      ],
+      "correctIds": ["b"],
+      "explanation": "You named the fear as real (you felt it too), then reframed: AI drafts, the teacher judges. Leading is reassuring, not pressuring — and never dismissing what someone's worried about."
+    },
+    {
+      "type": "reflection",
+      "id": "leading-1-reflect",
+      "question": "How clear do you feel about guiding a colleague — without preaching or pushing?"
+    }
+  ]
+}
