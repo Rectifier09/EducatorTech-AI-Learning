@@ -1,0 +1,39 @@
+{
+  "id": "build-helper-1",
+  "title": "A prompt you keep, not retype",
+  "estMinutes": 4,
+  "goal": "See a reusable prompt as a recipe you write once and reuse — not a fresh instruction every time.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "build-helper-1-hook",
+      "title": "Stop retyping the same thing",
+      "body": "Every Monday you open a blank chat and type the same six lines: \"You are a quiz-maker for Class 8 Science, make 5 MCQs, one mark each, add an answer key, keep the language simple…\" Then you do it again on Thursday. And next week.\n\nWhat if you wrote those instructions once — and just dropped in this week's topic? That's a mini-assistant. Four minutes here, and you'll never retype it again."
+    },
+    {
+      "type": "theory",
+      "id": "build-helper-1-teach",
+      "title": "A saved recipe for a repeat job",
+      "body": "A reusable prompt is a recipe for a task you do again and again. You bake in the parts that never change, and leave a slot for the one part that does.\n\nThree parts stay fixed:\n• Role — who the AI is being (\"You are a quiz-maker for my class\").\n• Context — your class, board, level (\"Class 8 CBSE Science, mixed ability\").\n• Rules — what it must always do (\"5 questions, one answer key, simple English, no trick questions\").\n\nThen one part changes each time — the task slot: \"This week's topic: ____\". Save the fixed parts once; fill the slot forever.",
+      "goDeeper": "This is the same idea that powers custom AI \"assistants\" — a fixed set of instructions, often called a system prompt. You're just writing yours in plain words. No coding, no settings. A saved prompt in your Toolkit is your mini-assistant."
+    },
+    {
+      "type": "order",
+      "id": "build-helper-1-order",
+      "prompt": "Assemble a reusable quiz-maker prompt — the fixed setup first, the part that changes last.",
+      "items": [
+        { "id": "role", "text": "Role: \"You are a quiz-maker for my class.\"" },
+        { "id": "context", "text": "Context: \"Class 8 CBSE Science, mixed ability.\"" },
+        { "id": "rules", "text": "Rules: \"Always 5 MCQs, one mark each, with an answer key, in simple English.\"" },
+        { "id": "task", "text": "Task slot: \"This week's topic: ____ (I'll fill this in each time).\"" }
+      ],
+      "correctOrder": ["role", "context", "rules", "task"]
+    },
+    {
+      "type": "reflection",
+      "id": "build-helper-1-reflect",
+      "question": "How clear are you on what makes a prompt reusable — write once, reuse forever?"
+    }
+  ]
+}
