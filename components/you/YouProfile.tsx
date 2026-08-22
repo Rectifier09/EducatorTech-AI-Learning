@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ConfidenceGauge } from "@/components/gamification/ConfidenceGauge";
 import { LeagueBoard } from "@/components/gamification/LeagueBoard";
 import { DeleteAccount } from "@/components/you/DeleteAccount";
@@ -13,6 +14,7 @@ interface YouProfileProps {
   badges: Badge[];
   league: LeagueMember[];
   daysLeft: number;
+  isAdmin: boolean;
   setAlias: (formData: FormData) => Promise<void>;
   signOut: () => Promise<void>;
   deleteAccount: () => Promise<void>;
@@ -32,6 +34,7 @@ export function YouProfile({
   badges,
   league,
   daysLeft,
+  isAdmin,
   setAlias,
   signOut,
   deleteAccount,
@@ -90,13 +93,32 @@ export function YouProfile({
         </Button>
       </form>
 
-      <form action={signOut} className="mt-auto pt-2">
-        <Button variant="ghost" type="submit" className="w-full">
-          Sign out
-        </Button>
-      </form>
+      <div className="mt-auto flex flex-col gap-3 pt-2">
+        {isAdmin && (
+          <Link
+            href="/admin"
+            className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full bg-surface-2 px-6 py-3 text-[15px] font-extrabold tracking-tight text-ink transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          >
+            <span aria-hidden="true">📊</span> Analytics dashboard
+          </Link>
+        )}
 
-      <div className="flex flex-col pt-1">
+        <form action={signOut}>
+          <Button variant="ghost" type="submit" className="w-full">
+            Sign out
+          </Button>
+        </form>
+
+        <nav className="flex items-center justify-center gap-3 text-[12px] text-muted">
+          <Link href="/privacy" className="underline underline-offset-4 hover:text-ink">
+            Privacy
+          </Link>
+          <span aria-hidden="true">·</span>
+          <Link href="/terms" className="underline underline-offset-4 hover:text-ink">
+            Terms
+          </Link>
+        </nav>
+
         <DeleteAccount deleteAccount={deleteAccount} />
       </div>
     </main>

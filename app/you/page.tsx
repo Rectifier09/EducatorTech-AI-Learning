@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getSessionUser, signOut } from "@/lib/auth";
+import { isAdmin } from "@/lib/admin";
 import { getAllProgress } from "@/lib/data/progress";
 import { getUserEvents } from "@/lib/data/events";
 import { getSurveys } from "@/lib/data/survey";
@@ -71,6 +72,7 @@ export default async function YouPage() {
       badges={badges}
       league={members}
       daysLeft={daysLeft}
+      isAdmin={isAdmin(user.email)}
       setAlias={setAlias}
       signOut={signOut}
       deleteAccount={deleteAccount}
