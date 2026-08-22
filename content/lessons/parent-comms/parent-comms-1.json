@@ -1,0 +1,59 @@
+{
+  "id": "parent-comms-1",
+  "title": "Warm, clear, in a minute",
+  "estMinutes": 4,
+  "goal": "Trust AI to draft a sensitive parent message — while you own the tone and keep private details out.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "parent-comms-1-hook",
+      "title": "The email you keep putting off",
+      "body": "There's a message sitting in the back of your mind — the one to the parent about a tricky situation. You've rewritten the first line five times and closed the laptop twice.\n\nHere's the good news: this is exactly where AI helps most. It gives you a calm first draft in a minute, so you're editing instead of staring at a blank screen. You stay the one who decides how it lands."
+    },
+    {
+      "type": "theory",
+      "id": "parent-comms-1-teach",
+      "title": "Situation, tone, outcome — no names",
+      "body": "A good parent message needs three things, and you can hand all three to AI:\n\n1. The situation — what happened, in plain words.\n2. The tone you want — warm, reassuring, firm-but-kind.\n3. The outcome — what you hope the parent does next.\n\nOne rule stays with you: keep students' names and private details out of the box. Describe \"a student in my class\", never \"Rohan, who is on medication\". Free AI tools aren't a private staffroom — so you de-identify first, then let AI draft.",
+      "goDeeper": "Why leave names out? Anything you type into a free AI tool may be stored or used to train it. A situation described as \"a student who has been missing homework\" gets you the same warm draft — with none of the child's privacy handed away."
+    },
+    {
+      "type": "mcq",
+      "id": "parent-comms-1-check",
+      "question": "A child has been disruptive in class and you're writing to the parent. Which opening line lands as respectful, not defensive?",
+      "options": [
+        { "id": "a", "text": "I need to talk to you about your son's behaviour problem." },
+        { "id": "b", "text": "I wanted to share something I've noticed lately, and work together with you on it." },
+        { "id": "c", "text": "Your son has been a constant distraction in my class." }
+      ],
+      "correctIds": ["b"],
+      "explanation": "You spotted it — the collaborative opener invites the parent onto your side. The other two put them on the defensive before they've read a word. That instinct for tone is exactly what you bring that AI can't."
+    },
+    {
+      "type": "fillBlank",
+      "id": "parent-comms-1-fill",
+      "template": "Rewrite the situation for AI without leaking anything private: \"{{who}} {{detail}} — help me write a warm note to their parent.\"",
+      "blanks": [
+        {
+          "id": "who",
+          "options": ["A student in my class", "Rohan (Class 6)"],
+          "correctIndex": 0
+        },
+        {
+          "id": "detail",
+          "options": [
+            "has been missing homework this week",
+            "has been missing homework because of his counselling sessions"
+          ],
+          "correctIndex": 0
+        }
+      ]
+    },
+    {
+      "type": "reflection",
+      "id": "parent-comms-1-reflect",
+      "question": "How comfortable do you feel letting AI draft a sensitive parent message — with you keeping the names and the tone in your own hands?"
+    }
+  ]
+}
