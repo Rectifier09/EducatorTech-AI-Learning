@@ -1,0 +1,51 @@
+{
+  "id": "scepticism-1",
+  "title": "Why confident isn't correct",
+  "estMinutes": 5,
+  "goal": "Understand why AI can sound completely sure and still be wrong — so scepticism becomes a method, not a mood.",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "scepticism-1-hook",
+      "title": "The source that never existed",
+      "body": "A student hands in an essay that \"quotes\" a 2018 study — author, title, journal, page number, all of it. You go to look it up. It isn't there. It was never there.\n\nThe AI didn't lie to trick anyone. It did exactly what it's built to do — and that's the part worth understanding today. About 5 minutes."
+    },
+    {
+      "type": "theory",
+      "id": "scepticism-1-teach",
+      "title": "It guesses words, not truth",
+      "body": "AI writes by predicting the next likely word, over and over. It's aiming for what sounds right, not what is right. There's no moment where it stops to check a fact against a source — it has no source.\n\nSo confidence tells you nothing. A smooth, certain sentence and a wrong one look identical to the AI. That steady, expert tone is a writing style it learned — not evidence that it's true.\n\nYou already know this feeling: the colleague who explains everything with total confidence and is sometimes flatly wrong. Same thing. You listen, then you check.",
+      "goDeeper": "This invented-but-plausible output is called a 'hallucination'. It happens because the AI stitches real-sounding fragments into a whole that never existed — a real author's name, a believable title, a plausible year — producing a citation that looks perfect and points to nothing. The more specific it gets, the more real it feels, and the more it needs your check."
+    },
+    {
+      "type": "mcq",
+      "id": "scepticism-1-check",
+      "question": "An AI answer includes: \"A 2019 NCERT study found 73% of students improved with this method.\" You'd love to use that line. What's your move?",
+      "options": [
+        { "id": "a", "text": "Use it — the number is that specific, so it must be real" },
+        { "id": "b", "text": "Treat the stat and the source as unverified — confirm it on NCERT before you cite it anywhere" },
+        { "id": "c", "text": "Round it to 70% and use it" }
+      ],
+      "correctIds": ["b"],
+      "explanation": "Exactly. A precise number is not proof — the AI can invent \"73%\" as easily as \"most\". You checking the source before it reaches your students is the skill no tool has."
+    },
+    {
+      "type": "mcq",
+      "id": "scepticism-1-signal",
+      "question": "Three AI answers land in front of you. Which one deserves the MOST careful check before you trust it?",
+      "options": [
+        { "id": "a", "text": "\"I'm not fully sure, but roughly around the 1850s…\"" },
+        { "id": "b", "text": "A crisp, confident claim with an exact figure and a named source" },
+        { "id": "c", "text": "\"I don't have reliable information on that.\"" }
+      ],
+      "correctIds": ["b"],
+      "explanation": "The confident, specific one — that's the twist. Certainty and detail are style, not truth. The answers that sound the surest are exactly the ones worth checking hardest."
+    },
+    {
+      "type": "reflection",
+      "id": "scepticism-1-reflect",
+      "question": "How clear are you now on why AI can be confidently wrong?"
+    }
+  ]
+}
