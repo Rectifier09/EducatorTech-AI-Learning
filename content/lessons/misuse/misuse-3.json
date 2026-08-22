@@ -1,0 +1,51 @@
+{
+  "id": "misuse-3",
+  "title": "Check your redesign holds up",
+  "estMinutes": 6,
+  "goal": "Stress-test your redesigned task — could AI still do it, and is it fair for every student?",
+  "mascot": "Ravi",
+  "blocks": [
+    {
+      "type": "theory",
+      "id": "misuse-3-hook",
+      "title": "Try to break your own task",
+      "body": "You've redesigned a task. Before you set it, do what a clever, time-pressed student would: try to break it.\n\nOpen an AI tool in your head and ask, 'Could it just do this for me anyway?' Then ask the fairness question, 'Can every child in my class actually do this?'\n\nBelow are two 'AI-resilient' redesigns. Read them the way you'd read AI's own work — confident on the surface, worth checking underneath."
+    },
+    {
+      "type": "mcq",
+      "id": "misuse-3-slip",
+      "question": "A redesign reads: \"Write a 500-word essay on 'My favourite festival', and add one personal paragraph about why you like it.\" How AI-resilient is it?",
+      "options": [
+        { "id": "a", "text": "Very — the personal paragraph makes it safe." },
+        { "id": "b", "text": "Not really — AI can write the essay and a convincing 'personal' paragraph too." },
+        { "id": "c", "text": "Fully safe — no AI could do a festival essay." }
+      ],
+      "correctIds": ["b"],
+      "explanation": "Caught it. 👏 'Add a personal paragraph' sounds resilient, but AI happily invents feelings and memories. Real resilience anchors to something checkable — an in-class draft, a specific class discussion, or a two-minute 'tell me about your festival' out loud."
+    },
+    {
+      "type": "mcq",
+      "id": "misuse-3-fit",
+      "question": "Another redesign reads: \"Record a 3-minute video at home explaining your project and upload it before class.\" What's the risk here?",
+      "options": [
+        { "id": "a", "text": "Equity — students without a phone, data, or a quiet space at home are unfairly stuck." },
+        { "id": "b", "text": "None — every student can record a video." },
+        { "id": "c", "text": "It's a factual error in the task." }
+      ],
+      "correctIds": ["a"],
+      "explanation": "Right — a task can be AI-resilient and still unfair. Not every home has a device, data, or space. Move the oral part into class time, so it's resilient for you and doable for everyone."
+    },
+    {
+      "type": "playground",
+      "id": "misuse-3-verify",
+      "mode": "verify",
+      "scaffold": "",
+      "saveToToolkit": false
+    },
+    {
+      "type": "reflection",
+      "id": "misuse-3-reflect",
+      "question": "How ready do you feel to design tasks that hold up — resilient to AI and fair to every student?"
+    }
+  ]
+}
