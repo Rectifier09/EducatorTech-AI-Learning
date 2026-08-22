@@ -12,6 +12,7 @@ import { ExploreList } from "@/components/learn/ExploreList";
 import type { Lesson } from "@/lib/content/types";
 import type { LessonProgress } from "@/lib/data/types";
 import type { SkillTreeData } from "@/lib/content/skilltree";
+import type { DayActivity } from "@/lib/gamification/streak";
 
 type SubTab = "journey" | "explore";
 
@@ -33,6 +34,8 @@ interface LearnHomeProps {
   confidence: number;
   deltaThisWeek?: number;
   streak: number;
+  /** Trailing 7-day activity, oldest → newest (today last). */
+  weekDays: DayActivity[];
   xp: number;
   continueTarget: string | null;
   continueMeta: ContinueMeta | null;
@@ -49,6 +52,7 @@ export function LearnHome({
   confidence,
   deltaThisWeek,
   streak,
+  weekDays,
   xp,
   continueTarget,
   continueMeta,
@@ -100,7 +104,10 @@ export function LearnHome({
           </Link>
         )}
 
-        <StreakRow streak={streak} xp={xp} />
+        <div className="flex flex-col items-center gap-2.5">
+          <WeekDots days={weekDays} />
+          <StreakRow streak={streak} xp={xp} />
+        </div>
       </div>
 
       {dueFollowUp && (
@@ -148,6 +155,46 @@ export function LearnHome({
           <ExploreList tree={tree} notified={notified} />
         )}
       </div>
+    </div>
+  );
+}
+
+function WeekDots({ days }: { days: DayActivity[] }) {
+  const activeCount = days.filter((d) => d.active).length;
+  return (
+    <div
+      className="flex items-center gap-3"
+      role="img"
+      aria-label={`Activity this week: ${activeCount} of ${days.length} days active`}
+    >
+      {days.map((d) => (
+        <div
+          key={d.date}
+          className="flex flex-col items-center gap-1.5"
+          aria-hidden="true"
+        >
+          <span
+            className={`text-[9px] font-bold uppercase leading-none ${
+              d.isToday ? "text-brand-ink" : "text-faint"
+            }`}
+          >
+            {d.label}
+          </span>
+          <span
+            className={`h-2.5 w-2.5 rounded-full ${
+              d.active
+                ? "bg-gradient-to-br from-accent to-brand shadow-[var(--glow-gold)]"
+                : "border border-line-2 bg-surface-2"
+            } ${
+              d.isToday
+                ? d.active
+                  ? "ring-1 ring-brand/50"
+                  : "border-brand/70"
+                : ""
+            }`}
+          />
+        </div>
+      ))}
     </div>
   );
 }

@@ -5,7 +5,11 @@ import { getAllProgress } from "@/lib/data/progress";
 import { getUserEvents } from "@/lib/data/events";
 import { getSurveys } from "@/lib/data/survey";
 import { computeXp } from "@/lib/gamification/xp";
-import { computeStreak, activeDatesFromEvents } from "@/lib/gamification/streak";
+import {
+  computeStreak,
+  activeDatesFromEvents,
+  weekActivity,
+} from "@/lib/gamification/streak";
 import { computeConfidence } from "@/lib/gamification/confidence";
 import { getDueFollowUp } from "@/lib/data/commitments";
 import { getSkillTree } from "@/lib/content/skilltree";
@@ -51,7 +55,9 @@ export default async function LearnPage() {
   ).length;
   const xp = computeXp(events);
   const today = new Date().toISOString().slice(0, 10);
-  const streak = computeStreak(activeDatesFromEvents(events), today);
+  const activeDates = activeDatesFromEvents(events);
+  const streak = computeStreak(activeDates, today);
+  const weekDays = weekActivity(activeDates, today);
   const confidenceChecks = events.filter(
     (e) => e.name === "confidence_check",
   ).length;
@@ -88,6 +94,7 @@ export default async function LearnPage() {
       confidence={confidence}
       deltaThisWeek={undefined}
       streak={streak.current}
+      weekDays={weekDays}
       xp={xp}
       continueTarget={continueTarget}
       continueMeta={continueMeta}

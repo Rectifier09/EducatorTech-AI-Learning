@@ -111,8 +111,18 @@ export function McqBlockView({
                   )}
                 </button>
                 {/* Mounted on every correct option; fires its burst only
-                    when that option is the one just confirmed correct. */}
-                {isCorrectOption && <GoldBurst trigger={solved && sel} />}
+                    when that option is the one just confirmed correct. The
+                    origin is anchored near the trailing ✓ rather than the
+                    dead-centre of a full-width option, so the burst reads as
+                    springing from the success mark. */}
+                {isCorrectOption && (
+                  <GoldBurst
+                    trigger={solved && sel}
+                    originX="88%"
+                    originY="50%"
+                    delayMs={200}
+                  />
+                )}
               </div>
             );
           })}

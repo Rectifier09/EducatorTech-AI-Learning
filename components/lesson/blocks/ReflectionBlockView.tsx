@@ -46,11 +46,11 @@ export function ReflectionBlockView({
                 className="group flex flex-1 flex-col items-center gap-2 rounded-xl py-2 transition disabled:opacity-60"
               >
                 <span
-                  className="rounded-full bg-gradient-to-br from-accent to-brand shadow-[var(--glow-gold)] transition group-hover:scale-110 group-focus-visible:scale-110"
+                  className="rounded-full bg-gradient-to-br from-accent to-brand shadow-[var(--glow-gold)] ring-1 ring-inset ring-white/15 transition group-hover:scale-110 group-focus-visible:scale-110"
                   style={{
                     width: `${dot}px`,
                     height: `${dot}px`,
-                    opacity: 0.3 + ratio * 0.7,
+                    opacity: 0.55 + ratio * 0.45,
                   }}
                 />
               </button>

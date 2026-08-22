@@ -11,6 +11,13 @@ interface Props {
   deltaThisWeek?: number;
   variant?: "full" | "chip";
   animate?: boolean;
+  /**
+   * When false, the visible text caption is suppressed while `label` still
+   * drives the accessible `aria-label`. Use where a surrounding heading
+   * already names the gauge (e.g. the You page's "…standing" frame) to avoid
+   * a redundant second label. Defaults to true.
+   */
+  showLabel?: boolean;
 }
 
 const SIZES = {
@@ -24,6 +31,7 @@ export function ConfidenceGauge({
   deltaThisWeek,
   variant = "full",
   animate = true,
+  showLabel = true,
 }: Props) {
   const target = clampScore(value);
   const dash = gaugeDash(target);
@@ -117,9 +125,11 @@ export function ConfidenceGauge({
 
       {!showChip && (
         <>
-          <span className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-muted">
-            {label}
-          </span>
+          {showLabel && (
+            <span className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-muted">
+              {label}
+            </span>
+          )}
           {typeof deltaThisWeek === "number" && deltaThisWeek > 0 && (
             <span className="text-[0.82rem] font-bold text-success-ink">
               +{deltaThisWeek} this week

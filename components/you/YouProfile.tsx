@@ -39,7 +39,11 @@ export function YouProfile({
         <p className="text-[0.95rem] font-semibold text-muted">
           {firstName}&apos;s standing
         </p>
-        <ConfidenceGauge value={confidence} />
+        <ConfidenceGauge
+          value={confidence}
+          label="AI confidence"
+          showLabel={false}
+        />
       </div>
 
       <div className="flex gap-3">
