@@ -132,7 +132,7 @@ export interface JourneyFunnel {
 }
 
 const pct = (num: number, den: number) =>
-  den > 0 ? Math.round((num / den) * 100) : 0;
+  den > 0 ? Math.min(100, Math.round((num / den) * 100)) : 0;
 
 /**
  * Per-journey started → completed funnel, distinct users at each step.

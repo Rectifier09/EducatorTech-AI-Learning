@@ -4,6 +4,8 @@ import { Fraunces, Mulish } from "next/font/google";
 import "./globals.css";
 import { APP_NAME, APP_TAGLINE } from "@/lib/config";
 import { BottomTabBar } from "@/components/nav/BottomTabBar";
+import { AnalyticsInit } from "@/components/analytics/AnalyticsInit";
+import { getSessionUser } from "@/lib/auth";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -22,13 +24,19 @@ export const metadata: Metadata = {
   description: APP_TAGLINE,
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const user = await getSessionUser();
   return (
     <html
       lang="en"
       className={`${fraunces.variable} ${mulish.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-paper text-ink">
+        <AnalyticsInit userId={user?.id ?? null} />
         <div className="mx-auto flex min-h-full w-full max-w-md flex-col">
           {children}
           <BottomTabBar />
