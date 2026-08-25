@@ -75,3 +75,18 @@ describe("ArtifactCard delete", () => {
     await waitFor(() => expect(refresh).toHaveBeenCalled());
   });
 });
+
+describe("ArtifactCard rendering", () => {
+  it("renders the output through ArtifactRenderer, formatting markdown", () => {
+    render(
+      <ArtifactCard
+        id="a1"
+        title="Worksheet · Fractions"
+        output="Here is your **worksheet**."
+        createdAt="2026-08-20T10:00:00.000Z"
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "View" }));
+    expect(screen.getByText("worksheet").tagName).toBe("STRONG");
+  });
+});

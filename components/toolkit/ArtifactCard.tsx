@@ -3,17 +3,22 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteToolkitItem } from "@/app/actions/toolkit";
+import { ArtifactRenderer } from "@/components/artifacts/ArtifactRenderer";
 
 export function ArtifactCard({
   id,
   title,
   output,
   createdAt,
+  templateType = null,
+  structured = null,
 }: {
   id: string;
   title: string;
   output: string;
   createdAt: string;
+  templateType?: string | null;
+  structured?: unknown;
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -62,8 +67,12 @@ export function ArtifactCard({
       </div>
       {open && (
         <>
-          <div className="mt-4 max-h-64 overflow-auto whitespace-pre-wrap rounded-2xl border border-line-2 bg-sunk p-4 text-[13px] leading-relaxed text-muted">
-            {output}
+          <div className="mt-4 max-h-64 overflow-auto rounded-2xl border border-line-2 bg-sunk p-4 text-[13px] leading-relaxed text-muted">
+            <ArtifactRenderer
+              templateType={templateType}
+              structured={structured}
+              output={output}
+            />
           </div>
           <div className="mt-3 flex items-center gap-4 text-[13px] font-extrabold">
             {confirmingDelete ? (

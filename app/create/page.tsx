@@ -81,6 +81,8 @@ export default async function CreatePage() {
                 title={artifactTitle(a)}
                 output={a.output}
                 createdAt={a.createdAt}
+                templateType={a.templateType}
+                structured={a.structured}
               />
             ))}
           </div>
