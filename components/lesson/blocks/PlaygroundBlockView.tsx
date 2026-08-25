@@ -100,7 +100,7 @@ export function PlaygroundBlockView({
         artifactType={choice || null}
         lessonId={lessonId}
         allowSave={false}
-        onResult={(text, prompt) => {
+        onResult={(text, prompt, templateType, structured) => {
           onArtifact(text);
           setProduced(true);
           if (block.saveToToolkit !== false) {
@@ -108,6 +108,8 @@ export function PlaygroundBlockView({
               prompt,
               output: text,
               artifactType: choice || null,
+              templateType: templateType ?? null,
+              structured: (structured as Record<string, unknown> | null) ?? null,
               trackId,
               lessonId,
             });

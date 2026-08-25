@@ -58,4 +58,22 @@ describe("Playground", () => {
       screen.queryByRole("button", { name: "Cancel" }),
     ).not.toBeInTheDocument();
   });
+
+  it("passes artifactType through to requestGenerate when set", async () => {
+    requestGenerate.mockResolvedValue({ text: "Here is a quiz" });
+    render(<Playground scaffold="Make a quiz" artifactType="Quiz" />);
+    fireEvent.click(screen.getByRole("button", { name: "Generate" }));
+
+    await waitFor(() => expect(requestGenerate).toHaveBeenCalled());
+    const [, , , artifactType] = requestGenerate.mock.calls[0];
+    expect(artifactType).toBe("Quiz");
+  });
+
+  it("renders the result through ArtifactRenderer, formatting markdown", async () => {
+    requestGenerate.mockResolvedValue({ text: "Here is your **quiz**." });
+    render(<Playground scaffold="Make a quiz" />);
+    fireEvent.click(screen.getByRole("button", { name: "Generate" }));
+
+    await waitFor(() => expect(screen.getByText("quiz").tagName).toBe("STRONG"));
+  });
 });

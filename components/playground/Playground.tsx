@@ -6,6 +6,7 @@ import { requestGenerate } from "@/lib/ai/client";
 import { saveToToolkit } from "@/app/actions/toolkit";
 import type { AiMode } from "@/lib/ai/guardrails";
 import { useAnimatedEllipsis } from "@/hooks/useAnimatedEllipsis";
+import { ArtifactRenderer } from "@/components/artifacts/ArtifactRenderer";
 
 export function Playground({
   scaffold,
@@ -22,13 +23,20 @@ export function Playground({
   seedContent?: string;
   /** Prior material to refine — shown read-only and prepended to the request. */
   context?: string | null;
-  onResult?: (text: string, prompt: string) => void;
+  onResult?: (
+    text: string,
+    prompt: string,
+    templateType?: string | null,
+    structured?: unknown,
+  ) => void;
   allowSave?: boolean;
   artifactType?: string | null;
   lessonId?: string | null;
 }) {
   const [prompt, setPrompt] = useState(seedContent ?? scaffold);
   const [output, setOutput] = useState<string | null>(null);
+  const [templateType, setTemplateType] = useState<string | null>(null);
+  const [structured, setStructured] = useState<unknown>(null);
   const [error, setError] = useState<{ msg: string; rate: boolean } | null>(
     null,
   );
@@ -40,7 +48,7 @@ export function Playground({
   async function save() {
     if (!output || saved) return;
     setSaved(true);
-    await saveToToolkit({ prompt, output, artifactType, lessonId });
+    await saveToToolkit({ prompt, output, artifactType, templateType, structured: structured as Record<string, unknown> | null, lessonId });
   }
 
   async function run() {
@@ -50,11 +58,13 @@ export function Playground({
     setBusy(true);
     setError(null);
     setOutput(null);
+    setTemplateType(null);
+    setStructured(null);
     setSaved(false);
     const userText = context
       ? `Here is my current material:\n\n${context}\n\nNow do this: ${prompt}`
       : prompt;
-    const r = await requestGenerate(userText, mode, controller.signal);
+    const r = await requestGenerate(userText, mode, controller.signal, artifactType);
     if (controller.signal.aborted) return; // cancelled — UI already reset
     setBusy(false);
     if ("error" in r) {
@@ -62,7 +72,9 @@ export function Playground({
       return;
     }
     setOutput(r.text);
-    onResult?.(r.text, prompt);
+    setTemplateType(r.templateType ?? null);
+    setStructured(r.structured ?? null);
+    onResult?.(r.text, prompt, r.templateType, r.structured);
   }
 
   function cancel() {
@@ -137,8 +149,12 @@ export function Playground({
       )}
 
       {output && (
-        <div className="whitespace-pre-wrap rounded-2xl border border-line bg-sunk p-4 text-[14px] leading-relaxed text-ink">
-          {output}
+        <div className="rounded-2xl border border-line bg-sunk p-4">
+          <ArtifactRenderer
+            templateType={templateType}
+            structured={structured}
+            output={output}
+          />
         </div>
       )}
       {output && allowSave && (
