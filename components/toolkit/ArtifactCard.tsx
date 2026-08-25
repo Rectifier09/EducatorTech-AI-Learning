@@ -35,7 +35,9 @@ export function ArtifactCard({
             {title}
           </p>
           <p className="text-[12px] text-faint">
-            {new Date(createdAt).toLocaleDateString()}
+            {new Date(createdAt).toLocaleDateString("en-US", {
+              timeZone: "UTC",
+            })}
           </p>
         </div>
         <button

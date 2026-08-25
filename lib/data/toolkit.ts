@@ -44,7 +44,7 @@ export function artifactTitle(
   }
   if (topic) return topic;
   const d = new Date(session.createdAt);
-  return `Creation · ${d.toLocaleDateString()}`;
+  return `Creation · ${d.toLocaleDateString("en-US", { timeZone: "UTC" })}`;
 }
 
 export async function saveArtifact(
