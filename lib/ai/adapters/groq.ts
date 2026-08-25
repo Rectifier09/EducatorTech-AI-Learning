@@ -4,7 +4,7 @@ import {
   type GenerateResult,
   type ModelAdapter,
 } from "../types";
-import { AI_CONFIG } from "../config";
+import { AI_CONFIG, AI_FETCH_TIMEOUT_MS } from "../config";
 
 export const groqAdapter: ModelAdapter = {
   name: "groq",
@@ -12,24 +12,33 @@ export const groqAdapter: ModelAdapter = {
     const key = process.env.GROQ_API_KEY;
     if (!key) throw new AiError("provider_error", "GROQ_API_KEY missing");
 
-    const res = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${key}`,
-          "Content-Type": "application/json",
+    let res: Response;
+    try {
+      res = await fetch(
+        "https://api.groq.com/openai/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${key}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: AI_CONFIG.groq.model,
+            messages: [
+              { role: "system", content: input.system },
+              { role: "user", content: input.user },
+            ],
+            max_tokens: input.maxTokens ?? 1024,
+          }),
+          signal: AbortSignal.timeout(AI_FETCH_TIMEOUT_MS),
         },
-        body: JSON.stringify({
-          model: AI_CONFIG.groq.model,
-          messages: [
-            { role: "system", content: input.system },
-            { role: "user", content: input.user },
-          ],
-          max_tokens: input.maxTokens ?? 1024,
-        }),
-      },
-    );
+      );
+    } catch (e) {
+      throw new AiError(
+        "provider_error",
+        `groq fetch failed: ${e instanceof Error ? e.message : String(e)}`,
+      );
+    }
 
     if (res.status === 429) throw new AiError("rate_limited", "groq 429");
     if (!res.ok) throw new AiError("provider_error", `groq ${res.status}`);
