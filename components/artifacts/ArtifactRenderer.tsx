@@ -2,7 +2,7 @@ import { Generic } from "./templates/Generic";
 
 export interface ArtifactRendererProps {
   templateType?: string | null;
-  structured?: unknown;
+  structured?: Record<string, unknown> | null;
   output: string;
 }
 

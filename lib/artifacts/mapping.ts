@@ -47,6 +47,6 @@ const LABEL_TO_ARCHETYPE: Record<string, ArchetypeId> = {
 export function archetypeForArtifactType(
   label: string | null,
 ): ArchetypeId | null {
-  if (!label) return null;
-  return LABEL_TO_ARCHETYPE[label] ?? null;
+  if (!label || !Object.hasOwn(LABEL_TO_ARCHETYPE, label)) return null;
+  return LABEL_TO_ARCHETYPE[label];
 }

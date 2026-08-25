@@ -3,5 +3,5 @@
 -- null means "render the Generic fallback from `output`" — covers both a
 -- validation failure on a fresh generation and every pre-existing row.
 alter table public.playground_sessions
-  add column template_type text,
-  add column structured jsonb;
+  add column if not exists template_type text,
+  add column if not exists structured jsonb;

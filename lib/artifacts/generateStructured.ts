@@ -10,14 +10,14 @@ import { ARCHETYPE_SCHEMAS, type ArchetypeId } from "./schema";
 export function extractAndValidate(
   text: string,
   archetype: ArchetypeId,
-): unknown | null {
+): Record<string, unknown> | null {
   try {
     const start = text.indexOf("{");
     const end = text.lastIndexOf("}");
     if (start === -1 || end === -1) return null;
     const obj: unknown = JSON.parse(text.slice(start, end + 1));
     const result = ARCHETYPE_SCHEMAS[archetype].safeParse(obj);
-    return result.success ? result.data : null;
+    return result.success ? (result.data as Record<string, unknown>) : null;
   } catch {
     return null;
   }

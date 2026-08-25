@@ -38,5 +38,8 @@ describe("archetypeForArtifactType", () => {
     expect(archetypeForArtifactType("Activity idea")).toBeNull();
     expect(archetypeForArtifactType("Some future label nobody mapped yet")).toBeNull();
     expect(archetypeForArtifactType(null)).toBeNull();
+    expect(archetypeForArtifactType("constructor")).toBeNull();
+    expect(archetypeForArtifactType("toString")).toBeNull();
+    expect(archetypeForArtifactType("hasOwnProperty")).toBeNull();
   });
 });

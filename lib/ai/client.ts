@@ -1,7 +1,11 @@
 import type { AiMode } from "./guardrails";
 
 export type GenerateReply =
-  | { text: string; templateType?: string | null; structured?: unknown }
+  | {
+      text: string;
+      templateType?: string | null;
+      structured?: Record<string, unknown> | null;
+    }
   | { error: string; code: string };
 
 export async function requestGenerate(

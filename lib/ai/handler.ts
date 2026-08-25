@@ -6,9 +6,14 @@ import { generate } from "./service";
 import { logEvent } from "@/lib/data/events";
 import { archetypeForArtifactType } from "@/lib/artifacts/mapping";
 import { extractAndValidate } from "@/lib/artifacts/generateStructured";
+import { flattenStructuredToText } from "@/lib/artifacts/flatten";
 
 export type GenerateResponse =
-  | { text: string; templateType?: string | null; structured?: unknown }
+  | {
+      text: string;
+      templateType?: string | null;
+      structured?: Record<string, unknown> | null;
+    }
   | { error: string; code: string };
 
 export async function handleGenerate({
@@ -53,12 +58,21 @@ export async function handleGenerate({
   );
 
   try {
-    const result = await generate({ system, user: userText, signal });
+    const result = await generate({
+      system,
+      user: userText,
+      signal,
+      maxTokens: archetype ? 2048 : undefined,
+    });
     await logEvent("ai_generate", { mode, provider: result.provider });
     if (archetype) {
       const structured = extractAndValidate(result.text, archetype);
       if (structured) {
-        return { text: result.text, templateType: archetype, structured };
+        return {
+          text: flattenStructuredToText(structured),
+          templateType: archetype,
+          structured,
+        };
       }
     }
     return { text: result.text };

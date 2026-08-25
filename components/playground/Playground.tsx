@@ -27,7 +27,7 @@ export function Playground({
     text: string,
     prompt: string,
     templateType?: string | null,
-    structured?: unknown,
+    structured?: Record<string, unknown> | null,
   ) => void;
   allowSave?: boolean;
   artifactType?: string | null;
@@ -36,7 +36,7 @@ export function Playground({
   const [prompt, setPrompt] = useState(seedContent ?? scaffold);
   const [output, setOutput] = useState<string | null>(null);
   const [templateType, setTemplateType] = useState<string | null>(null);
-  const [structured, setStructured] = useState<unknown>(null);
+  const [structured, setStructured] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState<{ msg: string; rate: boolean } | null>(
     null,
   );
@@ -48,7 +48,7 @@ export function Playground({
   async function save() {
     if (!output || saved) return;
     setSaved(true);
-    await saveToToolkit({ prompt, output, artifactType, templateType, structured: structured as Record<string, unknown> | null, lessonId });
+    await saveToToolkit({ prompt, output, artifactType, templateType, structured, lessonId });
   }
 
   async function run() {

@@ -109,7 +109,7 @@ export function PlaygroundBlockView({
               output: text,
               artifactType: choice || null,
               templateType: templateType ?? null,
-              structured: (structured as Record<string, unknown> | null) ?? null,
+              structured: structured ?? null,
               trackId,
               lessonId,
             });

@@ -88,9 +88,40 @@ describe("handleGenerate", () => {
       templateType: "questionSet",
       structured: { title: "Quiz" },
     });
+    expect((r as { text: string }).text).not.toContain("{");
+    expect((r as { text: string }).text).toContain("Quiz");
     // the system prompt handed to generate() must carry the JSON instruction
     expect(generate).toHaveBeenCalledWith(
       expect.objectContaining({ system: expect.stringMatching(/JSON/) }),
+    );
+  });
+
+  it("requests a higher token budget when generating structured JSON", async () => {
+    checkRateLimit.mockResolvedValue({ allowed: true, remaining: 29 });
+    generate.mockResolvedValue({
+      text: '{"title":"Quiz","questions":[{"number":1,"prompt":"1+1?","answer":"2"}]}',
+      provider: "gemini",
+    });
+    await handleGenerate({
+      userText: "Make a quiz",
+      mode: "playground",
+      artifactType: "Quiz",
+    });
+    expect(generate).toHaveBeenCalledWith(
+      expect.objectContaining({ maxTokens: 2048 }),
+    );
+  });
+
+  it("does not force a token budget for plain-text requests", async () => {
+    checkRateLimit.mockResolvedValue({ allowed: true, remaining: 29 });
+    generate.mockResolvedValue({ text: "Here's an activity idea", provider: "gemini" });
+    await handleGenerate({
+      userText: "Give me an idea",
+      mode: "playground",
+      artifactType: "Activity idea",
+    });
+    expect(generate).toHaveBeenCalledWith(
+      expect.objectContaining({ maxTokens: undefined }),
     );
   });
 

@@ -18,7 +18,7 @@ export function ArtifactCard({
   output: string;
   createdAt: string;
   templateType?: string | null;
-  structured?: unknown;
+  structured?: Record<string, unknown> | null;
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
