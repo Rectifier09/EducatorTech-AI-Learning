@@ -72,4 +72,51 @@ describe("handleGenerate", () => {
       expect.objectContaining({ signal: controller.signal }),
     );
   });
+
+  it("requests structured JSON and returns templateType/structured on success", async () => {
+    checkRateLimit.mockResolvedValue({ allowed: true, remaining: 29 });
+    generate.mockResolvedValue({
+      text: '{"title":"Quiz","questions":[{"number":1,"prompt":"1+1?","answer":"2"}]}',
+      provider: "gemini",
+    });
+    const r = await handleGenerate({
+      userText: "Make a quiz",
+      mode: "playground",
+      artifactType: "Quiz",
+    });
+    expect(r).toMatchObject({
+      templateType: "questionSet",
+      structured: { title: "Quiz" },
+    });
+    // the system prompt handed to generate() must carry the JSON instruction
+    expect(generate).toHaveBeenCalledWith(
+      expect.objectContaining({ system: expect.stringMatching(/JSON/) }),
+    );
+  });
+
+  it("falls back to plain text when the model ignores the JSON instruction", async () => {
+    checkRateLimit.mockResolvedValue({ allowed: true, remaining: 29 });
+    generate.mockResolvedValue({ text: "Sure, here's a quiz idea...", provider: "gemini" });
+    const r = await handleGenerate({
+      userText: "Make a quiz",
+      mode: "playground",
+      artifactType: "Quiz",
+    });
+    expect(r).toMatchObject({ text: "Sure, here's a quiz idea..." });
+    expect((r as { templateType?: unknown }).templateType).toBeUndefined();
+  });
+
+  it("skips JSON-mode entirely when artifactType has no archetype", async () => {
+    checkRateLimit.mockResolvedValue({ allowed: true, remaining: 29 });
+    generate.mockResolvedValue({ text: "Here's an activity idea", provider: "gemini" });
+    const r = await handleGenerate({
+      userText: "Give me an idea",
+      mode: "playground",
+      artifactType: "Activity idea",
+    });
+    expect(r).toMatchObject({ text: "Here's an activity idea" });
+    expect(generate).toHaveBeenCalledWith(
+      expect.objectContaining({ system: expect.not.stringMatching(/JSON/) }),
+    );
+  });
 });

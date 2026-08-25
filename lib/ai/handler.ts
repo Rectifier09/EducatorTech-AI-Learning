@@ -4,19 +4,23 @@ import { checkRateLimit } from "./rateLimit";
 import { buildSystemPrompt, isLikelyOffTopic, type AiMode } from "./guardrails";
 import { generate } from "./service";
 import { logEvent } from "@/lib/data/events";
+import { archetypeForArtifactType } from "@/lib/artifacts/mapping";
+import { extractAndValidate } from "@/lib/artifacts/generateStructured";
 
 export type GenerateResponse =
-  | { text: string }
+  | { text: string; templateType?: string | null; structured?: unknown }
   | { error: string; code: string };
 
 export async function handleGenerate({
   userText,
   mode,
   signal,
+  artifactType = null,
 }: {
   userText: string;
   mode: AiMode;
   signal?: AbortSignal;
+  artifactType?: string | null;
 }): Promise<GenerateResponse> {
   const user = await getSessionUser();
   if (!user) return { error: "Please sign in.", code: "unauthorized" };
@@ -36,6 +40,7 @@ export async function handleGenerate({
     };
   }
 
+  const archetype = archetypeForArtifactType(artifactType);
   const profile = await getProfile(user.id);
   const system = buildSystemPrompt(
     {
@@ -44,11 +49,18 @@ export async function handleGenerate({
       gradeBand: profile?.gradeBand ?? null,
     },
     mode,
+    archetype,
   );
 
   try {
     const result = await generate({ system, user: userText, signal });
     await logEvent("ai_generate", { mode, provider: result.provider });
+    if (archetype) {
+      const structured = extractAndValidate(result.text, archetype);
+      if (structured) {
+        return { text: result.text, templateType: archetype, structured };
+      }
+    }
     return { text: result.text };
   } catch {
     return {
