@@ -6,8 +6,15 @@ export async function POST(request: Request) {
   const body = await request.json().catch(() => ({}));
   const userText: string = typeof body.userText === "string" ? body.userText : "";
   const mode: AiMode = body.mode ?? "playground";
+  const artifactType: string | null =
+    typeof body.artifactType === "string" ? body.artifactType : null;
 
-  const result = await handleGenerate({ userText, mode, signal: request.signal });
+  const result = await handleGenerate({
+    userText,
+    mode,
+    signal: request.signal,
+    artifactType,
+  });
 
   if ("error" in result) {
     const status =
