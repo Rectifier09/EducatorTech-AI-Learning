@@ -1,10 +1,13 @@
 import type { Profile } from "@/lib/data/types";
+import { archetypeInstruction } from "@/lib/artifacts/prompt";
+import type { ArchetypeId } from "@/lib/artifacts/schema";
 
 export type AiMode = "playground" | "grade" | "taste";
 
 export function buildSystemPrompt(
   profile: Pick<Profile, "role" | "subject" | "gradeBand">,
   mode: AiMode,
+  archetype?: ArchetypeId | null,
 ): string {
   const who = `The user is a teacher${
     profile.subject ? ` who teaches ${profile.subject}` : ""
@@ -21,6 +24,9 @@ export function buildSystemPrompt(
       base +
       " You are grading the user's prompt against a rubric. Respond ONLY with the requested JSON, no prose."
     );
+  }
+  if (archetype) {
+    return base + " " + archetypeInstruction(archetype);
   }
   return base;
 }

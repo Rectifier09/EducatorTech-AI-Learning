@@ -18,6 +18,24 @@ describe("buildSystemPrompt", () => {
     );
     expect(p).toMatch(/JSON/);
   });
+
+  it("appends the archetype's JSON instruction when one is given", () => {
+    const p = buildSystemPrompt(
+      { role: null, subject: null, gradeBand: null },
+      "playground",
+      "questionSet",
+    );
+    expect(p).toMatch(/JSON/);
+    expect(p).toMatch(/questions/);
+  });
+
+  it("has no archetype instruction when none is given", () => {
+    const p = buildSystemPrompt(
+      { role: null, subject: null, gradeBand: null },
+      "playground",
+    );
+    expect(p).not.toMatch(/JSON/);
+  });
 });
 
 describe("isLikelyOffTopic", () => {
