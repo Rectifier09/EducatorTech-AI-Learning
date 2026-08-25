@@ -58,4 +58,18 @@ describe("handleGenerate", () => {
     expect(logEvent).toHaveBeenCalledTimes(1);
     expect(logEvent).toHaveBeenCalledWith("ai_generate", expect.any(Object));
   });
+
+  it("passes the caller's abort signal through to generate()", async () => {
+    checkRateLimit.mockResolvedValue({ allowed: true, remaining: 29 });
+    generate.mockResolvedValue({ text: "Here is a worksheet", provider: "gemini" });
+    const controller = new AbortController();
+    await handleGenerate({
+      userText: "Make a worksheet",
+      mode: "playground",
+      signal: controller.signal,
+    });
+    expect(generate).toHaveBeenCalledWith(
+      expect.objectContaining({ signal: controller.signal }),
+    );
+  });
 });

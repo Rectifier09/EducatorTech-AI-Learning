@@ -50,4 +50,18 @@ describe("gradePrompt", () => {
     const g = await gradePrompt({ brief: "b", rubric: ["x"], submission: "y" });
     expect(g.pass).toBe(true);
   });
+
+  it("passes the caller's abort signal through to generate()", async () => {
+    generate.mockResolvedValue({ text: '{"pass":true,"feedback":"ok"}', provider: "gemini" });
+    const controller = new AbortController();
+    await gradePrompt({
+      brief: "b",
+      rubric: ["x"],
+      submission: "y",
+      signal: controller.signal,
+    });
+    expect(generate).toHaveBeenCalledWith(
+      expect.objectContaining({ signal: controller.signal }),
+    );
+  });
 });

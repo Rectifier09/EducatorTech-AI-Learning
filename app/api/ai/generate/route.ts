@@ -7,7 +7,7 @@ export async function POST(request: Request) {
   const userText: string = typeof body.userText === "string" ? body.userText : "";
   const mode: AiMode = body.mode ?? "playground";
 
-  const result = await handleGenerate({ userText, mode });
+  const result = await handleGenerate({ userText, mode, signal: request.signal });
 
   if ("error" in result) {
     const status =

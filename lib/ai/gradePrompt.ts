@@ -40,6 +40,7 @@ export async function gradePrompt(input: {
   brief: string;
   rubric: string[];
   submission: string;
+  signal?: AbortSignal;
 }): Promise<PromptGrade> {
   const system = buildSystemPrompt(
     { role: null, subject: null, gradeBand: null },
@@ -53,7 +54,7 @@ export async function gradePrompt(input: {
     `pass = true when most rubric items are met.`;
 
   try {
-    const { text } = await generate({ system, user });
+    const { text } = await generate({ system, user, signal: input.signal });
     return parseGrade(text);
   } catch {
     return FALLBACK;

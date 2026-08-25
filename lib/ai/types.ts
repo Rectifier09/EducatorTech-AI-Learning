@@ -2,6 +2,8 @@ export interface GenerateInput {
   system: string;
   user: string;
   maxTokens?: number;
+  /** Aborts the in-flight provider call (user cancel or caller disconnect). */
+  signal?: AbortSignal;
 }
 
 export type Provider = "gemini" | "groq";

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { requestGenerate } from "@/lib/ai/client";
 import { saveToToolkit } from "@/app/actions/toolkit";
 import type { AiMode } from "@/lib/ai/guardrails";
+import { useAnimatedEllipsis } from "@/hooks/useAnimatedEllipsis";
 
 export function Playground({
   scaffold,
@@ -33,6 +34,8 @@ export function Playground({
   );
   const [busy, setBusy] = useState(false);
   const [saved, setSaved] = useState(false);
+  const controllerRef = useRef<AbortController | null>(null);
+  const dots = useAnimatedEllipsis(busy);
 
   async function save() {
     if (!output || saved) return;
@@ -42,6 +45,8 @@ export function Playground({
 
   async function run() {
     if (busy || !prompt.trim()) return;
+    const controller = new AbortController();
+    controllerRef.current = controller;
     setBusy(true);
     setError(null);
     setOutput(null);
@@ -49,7 +54,8 @@ export function Playground({
     const userText = context
       ? `Here is my current material:\n\n${context}\n\nNow do this: ${prompt}`
       : prompt;
-    const r = await requestGenerate(userText, mode);
+    const r = await requestGenerate(userText, mode, controller.signal);
+    if (controller.signal.aborted) return; // cancelled — UI already reset
     setBusy(false);
     if ("error" in r) {
       setError({ msg: r.error, rate: r.code === "rate_limited" });
@@ -57,6 +63,11 @@ export function Playground({
     }
     setOutput(r.text);
     onResult?.(r.text, prompt);
+  }
+
+  function cancel() {
+    controllerRef.current?.abort();
+    setBusy(false);
   }
 
   return (
@@ -87,8 +98,16 @@ export function Playground({
         disabled={busy || !prompt.trim()}
         className="w-full"
       >
-        {busy ? "Thinking…" : "Generate"}
+        {busy ? `Thinking${dots}` : "Generate"}
       </Button>
+      {busy && (
+        <button
+          onClick={cancel}
+          className="self-center text-[13px] font-extrabold text-muted underline"
+        >
+          Cancel
+        </button>
+      )}
 
       {error && (
         <div

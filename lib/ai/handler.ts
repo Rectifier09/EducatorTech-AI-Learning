@@ -12,9 +12,11 @@ export type GenerateResponse =
 export async function handleGenerate({
   userText,
   mode,
+  signal,
 }: {
   userText: string;
   mode: AiMode;
+  signal?: AbortSignal;
 }): Promise<GenerateResponse> {
   const user = await getSessionUser();
   if (!user) return { error: "Please sign in.", code: "unauthorized" };
@@ -45,7 +47,7 @@ export async function handleGenerate({
   );
 
   try {
-    const result = await generate({ system, user: userText });
+    const result = await generate({ system, user: userText, signal });
     await logEvent("ai_generate", { mode, provider: result.provider });
     return { text: result.text };
   } catch {

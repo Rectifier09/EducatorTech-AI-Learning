@@ -24,6 +24,7 @@ export async function POST(request: Request) {
     brief: typeof body.brief === "string" ? body.brief : "",
     rubric: Array.isArray(body.rubric) ? body.rubric.map(String) : [],
     submission,
+    signal: request.signal,
   });
   await logEvent("ai_generate", { mode: "grade" });
   return NextResponse.json(grade);

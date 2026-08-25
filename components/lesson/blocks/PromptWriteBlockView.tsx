@@ -6,6 +6,7 @@ import { AnswerFeedback } from "@/components/lesson/AnswerFeedback";
 import { GoldBurst } from "@/components/lesson/GoldBurst";
 import type { PromptWriteBlock } from "@/lib/content/types";
 import type { PromptGrade } from "@/lib/ai/gradePrompt";
+import { useAnimatedEllipsis } from "@/hooks/useAnimatedEllipsis";
 
 export function PromptWriteBlockView({
   block,
@@ -20,9 +21,13 @@ export function PromptWriteBlockView({
   const [grade, setGrade] = useState<PromptGrade | null>(null);
   const [busy, setBusy] = useState(false);
   const firstScored = useRef(false);
+  const controllerRef = useRef<AbortController | null>(null);
+  const dots = useAnimatedEllipsis(busy);
 
   async function submit() {
     if (!submission.trim() || busy) return;
+    const controller = new AbortController();
+    controllerRef.current = controller;
     setBusy(true);
     let g: PromptGrade;
     try {
@@ -34,19 +39,27 @@ export function PromptWriteBlockView({
           rubric: block.rubric,
           submission,
         }),
+        signal: controller.signal,
       });
       g = res.ok
         ? await res.json()
         : { pass: true, feedback: "Good effort — let's keep going.", met: [], missing: [] };
     } catch {
+      if (controller.signal.aborted) return; // cancelled — UI already reset
       g = { pass: true, feedback: "Good effort — let's keep going.", met: [], missing: [] };
     }
+    if (controller.signal.aborted) return;
     setBusy(false);
     setGrade(g);
     if (!firstScored.current) {
       firstScored.current = true;
       onResult(g.pass);
     }
+  }
+
+  function cancel() {
+    controllerRef.current?.abort();
+    setBusy(false);
   }
 
   return (
@@ -93,14 +106,24 @@ export function PromptWriteBlockView({
           Continue
         </Button>
       ) : (
-        <Button
-          variant="primary"
-          onClick={submit}
-          disabled={busy || !submission.trim()}
-          className="w-full"
-        >
-          {busy ? "Checking…" : grade ? "Try again" : "Check my prompt"}
-        </Button>
+        <div className="flex flex-col gap-2">
+          <Button
+            variant="primary"
+            onClick={submit}
+            disabled={busy || !submission.trim()}
+            className="w-full"
+          >
+            {busy ? `Checking${dots}` : grade ? "Try again" : "Check my prompt"}
+          </Button>
+          {busy && (
+            <button
+              onClick={cancel}
+              className="self-center text-[13px] font-extrabold text-muted underline"
+            >
+              Cancel
+            </button>
+          )}
+        </div>
       )}
     </div>
   );

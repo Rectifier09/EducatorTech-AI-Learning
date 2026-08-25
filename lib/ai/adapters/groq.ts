@@ -30,7 +30,11 @@ export const groqAdapter: ModelAdapter = {
             ],
             max_tokens: input.maxTokens ?? 1024,
           }),
-          signal: AbortSignal.timeout(AI_FETCH_TIMEOUT_MS),
+          signal: AbortSignal.any(
+            [input.signal, AbortSignal.timeout(AI_FETCH_TIMEOUT_MS)].filter(
+              (s): s is AbortSignal => s != null,
+            ),
+          ),
         },
       );
     } catch (e) {

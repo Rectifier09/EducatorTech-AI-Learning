@@ -5,12 +5,14 @@ export type GenerateReply = { text: string } | { error: string; code: string };
 export async function requestGenerate(
   userText: string,
   mode: AiMode = "playground",
+  signal?: AbortSignal,
 ): Promise<GenerateReply> {
   try {
     const res = await fetch("/api/ai/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userText, mode }),
+      signal,
     });
     return (await res.json()) as GenerateReply;
   } catch {
