@@ -1,18 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { deleteToolkitItem } from "@/app/actions/toolkit";
 
 export function ArtifactCard({
+  id,
   title,
   output,
   createdAt,
 }: {
+  id: string;
   title: string;
   output: string;
   createdAt: string;
 }) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   async function copy() {
     try {
@@ -22,6 +29,12 @@ export function ArtifactCard({
     } catch {
       /* clipboard unavailable */
     }
+  }
+
+  async function confirmDelete() {
+    setDeleting(true);
+    await deleteToolkitItem(id);
+    router.refresh();
   }
 
   return (
@@ -52,12 +65,42 @@ export function ArtifactCard({
           <div className="mt-4 max-h-64 overflow-auto whitespace-pre-wrap rounded-2xl border border-line-2 bg-sunk p-4 text-[13px] leading-relaxed text-muted">
             {output}
           </div>
-          <button
-            onClick={copy}
-            className="mt-3 text-[13px] font-extrabold text-brand-ink underline underline-offset-2"
-          >
-            {copied ? "Copied ✓" : "Copy"}
-          </button>
+          <div className="mt-3 flex items-center gap-4 text-[13px] font-extrabold">
+            {confirmingDelete ? (
+              <>
+                <span className="text-muted">Sure?</span>
+                <button
+                  onClick={confirmDelete}
+                  disabled={deleting}
+                  className="text-coral underline underline-offset-2 disabled:opacity-50"
+                >
+                  Yes
+                </button>
+                <button
+                  onClick={() => setConfirmingDelete(false)}
+                  disabled={deleting}
+                  className="text-brand-ink underline underline-offset-2 disabled:opacity-50"
+                >
+                  No
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={copy}
+                  className="text-brand-ink underline underline-offset-2"
+                >
+                  {copied ? "Copied ✓" : "Copy"}
+                </button>
+                <button
+                  onClick={() => setConfirmingDelete(true)}
+                  className="text-coral underline underline-offset-2"
+                >
+                  Delete
+                </button>
+              </>
+            )}
+          </div>
         </>
       )}
     </div>

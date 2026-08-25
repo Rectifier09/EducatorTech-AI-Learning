@@ -77,6 +77,7 @@ export default async function CreatePage() {
             {artifacts.map((a) => (
               <ArtifactCard
                 key={a.id}
+                id={a.id}
                 title={artifactTitle(a)}
                 output={a.output}
                 createdAt={a.createdAt}

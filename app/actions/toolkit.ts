@@ -1,7 +1,7 @@
 "use server";
 
 import { getSessionUser } from "@/lib/auth";
-import { saveArtifact } from "@/lib/data/toolkit";
+import { saveArtifact, deleteArtifact } from "@/lib/data/toolkit";
 import { logEvent } from "@/lib/data/events";
 
 export async function saveToToolkit(input: {
@@ -19,4 +19,11 @@ export async function saveToToolkit(input: {
     trackId: input.trackId ?? null,
     lessonId: input.lessonId ?? null,
   });
+}
+
+export async function deleteToolkitItem(id: string): Promise<void> {
+  const user = await getSessionUser();
+  if (!user) throw new Error("Not authenticated");
+  await deleteArtifact(user.id, id);
+  await logEvent("artifact_deleted", { id });
 }

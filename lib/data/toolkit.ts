@@ -101,3 +101,14 @@ export async function listArtifacts(userId: string): Promise<SavedArtifact[]> {
     .order("created_at", { ascending: false });
   return ((data ?? []) as PlaygroundRow[]).map(rowToArtifact);
 }
+
+export async function deleteArtifact(userId: string, id: string): Promise<void> {
+  const { createServerClient } = await import("@/lib/supabase/server");
+  const supabase = await createServerClient();
+  const { error } = await supabase
+    .from("playground_sessions")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", userId);
+  if (error) throw error;
+}
