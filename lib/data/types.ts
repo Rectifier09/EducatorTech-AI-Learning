@@ -50,6 +50,8 @@ export interface PlaygroundSession {
   userId: string;
   lessonId: string | null;
   artifactType: string | null;
+  templateType: string | null;
+  structured: Record<string, unknown> | null;
   prompt: string;
   output: string;
   savedToToolkit: boolean;

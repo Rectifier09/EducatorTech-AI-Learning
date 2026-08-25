@@ -5,6 +5,8 @@ interface PlaygroundRow {
   user_id: string;
   lesson_id: string | null;
   artifact_type: string | null;
+  template_type: string | null;
+  structured: Record<string, unknown> | null;
   prompt: string;
   output: string;
   saved_to_toolkit: boolean;
@@ -21,6 +23,8 @@ function rowToArtifact(row: PlaygroundRow): SavedArtifact {
     userId: row.user_id,
     lessonId: row.lesson_id,
     artifactType: row.artifact_type,
+    templateType: row.template_type,
+    structured: row.structured,
     prompt: row.prompt,
     output: row.output,
     savedToToolkit: row.saved_to_toolkit,
@@ -52,6 +56,8 @@ export async function saveArtifact(
   input: {
     lessonId?: string | null;
     artifactType?: string | null;
+    templateType?: string | null;
+    structured?: Record<string, unknown> | null;
     prompt: string;
     output: string;
   },
@@ -64,6 +70,8 @@ export async function saveArtifact(
       user_id: userId,
       lesson_id: input.lessonId ?? null,
       artifact_type: input.artifactType ?? null,
+      template_type: input.templateType ?? null,
+      structured: input.structured ?? null,
       prompt: input.prompt,
       output: input.output,
       saved_to_toolkit: true,
