@@ -1,6 +1,7 @@
 import { confidenceDelta } from "./delta";
 import { FOUNDATIONS_TRACK_ID } from "@/lib/content/loader";
 import type { Attitude } from "@/lib/data/types";
+import { computeStreak, activeDatesFromEvents } from "@/lib/gamification/streak";
 
 export interface ProfileRow {
   user_id: string;
@@ -123,6 +124,74 @@ export function track1Activation(input: {
 }): Track1Activation {
   const activated = track1ActivatedUserIds(input.events).size;
   return { activated, activatedPct: pct(activated, input.onboardedCount) };
+}
+
+export interface RetentionStat {
+  eligible: number;
+  retained: number;
+  retainedPct: number;
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+/** % of users onboarded >=7 days ago with >=1 event 7+ days after onboarding. */
+export function retentionD7(input: {
+  profiles: ProfileRow[];
+  events: EventRow[];
+  now?: Date;
+}): RetentionStat {
+  const now = input.now ?? new Date();
+  const eventsByUser = new Map<string, EventRow[]>();
+  for (const e of input.events) {
+    const list = eventsByUser.get(e.user_id) ?? [];
+    list.push(e);
+    eventsByUser.set(e.user_id, list);
+  }
+
+  let eligible = 0;
+  let retained = 0;
+  for (const p of input.profiles) {
+    if (!p.onboarded_at) continue;
+    const onboardedAt = new Date(p.onboarded_at).getTime();
+    if (now.getTime() - onboardedAt < 7 * DAY_MS) continue;
+    eligible++;
+    const threshold = onboardedAt + 7 * DAY_MS;
+    const hasReturned = (eventsByUser.get(p.user_id) ?? []).some(
+      (e) => new Date(e.created_at).getTime() >= threshold,
+    );
+    if (hasReturned) retained++;
+  }
+  return { eligible, retained, retainedPct: pct(retained, eligible) };
+}
+
+/** % of onboarded users whose current streak (via computeStreak) is >= 7. */
+export function retentionByStreak(input: {
+  profiles: ProfileRow[];
+  events: EventRow[];
+  now?: Date;
+}): RetentionStat {
+  const now = input.now ?? new Date();
+  const today = now.toISOString().slice(0, 10);
+  const eventsByUser = new Map<string, EventRow[]>();
+  for (const e of input.events) {
+    const list = eventsByUser.get(e.user_id) ?? [];
+    list.push(e);
+    eventsByUser.set(e.user_id, list);
+  }
+
+  let eligible = 0;
+  let retained = 0;
+  for (const p of input.profiles) {
+    if (!p.onboarded_at) continue;
+    eligible++;
+    const userEvents = eventsByUser.get(p.user_id) ?? [];
+    const activeDates = activeDatesFromEvents(
+      userEvents.map((e) => ({ createdAt: e.created_at })),
+    );
+    const { current } = computeStreak(activeDates, today);
+    if (current >= 7) retained++;
+  }
+  return { eligible, retained, retainedPct: pct(retained, eligible) };
 }
 
 /** Mean using/trust confidence change across users with both surveys. */

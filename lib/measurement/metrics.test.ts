@@ -8,6 +8,8 @@ import {
   lessonHealthRanking,
   acquisitionBySource,
   track1Activation,
+  retentionD7,
+  retentionByStreak,
 } from "./metrics";
 import { isAdmin } from "@/lib/admin";
 
@@ -149,6 +151,42 @@ describe("measurement metrics", () => {
       onboardedCount: 4,
     });
     expect(r).toEqual({ activated: 1, activatedPct: 25 });
+  });
+
+  it("retentionD7 counts a user as retained if they have an event 7+ days after onboarding", () => {
+    const now = new Date("2026-09-10T00:00:00Z");
+    const r = retentionD7({
+      profiles: [
+        { user_id: "a", onboarded_at: "2026-09-01T00:00:00Z" }, // 9 days ago, eligible
+        { user_id: "b", onboarded_at: "2026-09-01T00:00:00Z" }, // eligible, no return
+        { user_id: "c", onboarded_at: "2026-09-08T00:00:00Z" }, // only 2 days ago — not eligible
+      ],
+      events: [
+        { user_id: "a", name: "lesson_started", created_at: "2026-09-09T00:00:00Z" }, // 8 days after onboarding
+      ],
+      now,
+    });
+    expect(r).toEqual({ eligible: 2, retained: 1, retainedPct: 50 });
+  });
+
+  it("retentionByStreak counts a user as retained if their current streak is >= 7", () => {
+    const now = new Date("2026-09-10T00:00:00Z");
+    const activeDates = [
+      "2026-09-04", "2026-09-05", "2026-09-06", "2026-09-07",
+      "2026-09-08", "2026-09-09", "2026-09-10",
+    ];
+    const r = retentionByStreak({
+      profiles: [
+        { user_id: "a", onboarded_at: "2026-08-01T00:00:00Z" },
+        { user_id: "b", onboarded_at: "2026-08-01T00:00:00Z" },
+      ],
+      events: [
+        ...activeDates.map((d) => ({ user_id: "a", name: "lesson_started", created_at: `${d}T09:00:00Z` })),
+        { user_id: "b", name: "lesson_started", created_at: "2026-09-10T09:00:00Z" },
+      ],
+      now,
+    });
+    expect(r).toEqual({ eligible: 2, retained: 1, retainedPct: 50 });
   });
 
   it("isAdmin gates by the allow-list", () => {
