@@ -15,6 +15,8 @@ export interface Profile {
   onboardedAt: string | null;
   alias: string | null;
   displayName: string | null;
+  referralCode: string | null;
+  referredBy: string | null;
 }
 
 export type SurveyPhase = "pre" | "post";

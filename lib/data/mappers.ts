@@ -12,6 +12,8 @@ export interface ProfileRow {
   onboarded_at: string | null;
   alias?: string | null;
   display_name?: string | null;
+  referral_code?: string | null;
+  referred_by?: string | null;
 }
 
 const FIELD_TO_COLUMN: Record<keyof Profile, string> = {
@@ -26,6 +28,8 @@ const FIELD_TO_COLUMN: Record<keyof Profile, string> = {
   onboardedAt: "onboarded_at",
   alias: "alias",
   displayName: "display_name",
+  referralCode: "referral_code",
+  referredBy: "referred_by",
 };
 
 export function rowToProfile(row: ProfileRow): Profile {
@@ -41,6 +45,8 @@ export function rowToProfile(row: ProfileRow): Profile {
     onboardedAt: row.onboarded_at,
     alias: row.alias ?? null,
     displayName: row.display_name ?? null,
+    referralCode: row.referral_code ?? null,
+    referredBy: row.referred_by ?? null,
   };
 }
 
