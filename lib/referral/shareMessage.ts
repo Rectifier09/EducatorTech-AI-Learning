@@ -4,6 +4,6 @@ export function buildReferralLink(origin: string, code: string): string {
 
 export function buildWhatsappShareHref(origin: string, code: string): string {
   const link = buildReferralLink(origin, code);
-  const message = `I've been using SahajAiVidya to make worksheets and quizzes in minutes instead of hours — thought you'd like it too: ${link}`;
+  const message = `Hi, I've been using SahajAiVidya to learn more about AI & Tech and how teachers can use it to make worksheets and quizzes in minutes instead of hours — thought you'd like it too: ${link}`;
   return `https://wa.me/?text=${encodeURIComponent(message)}`;
 }
