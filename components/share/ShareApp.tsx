@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getOrCreateReferralCode, logReferralShare } from "@/app/actions/referral";
+import { buildReferralLink, buildWhatsappShareHref } from "@/lib/referral/shareMessage";
 
 export function ShareApp() {
   const [code, setCode] = useState<string | null>(null);
@@ -23,9 +24,8 @@ export function ShareApp() {
 
   if (!code) return null;
 
-  const link = `${window.location.origin}/r/${code}`;
-  const message = `I've been using SahajAiVidya to make worksheets and quizzes in minutes instead of hours — thought you'd like it too: ${link}`;
-  const whatsappHref = `https://wa.me/?text=${encodeURIComponent(message)}`;
+  const link = buildReferralLink(window.location.origin, code);
+  const whatsappHref = buildWhatsappShareHref(window.location.origin, code);
 
   return (
     <div className="flex flex-col gap-2 rounded-3xl border border-line bg-surface p-4 shadow-[var(--elev-1)]">
