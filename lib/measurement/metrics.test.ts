@@ -10,6 +10,7 @@ import {
   track1Activation,
   retentionD7,
   retentionByStreak,
+  referralFunnel,
 } from "./metrics";
 import { isAdmin } from "@/lib/admin";
 
@@ -187,6 +188,29 @@ describe("measurement metrics", () => {
       now,
     });
     expect(r).toEqual({ eligible: 2, retained: 1, retainedPct: 50 });
+  });
+
+  it("referralFunnel computes shares sent, signups attributed, and activation rate for referred vs organic", () => {
+    const r = referralFunnel({
+      events: [
+        { user_id: "a", name: "referral_link_shared", created_at: "now" },
+        { user_id: "a", name: "referral_link_shared", created_at: "now" },
+        { user_id: "b", name: "ai_generate", created_at: "now", props: { trackId: "ai-foundations" } },
+        { user_id: "d", name: "ai_generate", created_at: "now", props: { trackId: "ai-foundations" } },
+      ],
+      profiles: [
+        { user_id: "b", onboarded_at: "now", referred_by: "a" }, // referred, activated
+        { user_id: "c", onboarded_at: "now", referred_by: "a" }, // referred, not activated
+        { user_id: "d", onboarded_at: "now", referred_by: null }, // organic, activated
+        { user_id: "e", onboarded_at: "now", referred_by: null }, // organic, not activated
+      ],
+    });
+    expect(r).toEqual({
+      sharesSent: 2,
+      signupsAttributed: 2,
+      referredActivatedPct: 50,
+      organicActivatedPct: 50,
+    });
   });
 
   it("isAdmin gates by the allow-list", () => {

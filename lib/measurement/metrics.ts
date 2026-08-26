@@ -194,6 +194,36 @@ export function retentionByStreak(input: {
   return { eligible, retained, retainedPct: pct(retained, eligible) };
 }
 
+export interface ReferralFunnelStat {
+  sharesSent: number;
+  signupsAttributed: number;
+  referredActivatedPct: number;
+  organicActivatedPct: number;
+}
+
+/** Shares sent -> signups attributed -> activation rate, referred vs. organic. */
+export function referralFunnel(input: {
+  events: EventRow[];
+  profiles: ProfileRow[];
+}): ReferralFunnelStat {
+  const sharesSent = input.events.filter(
+    (e) => e.name === "referral_link_shared",
+  ).length;
+  const referred = input.profiles.filter((p) => p.referred_by);
+  const organic = input.profiles.filter((p) => !p.referred_by);
+  const activated = track1ActivatedUserIds(input.events);
+
+  const activatedCount = (rows: ProfileRow[]) =>
+    rows.filter((p) => activated.has(p.user_id)).length;
+
+  return {
+    sharesSent,
+    signupsAttributed: referred.length,
+    referredActivatedPct: pct(activatedCount(referred), referred.length),
+    organicActivatedPct: pct(activatedCount(organic), organic.length),
+  };
+}
+
 /** Mean using/trust confidence change across users with both surveys. */
 export function avgConfidenceDelta(rows: SurveyRow[]): {
   n: number;
