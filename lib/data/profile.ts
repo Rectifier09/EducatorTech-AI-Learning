@@ -26,3 +26,15 @@ export async function upsertProfile(
   if (error) throw error;
   return rowToProfile(data as ProfileRow);
 }
+
+export async function getProfileByReferralCode(
+  code: string,
+): Promise<Profile | null> {
+  const supabase = await createServerClient();
+  const { data } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("referral_code", code)
+    .maybeSingle();
+  return data ? rowToProfile(data as ProfileRow) : null;
+}
