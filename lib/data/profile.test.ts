@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 const maybeSingle = vi.fn();
 const eq = vi.fn(() => ({ maybeSingle }));
 const select = vi.fn(() => ({ eq }));
-const from = vi.fn(() => ({ select }));
+const from = vi.fn((_t: string) => ({ select }));
 
 vi.mock("@/lib/supabase/server", () => ({
   createServerClient: async () => ({ from: (t: string) => from(t) }),
