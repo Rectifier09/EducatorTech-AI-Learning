@@ -7,6 +7,7 @@ import { saveToToolkit } from "@/app/actions/toolkit";
 import type { AiMode } from "@/lib/ai/guardrails";
 import { useAnimatedEllipsis } from "@/hooks/useAnimatedEllipsis";
 import { ArtifactRenderer } from "@/components/artifacts/ArtifactRenderer";
+import { DownloadPdfButton } from "@/components/artifacts/DownloadPdfButton";
 
 export function Playground({
   scaffold,
@@ -166,6 +167,13 @@ export function Playground({
         >
           {saved ? "Saved to Toolkit ✓" : "Save to Toolkit"}
         </Button>
+      )}
+      {output && (
+        <DownloadPdfButton
+          templateType={templateType}
+          structured={structured}
+          output={output}
+        />
       )}
     </div>
   );

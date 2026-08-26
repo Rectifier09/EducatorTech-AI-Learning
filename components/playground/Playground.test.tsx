@@ -76,4 +76,13 @@ describe("Playground", () => {
 
     await waitFor(() => expect(screen.getByText("quiz").tagName).toBe("STRONG"));
   });
+
+  it("shows a Download PDF button once a result exists", async () => {
+    requestGenerate.mockResolvedValue({ text: "Here's your worksheet." });
+    render(<Playground scaffold="Make a worksheet" />);
+    fireEvent.click(screen.getByRole("button", { name: "Generate" }));
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: "Download PDF" })).toBeInTheDocument(),
+    );
+  });
 });
