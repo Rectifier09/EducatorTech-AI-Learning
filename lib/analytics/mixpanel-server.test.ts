@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { trackServer } from "./mixpanel-server";
+import { trackServer, setProfileProperties } from "./mixpanel-server";
 
 const ORIGINAL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
 
@@ -43,5 +43,42 @@ describe("trackServer", () => {
     vi.spyOn(global, "fetch").mockRejectedValue(new Error("network down"));
 
     await expect(trackServer("lesson_started", "u1")).resolves.toBeUndefined();
+  });
+});
+
+describe("setProfileProperties", () => {
+  it("no-ops without a project token", async () => {
+    delete process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
+    const fetchSpy = vi.spyOn(global, "fetch");
+    await setProfileProperties("u1", { acquisition_source: "organic" });
+    expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
+  it("posts profile properties to Mixpanel's engage API when configured", async () => {
+    process.env.NEXT_PUBLIC_MIXPANEL_TOKEN = "test-token";
+    const fetchSpy = vi
+      .spyOn(global, "fetch")
+      .mockResolvedValue(new Response("1"));
+
+    await setProfileProperties("u1", { acquisition_source: "referral" });
+
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    const [url, init] = fetchSpy.mock.calls[0];
+    expect(url).toBe("https://api.mixpanel.com/engage");
+    const body = JSON.parse(init!.body as string);
+    expect(body[0]).toMatchObject({
+      $token: "test-token",
+      $distinct_id: "u1",
+      $set: { acquisition_source: "referral" },
+    });
+  });
+
+  it("never throws even if the network call fails", async () => {
+    process.env.NEXT_PUBLIC_MIXPANEL_TOKEN = "test-token";
+    vi.spyOn(global, "fetch").mockRejectedValue(new Error("network down"));
+
+    await expect(
+      setProfileProperties("u1", { acquisition_source: "organic" }),
+    ).resolves.toBeUndefined();
   });
 });

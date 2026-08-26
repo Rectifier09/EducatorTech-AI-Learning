@@ -32,3 +32,32 @@ export async function trackServer(
     console.error("trackServer failed:", e);
   }
 }
+
+/**
+ * Fire-and-forget profile-property mirror to Mixpanel's HTTP Engage API.
+ * NEVER throws — analytics must not break the app. No-ops if the project
+ * token isn't configured.
+ */
+export async function setProfileProperties(
+  distinctId: string,
+  props: Record<string, unknown>,
+): Promise<void> {
+  const token = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
+  if (!token) return;
+
+  try {
+    await fetch("https://api.mixpanel.com/engage", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify([
+        {
+          $token: token,
+          $distinct_id: distinctId,
+          $set: props,
+        },
+      ]),
+    });
+  } catch (e) {
+    console.error("setProfileProperties failed:", e);
+  }
+}
