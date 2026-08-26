@@ -10,6 +10,7 @@ import { ProgressDots } from "@/components/ui/ProgressDots";
 import { JourneyList } from "@/components/learn/JourneyList";
 import { ExploreList } from "@/components/learn/ExploreList";
 import { CollapsibleSection } from "@/components/learn/CollapsibleSection";
+import { ShareIconButton } from "@/components/share/ShareIconButton";
 import type { Lesson } from "@/lib/content/types";
 import type { ProgressStatus } from "@/lib/data/types";
 import type { SkillTreeData } from "@/lib/content/skilltree";
@@ -91,7 +92,10 @@ export function LearnHome({
     <div className="flex flex-col">
       {/* Full hero: greeting, gauge, continue card, streak. This is normal
           document flow — it scrolls away with the page, it isn't toggled. */}
-      <div className="flex flex-col items-center gap-4 px-6 pb-5 pt-6">
+      <div className="relative flex flex-col items-center gap-4 px-6 pb-5 pt-6">
+        <div className="absolute right-4 top-4">
+          <ShareIconButton />
+        </div>
         <p className="text-[0.95rem] font-semibold text-muted">
           {greeting}, {firstName}
         </p>
