@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteToolkitItem } from "@/app/actions/toolkit";
 import { ArtifactRenderer } from "@/components/artifacts/ArtifactRenderer";
+import { DownloadPdfButton } from "@/components/artifacts/DownloadPdfButton";
 
 export function ArtifactCard({
   id,
@@ -101,6 +102,11 @@ export function ArtifactCard({
                 >
                   {copied ? "Copied ✓" : "Copy"}
                 </button>
+                <DownloadPdfButton
+                  templateType={templateType}
+                  structured={structured}
+                  output={output}
+                />
                 <button
                   onClick={() => setConfirmingDelete(true)}
                   className="text-coral underline underline-offset-2"

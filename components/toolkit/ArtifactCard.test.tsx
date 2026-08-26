@@ -89,4 +89,17 @@ describe("ArtifactCard rendering", () => {
     fireEvent.click(screen.getByRole("button", { name: "View" }));
     expect(screen.getByText("worksheet").tagName).toBe("STRONG");
   });
+
+  it("shows a Download PDF button in the expanded view", () => {
+    render(
+      <ArtifactCard
+        id="a1"
+        title="Worksheet · Fractions"
+        output="Here is your worksheet."
+        createdAt="2026-08-20T10:00:00.000Z"
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "View" }));
+    expect(screen.getByRole("button", { name: "Download PDF" })).toBeInTheDocument();
+  });
 });
