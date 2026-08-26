@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ConfidenceGauge } from "@/components/gamification/ConfidenceGauge";
 import { LeagueBoard } from "@/components/gamification/LeagueBoard";
 import { DeleteAccount } from "@/components/you/DeleteAccount";
+import { ShareApp } from "@/components/share/ShareApp";
 import { Button } from "@/components/ui/Button";
 import type { LeagueMember } from "@/lib/data/leaderboard";
 import type { Badge } from "@/lib/gamification/badges";
@@ -79,6 +80,11 @@ export function YouProfile({
         <div className="rounded-3xl border border-line bg-surface shadow-[var(--elev-1)] p-2">
           <LeagueBoard members={league} />
         </div>
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <SectionLabel>Share SahajAiVidya</SectionLabel>
+        <ShareApp />
       </section>
 
       <form action={setAlias} className="flex gap-2">
