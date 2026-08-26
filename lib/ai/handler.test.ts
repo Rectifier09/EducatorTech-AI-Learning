@@ -137,6 +137,21 @@ describe("handleGenerate", () => {
     expect((r as { templateType?: unknown }).templateType).toBeUndefined();
   });
 
+  it("uses the archetype's own text formatter, not the generic flatten, for successful structured JSON", async () => {
+    checkRateLimit.mockResolvedValue({ allowed: true, remaining: 29 });
+    generate.mockResolvedValue({
+      text: '{"title":"Quiz","questions":[{"number":1,"prompt":"1+1?","answer":"2"}]}',
+      provider: "gemini",
+    });
+    const r = await handleGenerate({
+      userText: "Make a quiz",
+      mode: "playground",
+      artifactType: "Quiz",
+    });
+    expect((r as { text: string }).text).toContain("Q1: 1+1?");
+    expect((r as { text: string }).text).toContain("Answer: 2");
+  });
+
   it("skips JSON-mode entirely when artifactType has no archetype", async () => {
     checkRateLimit.mockResolvedValue({ allowed: true, remaining: 29 });
     generate.mockResolvedValue({ text: "Here's an activity idea", provider: "gemini" });

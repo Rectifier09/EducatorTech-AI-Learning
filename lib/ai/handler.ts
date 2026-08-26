@@ -7,6 +7,7 @@ import { logEvent } from "@/lib/data/events";
 import { archetypeForArtifactType } from "@/lib/artifacts/mapping";
 import { extractAndValidate } from "@/lib/artifacts/generateStructured";
 import { flattenStructuredToText } from "@/lib/artifacts/flatten";
+import { ARCHETYPE_TEXT_FORMATTERS } from "@/lib/artifacts/formatArchetypeText";
 
 export type GenerateResponse =
   | {
@@ -68,11 +69,13 @@ export async function handleGenerate({
     if (archetype) {
       const structured = extractAndValidate(result.text, archetype);
       if (structured) {
-        return {
-          text: flattenStructuredToText(structured),
-          templateType: archetype,
-          structured,
-        };
+        let text: string;
+        try {
+          text = ARCHETYPE_TEXT_FORMATTERS[archetype](structured);
+        } catch {
+          text = flattenStructuredToText(structured);
+        }
+        return { text, templateType: archetype, structured };
       }
     }
     return { text: result.text };
