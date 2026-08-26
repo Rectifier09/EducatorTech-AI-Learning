@@ -210,7 +210,10 @@ export function referralFunnel(input: {
     (e) => e.name === "referral_link_shared",
   ).length;
   const referred = input.profiles.filter((p) => p.referred_by);
-  const organic = input.profiles.filter((p) => !p.referred_by);
+  const referredOnboarded = referred.filter((p) => p.onboarded_at);
+  const organicOnboarded = input.profiles.filter(
+    (p) => !p.referred_by && p.onboarded_at,
+  );
   const activated = track1ActivatedUserIds(input.events);
 
   const activatedCount = (rows: ProfileRow[]) =>
@@ -219,8 +222,8 @@ export function referralFunnel(input: {
   return {
     sharesSent,
     signupsAttributed: referred.length,
-    referredActivatedPct: pct(activatedCount(referred), referred.length),
-    organicActivatedPct: pct(activatedCount(organic), organic.length),
+    referredActivatedPct: pct(activatedCount(referredOnboarded), referredOnboarded.length),
+    organicActivatedPct: pct(activatedCount(organicOnboarded), organicOnboarded.length),
   };
 }
 

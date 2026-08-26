@@ -142,30 +142,42 @@ export default async function AdminPage() {
         <h2 className="text-[11px] font-bold uppercase tracking-wide text-muted">
           Retention
         </h2>
-        <Row
-          label="Returned 7+ days after onboarding"
-          value={`${retentionReturn.retained}/${retentionReturn.eligible} (${retentionReturn.retainedPct}%)`}
-        />
-        <Row
-          label="Streak of 7+ days"
-          value={`${retentionStreak.retained}/${retentionStreak.eligible} (${retentionStreak.retainedPct}%)`}
-        />
+        {retentionReturn.eligible === 0 && retentionStreak.eligible === 0 ? (
+          <p className="text-sm text-muted">No data yet.</p>
+        ) : (
+          <>
+            <Row
+              label="Returned 7+ days after onboarding"
+              value={`${retentionReturn.retained}/${retentionReturn.eligible} (${retentionReturn.retainedPct}%)`}
+            />
+            <Row
+              label="Streak of 7+ days (all onboarded)"
+              value={`${retentionStreak.retained}/${retentionStreak.eligible} (${retentionStreak.retainedPct}%)`}
+            />
+          </>
+        )}
       </section>
 
       <section className="flex flex-col gap-2">
         <h2 className="text-[11px] font-bold uppercase tracking-wide text-muted">
           Referral
         </h2>
-        <Row label="Shares sent" value={referral.sharesSent} />
-        <Row label="Signups attributed" value={referral.signupsAttributed} />
-        <Row
-          label="Activation rate — referred users"
-          value={`${referral.referredActivatedPct}%`}
-        />
-        <Row
-          label="Activation rate — organic users"
-          value={`${referral.organicActivatedPct}%`}
-        />
+        {referral.sharesSent === 0 && referral.signupsAttributed === 0 ? (
+          <p className="text-sm text-muted">No shares yet.</p>
+        ) : (
+          <>
+            <Row label="Shares sent" value={referral.sharesSent} />
+            <Row label="Signups attributed" value={referral.signupsAttributed} />
+            <Row
+              label="Activation rate — referred users"
+              value={`${referral.referredActivatedPct}%`}
+            />
+            <Row
+              label="Activation rate — organic users"
+              value={`${referral.organicActivatedPct}%`}
+            />
+          </>
+        )}
       </section>
 
       <section className="flex flex-col gap-2">

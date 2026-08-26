@@ -213,6 +213,25 @@ describe("measurement metrics", () => {
     });
   });
 
+  it("referralFunnel excludes not-yet-onboarded users from the activation-rate denominators, but still counts every referred_by signup", () => {
+    const r = referralFunnel({
+      events: [
+        { user_id: "b", name: "ai_generate", created_at: "now", props: { trackId: "ai-foundations" } },
+      ],
+      profiles: [
+        { user_id: "b", onboarded_at: "now", referred_by: "a" }, // referred, onboarded, activated
+        { user_id: "f", onboarded_at: null, referred_by: "a" }, // referred, NOT onboarded — counts toward signupsAttributed only
+        { user_id: "g", onboarded_at: null, referred_by: null }, // organic, NOT onboarded — excluded entirely
+      ],
+    });
+    expect(r).toEqual({
+      sharesSent: 0,
+      signupsAttributed: 2,
+      referredActivatedPct: 100,
+      organicActivatedPct: 0,
+    });
+  });
+
   it("isAdmin gates by the allow-list", () => {
     expect(isAdmin("prashantpps09@gmail.com")).toBe(true);
     expect(isAdmin("someone@else.com")).toBe(false);
