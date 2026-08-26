@@ -6,6 +6,7 @@ import {
   journeyFunnel,
   reflectionValueByLesson,
   lessonHealthRanking,
+  acquisitionBySource,
 } from "./metrics";
 import { isAdmin } from "@/lib/admin";
 
@@ -120,6 +121,19 @@ describe("measurement metrics", () => {
     expect(ranked.map((r) => r.lessonId)).toEqual(["l1", "l2"]);
     expect(ranked.every((r) => r.concern > 0)).toBe(true);
     expect(ranked.find((r) => r.lessonId === "l2")!.reason).toContain("low reflection");
+  });
+
+  it("acquisitionBySource buckets onboarded_at into Monday-start weeks, split organic vs referred", () => {
+    const weeks = acquisitionBySource([
+      { user_id: "a", onboarded_at: "2026-08-24T10:00:00Z", referred_by: null }, // Monday
+      { user_id: "b", onboarded_at: "2026-08-26T10:00:00Z", referred_by: "r1" }, // Wednesday, same week
+      { user_id: "c", onboarded_at: "2026-08-31T10:00:00Z", referred_by: null }, // next Monday
+      { user_id: "d", onboarded_at: null }, // not onboarded — excluded
+    ]);
+    expect(weeks).toEqual([
+      { weekStart: "2026-08-24", organic: 1, referred: 1 },
+      { weekStart: "2026-08-31", organic: 1, referred: 0 },
+    ]);
   });
 
   it("isAdmin gates by the allow-list", () => {

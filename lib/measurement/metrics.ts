@@ -5,6 +5,9 @@ import type { Attitude } from "@/lib/data/types";
 export interface ProfileRow {
   user_id: string;
   onboarded_at: string | null;
+  /** Optional: only populated by callers that fetched it (Acquisition/Referral
+   *  sections). Missing or null both mean "not referred" (organic). */
+  referred_by?: string | null;
 }
 export interface ProgressRow {
   user_id: string;
@@ -61,6 +64,39 @@ export function activationCounts(input: {
     smallWin: smallWinUsers.size,
     completedTrack: completedFor(ns("l7")).size,
   };
+}
+
+function mondayOf(isoDateTime: string): string {
+  const d = new Date(isoDateTime);
+  const day = d.getUTCDay();
+  const diff = (day === 0 ? -6 : 1) - day;
+  const monday = new Date(
+    Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + diff),
+  );
+  return monday.toISOString().slice(0, 10);
+}
+
+export interface AcquisitionWeek {
+  /** Monday of the week, YYYY-MM-DD (UTC). */
+  weekStart: string;
+  organic: number;
+  referred: number;
+}
+
+/** New signups per week (Monday-start, UTC), split organic vs. referred. */
+export function acquisitionBySource(profiles: ProfileRow[]): AcquisitionWeek[] {
+  const byWeek = new Map<string, { organic: number; referred: number }>();
+  for (const p of profiles) {
+    if (!p.onboarded_at) continue;
+    const week = mondayOf(p.onboarded_at);
+    const cur = byWeek.get(week) ?? { organic: 0, referred: 0 };
+    if (p.referred_by) cur.referred += 1;
+    else cur.organic += 1;
+    byWeek.set(week, cur);
+  }
+  return [...byWeek.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([weekStart, counts]) => ({ weekStart, ...counts }));
 }
 
 /** Mean using/trust confidence change across users with both surveys. */
