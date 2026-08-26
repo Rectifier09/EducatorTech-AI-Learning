@@ -7,6 +7,7 @@ import {
   reflectionValueByLesson,
   lessonHealthRanking,
   acquisitionBySource,
+  track1Activation,
 } from "./metrics";
 import { isAdmin } from "@/lib/admin";
 
@@ -134,6 +135,20 @@ describe("measurement metrics", () => {
       { weekStart: "2026-08-24", organic: 1, referred: 1 },
       { weekStart: "2026-08-31", organic: 1, referred: 0 },
     ]);
+  });
+
+  it("track1Activation counts distinct users with an ai_generate event scoped to Track 1", () => {
+    const r = track1Activation({
+      events: [
+        { user_id: "a", name: "ai_generate", created_at: "now", props: { trackId: "ai-foundations" } },
+        { user_id: "a", name: "ai_generate", created_at: "now", props: { trackId: "ai-foundations" } },
+        { user_id: "b", name: "ai_generate", created_at: "now", props: { trackId: "other-track" } },
+        { user_id: "c", name: "ai_generate", created_at: "now" },
+        { user_id: "d", name: "lesson_started", created_at: "now", props: { trackId: "ai-foundations" } },
+      ],
+      onboardedCount: 4,
+    });
+    expect(r).toEqual({ activated: 1, activatedPct: 25 });
   });
 
   it("isAdmin gates by the allow-list", () => {

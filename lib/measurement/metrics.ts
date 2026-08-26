@@ -99,6 +99,32 @@ export function acquisitionBySource(profiles: ProfileRow[]): AcquisitionWeek[] {
     .map(([weekStart, counts]) => ({ weekStart, ...counts }));
 }
 
+/** Distinct user ids with an ai_generate event scoped to Track 1 (Foundations). */
+function track1ActivatedUserIds(events: EventRow[]): Set<string> {
+  const ids = new Set<string>();
+  for (const e of events) {
+    if (e.name !== "ai_generate") continue;
+    if (e.props?.trackId !== FOUNDATIONS_TRACK_ID) continue;
+    ids.add(e.user_id);
+  }
+  return ids;
+}
+
+export interface Track1Activation {
+  activated: number;
+  activatedPct: number;
+}
+
+/** Activation defined as: first (any) ai_generate action scoped to Track 1.
+ *  Additive to activationCounts — does not replace it. */
+export function track1Activation(input: {
+  events: EventRow[];
+  onboardedCount: number;
+}): Track1Activation {
+  const activated = track1ActivatedUserIds(input.events).size;
+  return { activated, activatedPct: pct(activated, input.onboardedCount) };
+}
+
 /** Mean using/trust confidence change across users with both surveys. */
 export function avgConfidenceDelta(rows: SurveyRow[]): {
   n: number;
