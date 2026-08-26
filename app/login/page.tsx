@@ -2,7 +2,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/auth";
 import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
-import { MascotGuide } from "@/components/brand/MascotGuide";
 
 export const dynamic = "force-dynamic";
 
@@ -41,9 +40,11 @@ export default async function LoginPage() {
           </li>
         </ul>
 
-        <div className="mt-8">
-          <MascotGuide mood="welcome" caption="Welcome, colleague. Let's get you started." />
-        </div>
+        <p className="mt-8 text-[15px] font-semibold text-brand-ink">
+          Built for educators, not engineers — SahajAiVidya turns AI &amp;
+          Tech into something you can actually use in your classroom, one
+          short lesson at a time.
+        </p>
       </div>
 
       <div>
