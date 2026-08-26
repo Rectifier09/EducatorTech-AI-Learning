@@ -4,6 +4,7 @@ import { Fraunces, Mulish } from "next/font/google";
 import "./globals.css";
 import { APP_NAME, APP_TAGLINE } from "@/lib/config";
 import { BottomTabBar } from "@/components/nav/BottomTabBar";
+import { RouteProgressBar } from "@/components/nav/RouteProgressBar";
 import { AnalyticsInit } from "@/components/analytics/AnalyticsInit";
 import { getSessionUser } from "@/lib/auth";
 
@@ -37,6 +38,7 @@ export default async function RootLayout({
     >
       <body className="min-h-full bg-paper text-ink">
         <AnalyticsInit userId={user?.id ?? null} />
+        <RouteProgressBar />
         <div className="mx-auto flex min-h-full w-full max-w-md flex-col">
           {children}
           <BottomTabBar />
