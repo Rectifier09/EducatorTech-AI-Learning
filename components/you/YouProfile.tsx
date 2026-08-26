@@ -83,7 +83,6 @@ export function YouProfile({
       </section>
 
       <section className="flex flex-col gap-3">
-        <SectionLabel>Share SahajAiVidya</SectionLabel>
         <ShareApp />
       </section>
 

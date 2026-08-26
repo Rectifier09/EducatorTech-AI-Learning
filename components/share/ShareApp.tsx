@@ -9,8 +9,12 @@ export function ShareApp() {
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const c = await getOrCreateReferralCode();
-      if (!cancelled) setCode(c);
+      try {
+        const c = await getOrCreateReferralCode();
+        if (!cancelled) setCode(c);
+      } catch (e) {
+        console.error("Failed to load referral code:", e);
+      }
     })();
     return () => {
       cancelled = true;

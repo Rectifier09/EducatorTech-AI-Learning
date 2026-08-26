@@ -24,19 +24,28 @@ export async function GET(request: Request) {
 
 /**
  * If a referral cookie is pending and this is a genuinely new user
- * (no profile row yet), attribute the signup and clear the cookie.
- * Never overwrites an existing user's referred_by, and never lets a
- * user be attributed as their own referrer.
+ * (no profile row yet), attribute the signup. Never overwrites an
+ * existing user's referred_by, and never lets a user be attributed as
+ * their own referrer. Never lets a failure in this path break sign-in —
+ * attribution is tracking-only, matching this codebase's existing
+ * `logEvent` convention that analytics must not break the app — and
+ * always clears the cookie so a poisoned value can't wedge a user on
+ * every retry.
  */
 async function captureReferral(userId: string): Promise<void> {
   const cookieStore = await cookies();
   const referredBy = cookieStore.get("referred_by")?.value;
   if (!referredBy || referredBy === userId) return;
 
-  const existing = await getProfile(userId);
-  if (existing) return;
+  try {
+    const existing = await getProfile(userId);
+    if (existing) return;
 
-  await upsertProfile(userId, { referredBy });
-  await logEvent("referral_signup", { referredBy });
-  cookieStore.delete("referred_by");
+    await upsertProfile(userId, { referredBy });
+    await logEvent("referral_signup", { referredBy });
+  } catch (e) {
+    console.error("captureReferral failed:", e);
+  } finally {
+    cookieStore.delete("referred_by");
+  }
 }

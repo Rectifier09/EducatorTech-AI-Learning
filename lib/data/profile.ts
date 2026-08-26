@@ -1,4 +1,5 @@
 import { createServerClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import type { Profile } from "./types";
 import { rowToProfile, profileToRow, type ProfileRow } from "./mappers";
 
@@ -29,12 +30,16 @@ export async function upsertProfile(
 
 export async function getProfileByReferralCode(
   code: string,
-): Promise<Profile | null> {
-  const supabase = await createServerClient();
-  const { data } = await supabase
+): Promise<{ userId: string } | null> {
+  const admin = createAdminClient();
+  const { data, error } = await admin
     .from("profiles")
-    .select("*")
+    .select("user_id")
     .eq("referral_code", code)
     .maybeSingle();
-  return data ? rowToProfile(data as ProfileRow) : null;
+  if (error) {
+    console.error("getProfileByReferralCode failed:", error);
+    return null;
+  }
+  return data ? { userId: data.user_id as string } : null;
 }

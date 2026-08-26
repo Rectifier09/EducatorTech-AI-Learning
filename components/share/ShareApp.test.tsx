@@ -38,4 +38,11 @@ describe("ShareApp", () => {
     const { container } = render(<ShareApp />);
     expect(container).toBeEmptyDOMElement();
   });
+
+  it("does not crash and stays rendering nothing when getOrCreateReferralCode rejects", async () => {
+    getOrCreateReferralCode.mockRejectedValue(new Error("Could not generate a referral code"));
+    const { container } = render(<ShareApp />);
+    await waitFor(() => expect(getOrCreateReferralCode).toHaveBeenCalled());
+    expect(container).toBeEmptyDOMElement();
+  });
 });

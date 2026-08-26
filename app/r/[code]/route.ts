@@ -13,6 +13,7 @@ export async function GET(
   if (referrer) {
     response.cookies.set("referred_by", referrer.userId, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 30,
       path: "/",
     });

@@ -72,4 +72,12 @@ describe("auth callback", () => {
     expect(res.headers.get("location")).toBe("https://app.test/login?error=auth");
     expect(upsertProfile).not.toHaveBeenCalled();
   });
+
+  it("still redirects to next and clears the cookie even when attribution fails", async () => {
+    get.mockReturnValue({ value: "referrer-1" });
+    upsertProfile.mockRejectedValue(new Error("db down"));
+    const res = await GET(new Request("https://app.test/auth/callback?code=abc"));
+    expect(res.headers.get("location")).toBe("https://app.test/");
+    expect(del).toHaveBeenCalledWith("referred_by");
+  });
 });
