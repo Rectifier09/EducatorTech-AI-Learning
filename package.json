@@ -13,6 +13,7 @@
     "db:migrate": "node --env-file=.env.local scripts/apply-migration.mjs"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^4.8.1",
     "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "^2.112.3",
     "mixpanel-browser": "^2.82.1",
