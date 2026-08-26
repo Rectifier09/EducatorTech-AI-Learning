@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { RewardMoment } from "@/components/reward/RewardMoment";
+import { ShareApp } from "@/components/share/ShareApp";
 import type { Badge } from "@/lib/gamification/badges";
 
 export function LessonComplete({
@@ -49,9 +50,14 @@ export function LessonComplete({
         secondaryLabel={nextHref ? "Back to Learn" : undefined}
         onSecondary={nextHref ? () => router.push("/learn") : undefined}
       >
-        {score < 100
-          ? "Nice work — review anytime to sharpen up."
-          : "Nice work — perfect run."}
+        <>
+          {score < 100
+            ? "Nice work — review anytime to sharpen up."
+            : "Nice work — perfect run."}
+          <div className="mt-4">
+            <ShareApp />
+          </div>
+        </>
       </RewardMoment>
     </main>
   );
