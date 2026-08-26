@@ -9,8 +9,14 @@ import {
   journeyFunnel,
   reflectionValueByLesson,
   lessonHealthRanking,
+  acquisitionBySource,
+  track1Activation,
+  retentionD7,
+  retentionByStreak,
+  referralFunnel,
   type SurveyRow,
   type EventRow,
+  type ProfileRow,
   type TrackInput,
 } from "@/lib/measurement/metrics";
 import { getSkillTree } from "@/lib/content/skilltree";
@@ -41,7 +47,7 @@ export default async function AdminPage() {
 
   const admin = createAdminClient();
   const [profiles, progress, events, surveys, notify] = await Promise.all([
-    admin.from("profiles").select("user_id, onboarded_at"),
+    admin.from("profiles").select("user_id, onboarded_at, referred_by"),
     admin.from("progress").select("user_id, lesson_id, status"),
     admin.from("events").select("user_id, name, created_at, props"),
     admin
@@ -58,6 +64,13 @@ export default async function AdminPage() {
     progress: progressRows,
     events: eventRows,
   });
+
+  const profileRows = (profiles.data ?? []) as ProfileRow[];
+  const acquisition = acquisitionBySource(profileRows);
+  const track1 = track1Activation({ events: eventRows, onboardedCount: funnel.onboarded });
+  const retentionReturn = retentionD7({ profiles: profileRows, events: eventRows });
+  const retentionStreak = retentionByStreak({ profiles: profileRows, events: eventRows });
+  const referral = referralFunnel({ events: eventRows, profiles: profileRows });
   const delta = avgConfidenceDelta((surveys.data ?? []) as SurveyRow[]);
   const demand = notifyDemand(notify.data ?? []);
 
@@ -86,6 +99,23 @@ export default async function AdminPage() {
 
       <section className="flex flex-col gap-2">
         <h2 className="text-[11px] font-bold uppercase tracking-wide text-muted">
+          Acquisition — new signups by source
+        </h2>
+        {acquisition.length === 0 ? (
+          <p className="text-sm text-muted">No signups yet.</p>
+        ) : (
+          acquisition.map((w) => (
+            <Row
+              key={w.weekStart}
+              label={`Week of ${w.weekStart}`}
+              value={`${w.organic} organic · ${w.referred} referred`}
+            />
+          ))
+        )}
+      </section>
+
+      <section className="flex flex-col gap-2">
+        <h2 className="text-[11px] font-bold uppercase tracking-wide text-muted">
           Activation funnel
         </h2>
         <Row label="Onboarded" value={funnel.onboarded} />
@@ -101,6 +131,40 @@ export default async function AdminPage() {
           value={`${funnel.completedTrack} (${completePct}%)`}
           pass={completePct >= 40}
           target="≥40%"
+        />
+        <Row
+          label="Activated Track 1 (first generate)"
+          value={`${track1.activated} (${track1.activatedPct}%)`}
+        />
+      </section>
+
+      <section className="flex flex-col gap-2">
+        <h2 className="text-[11px] font-bold uppercase tracking-wide text-muted">
+          Retention
+        </h2>
+        <Row
+          label="Returned 7+ days after onboarding"
+          value={`${retentionReturn.retained}/${retentionReturn.eligible} (${retentionReturn.retainedPct}%)`}
+        />
+        <Row
+          label="Streak of 7+ days"
+          value={`${retentionStreak.retained}/${retentionStreak.eligible} (${retentionStreak.retainedPct}%)`}
+        />
+      </section>
+
+      <section className="flex flex-col gap-2">
+        <h2 className="text-[11px] font-bold uppercase tracking-wide text-muted">
+          Referral
+        </h2>
+        <Row label="Shares sent" value={referral.sharesSent} />
+        <Row label="Signups attributed" value={referral.signupsAttributed} />
+        <Row
+          label="Activation rate — referred users"
+          value={`${referral.referredActivatedPct}%`}
+        />
+        <Row
+          label="Activation rate — organic users"
+          value={`${referral.organicActivatedPct}%`}
         />
       </section>
 
