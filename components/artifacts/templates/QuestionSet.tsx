@@ -46,6 +46,7 @@ export function QuestionSet({ data }: { data: QuestionSetData }) {
       <div>
         <button
           onClick={() => setShowAnswers((s) => !s)}
+          aria-expanded={showAnswers}
           className="text-[13px] font-extrabold text-brand-ink underline underline-offset-2"
         >
           {showAnswers ? "Hide answer key" : "Show answer key"}

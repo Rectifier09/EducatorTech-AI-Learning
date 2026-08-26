@@ -13,4 +13,13 @@ describe("GenericPdf", () => {
   it("builds a PDF from empty text without throwing", async () => {
     await expect(pdf(<GenericPdf output={""} />).toBuffer()).resolves.toBeTruthy();
   });
+
+  it("strips heading markers and renders bold spans instead of literal markdown", () => {
+    const element = GenericPdf({ output: "### Heading\nHere is **bold** text." });
+    const rendered = JSON.stringify(element);
+    expect(rendered).not.toContain("###");
+    expect(rendered).not.toContain("**");
+    expect(rendered).toContain("Heading");
+    expect(rendered).toContain("bold");
+  });
 });

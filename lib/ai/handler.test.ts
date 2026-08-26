@@ -149,7 +149,7 @@ describe("handleGenerate", () => {
       artifactType: "Quiz",
     });
     expect((r as { text: string }).text).toContain("Q1: 1+1?");
-    expect((r as { text: string }).text).toContain("Answer: 2");
+    expect((r as { text: string }).text).toContain("Answer: Q1 — 2");
   });
 
   it("skips JSON-mode entirely when artifactType has no archetype", async () => {

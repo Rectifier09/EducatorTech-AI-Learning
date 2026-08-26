@@ -2,12 +2,12 @@ import type { ReactNode } from "react";
 
 export function ArtifactHeading({ children }: { children: ReactNode }) {
   return (
-    <p
+    <h3
       className="text-[16px] font-semibold text-ink"
       style={{ fontFamily: "var(--font-display)" }}
     >
       {children}
-    </p>
+    </h3>
   );
 }
 

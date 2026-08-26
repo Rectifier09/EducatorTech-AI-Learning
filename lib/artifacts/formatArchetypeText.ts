@@ -19,7 +19,11 @@ export function formatQuestionSet(data: z.infer<typeof questionSetSchema>): stri
     if (q.options && q.options.length > 0) {
       lines.push("  " + q.options.map((o, i) => `${LETTERS[i] ?? i + 1}) ${o}`).join("  "));
     }
-    lines.push(`Answer: ${q.answer}`, "");
+    lines.push("");
+  }
+  lines.push("--- Answer Key ---", "");
+  for (const q of data.questions) {
+    lines.push(`Answer: Q${q.number} — ${q.answer}`);
   }
   return lines.join("\n").trim();
 }

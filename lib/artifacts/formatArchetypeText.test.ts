@@ -18,7 +18,8 @@ describe("formatArchetypeText", () => {
     expect(text).toContain("Q1: 1+1?");
     expect(text).toContain("A) 1");
     expect(text).toContain("B) 2");
-    expect(text).toContain("Answer: 2");
+    expect(text).toContain("Answer: Q1 — 2");
+    expect(text).toContain("--- Answer Key ---");
   });
 
   it("formats an outline with the title, headings, time estimates, and indented bullets", () => {

@@ -28,9 +28,11 @@ export function QuestionSetPdf({ data }: { data: QuestionSetData }) {
             )}
           </View>
         ))}
-        <Text style={pdfStyles.subheading}>Answer key</Text>
+      </Page>
+      <Page style={pdfStyles.page}>
+        <Text style={pdfStyles.title}>{data.title} — Answer Key</Text>
         {data.questions.map((q) => (
-          <Text key={`a-${q.number}`} style={pdfStyles.muted}>
+          <Text key={`a-${q.number}`} style={pdfStyles.body}>
             {q.number}. {q.answer}
           </Text>
         ))}
