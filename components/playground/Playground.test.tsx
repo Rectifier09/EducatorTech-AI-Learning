@@ -69,6 +69,16 @@ describe("Playground", () => {
     expect(artifactType).toBe("Quiz");
   });
 
+  it("passes trackId through to requestGenerate when set", async () => {
+    requestGenerate.mockResolvedValue({ text: "Here is a quiz" });
+    render(<Playground scaffold="Make a quiz" trackId="ai-foundations" />);
+    fireEvent.click(screen.getByRole("button", { name: "Generate" }));
+
+    await waitFor(() => expect(requestGenerate).toHaveBeenCalled());
+    const [, , , , trackId] = requestGenerate.mock.calls[0];
+    expect(trackId).toBe("ai-foundations");
+  });
+
   it("renders the result through ArtifactRenderer, formatting markdown", async () => {
     requestGenerate.mockResolvedValue({ text: "Here is your **quiz**." });
     render(<Playground scaffold="Make a quiz" />);

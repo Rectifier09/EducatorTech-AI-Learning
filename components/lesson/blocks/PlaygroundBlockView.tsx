@@ -99,6 +99,7 @@ export function PlaygroundBlockView({
         mode="playground"
         artifactType={choice || null}
         lessonId={lessonId}
+        trackId={trackId}
         allowSave={false}
         onResult={(text, prompt, templateType, structured) => {
           onArtifact(text);

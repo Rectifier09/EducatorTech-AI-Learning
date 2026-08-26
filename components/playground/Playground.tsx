@@ -18,6 +18,7 @@ export function Playground({
   allowSave = true,
   artifactType = null,
   lessonId = null,
+  trackId = null,
 }: {
   scaffold: string;
   mode?: AiMode;
@@ -33,6 +34,7 @@ export function Playground({
   allowSave?: boolean;
   artifactType?: string | null;
   lessonId?: string | null;
+  trackId?: string | null;
 }) {
   const [prompt, setPrompt] = useState(seedContent ?? scaffold);
   const [output, setOutput] = useState<string | null>(null);
@@ -65,7 +67,7 @@ export function Playground({
     const userText = context
       ? `Here is my current material:\n\n${context}\n\nNow do this: ${prompt}`
       : prompt;
-    const r = await requestGenerate(userText, mode, controller.signal, artifactType);
+    const r = await requestGenerate(userText, mode, controller.signal, artifactType, trackId);
     if (controller.signal.aborted) return; // cancelled — UI already reset
     setBusy(false);
     if ("error" in r) {
