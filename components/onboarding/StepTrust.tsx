@@ -1,6 +1,5 @@
 "use client";
 
-import { MascotGuide } from "@/components/brand/MascotGuide";
 import { Button } from "@/components/ui/Button";
 import { trustMessage } from "@/lib/onboarding/trustCopy";
 import type { Attitude } from "@/lib/data/types";
@@ -16,7 +15,6 @@ export function StepTrust({
   return (
     <div className="flex flex-1 flex-col justify-between gap-6">
       <div className="flex flex-1 flex-col justify-center gap-5">
-        <MascotGuide mood={m.mascotMood} size={64} />
         <h1
           className="text-[28px] leading-tight font-semibold text-balance"
           style={{ fontFamily: "var(--font-display)" }}

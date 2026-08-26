@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
-import { MascotGuide } from "@/components/brand/MascotGuide";
 import { completeOnboarding } from "@/app/actions/onboarding";
 import { buildTasteExample } from "@/lib/onboarding/tasteTemplate";
 import { requestGenerate } from "@/lib/ai/client";
@@ -48,10 +47,12 @@ export function StepTaste({
   return (
     <div className="flex flex-1 flex-col justify-between gap-6">
       <div className="flex flex-col gap-4">
-        <MascotGuide
-          mood="cheer"
-          caption="Before anything else — a small demonstration. Watch what AI does with one line of instruction."
-        />
+        <p
+          className="text-[15px] font-semibold text-brand-ink"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          This is what walks out of the box — see it for your subject.
+        </p>
         <div className="flex flex-col gap-1.5">
           <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-muted">
             What we asked

@@ -7,7 +7,7 @@ import { saveOnboardingField } from "@/app/actions/onboarding";
 export function StepRole({ onNext }: { onNext: () => void }) {
   return (
     <ChoiceStep
-      caption="First up —"
+      valueProp="Every worksheet, tuned to how you actually teach."
       prompt="What best describes you?"
       options={ROLE_OPTIONS}
       onSelect={async (role) => {

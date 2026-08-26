@@ -11,7 +11,7 @@ export function StepSubject({
 }) {
   return (
     <ChoiceStep
-      caption="And what do you mostly teach?"
+      valueProp="From lesson plans to quizzes — one tool for your whole week."
       prompt="Your subject"
       options={SUBJECT_OPTIONS}
       onSelect={async (subject) => {

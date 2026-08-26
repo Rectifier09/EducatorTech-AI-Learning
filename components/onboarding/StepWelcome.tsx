@@ -1,6 +1,5 @@
 "use client";
 
-import { MascotGuide } from "@/components/brand/MascotGuide";
 import { Button } from "@/components/ui/Button";
 
 export function StepWelcome({
@@ -12,17 +11,19 @@ export function StepWelcome({
 }) {
   return (
     <div className="flex flex-1 flex-col justify-between gap-6">
-      <div className="flex flex-1 flex-col justify-center gap-6">
-        <MascotGuide
-          mood="welcome"
-          size={64}
-          caption={`Welcome${firstName ? `, ${firstName}` : ""}. I'm Ravi — a teacher, like you.`}
-        />
+      <div className="flex flex-1 flex-col justify-center gap-4">
+        <p
+          className="text-[15px] font-semibold text-brand-ink"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          Built for the classroom, not for prompt engineers.
+        </p>
         <h1
           className="text-[28px] leading-tight font-semibold text-balance"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Let&apos;s set this up around what you teach — takes a minute.
+          {firstName ? `Welcome, ${firstName}.` : "Welcome."} Let&apos;s set
+          this up around what you teach — takes a minute.
         </h1>
       </div>
       <Button variant="primary" onClick={onNext} className="w-full">

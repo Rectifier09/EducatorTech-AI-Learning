@@ -11,7 +11,7 @@ export function StepGrade({
 }) {
   return (
     <ChoiceStep
-      caption="Which grades, mostly?"
+      valueProp="Same rigor, pitched right for your students."
       prompt="Grade level"
       options={GRADE_OPTIONS}
       onSelect={async (gradeBand) => {

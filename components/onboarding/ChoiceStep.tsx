@@ -1,17 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { MascotGuide } from "@/components/brand/MascotGuide";
 
-/** A single-tap choice step: mascot prompt + a column of option chips. */
+/** A single-tap choice step: a value-prop line + a column of option chips. */
 export function ChoiceStep({
   prompt,
-  caption,
+  valueProp,
   options,
   onSelect,
 }: {
   prompt: string;
-  caption?: string;
+  valueProp?: string;
   options: string[];
   onSelect: (value: string) => Promise<void> | void;
 }) {
@@ -25,7 +24,14 @@ export function ChoiceStep({
 
   return (
     <div className="flex flex-1 flex-col gap-6">
-      {caption ? <MascotGuide mood="welcome" caption={caption} /> : null}
+      {valueProp ? (
+        <p
+          className="text-[15px] font-semibold text-brand-ink"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          {valueProp}
+        </p>
+      ) : null}
       <h1
         className="text-[28px] leading-tight font-semibold text-balance"
         style={{ fontFamily: "var(--font-display)" }}
