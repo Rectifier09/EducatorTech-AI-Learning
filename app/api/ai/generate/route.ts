@@ -8,12 +8,15 @@ export async function POST(request: Request) {
   const mode: AiMode = body.mode ?? "playground";
   const artifactType: string | null =
     typeof body.artifactType === "string" ? body.artifactType : null;
+  const trackId: string | null =
+    typeof body.trackId === "string" ? body.trackId : null;
 
   const result = await handleGenerate({
     userText,
     mode,
     signal: request.signal,
     artifactType,
+    trackId,
   });
 
   if ("error" in result) {

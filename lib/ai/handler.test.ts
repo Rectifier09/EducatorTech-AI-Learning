@@ -165,4 +165,28 @@ describe("handleGenerate", () => {
       expect.objectContaining({ system: expect.not.stringMatching(/JSON/) }),
     );
   });
+
+  it("includes trackId in the logged ai_generate event when provided", async () => {
+    checkRateLimit.mockResolvedValue({ allowed: true, remaining: 29 });
+    generate.mockResolvedValue({ text: "Here is a worksheet", provider: "gemini" });
+    await handleGenerate({
+      userText: "Make a worksheet",
+      mode: "playground",
+      trackId: "ai-foundations",
+    });
+    expect(logEvent).toHaveBeenCalledWith(
+      "ai_generate",
+      expect.objectContaining({ trackId: "ai-foundations" }),
+    );
+  });
+
+  it("logs trackId: null when the caller doesn't provide one", async () => {
+    checkRateLimit.mockResolvedValue({ allowed: true, remaining: 29 });
+    generate.mockResolvedValue({ text: "Here is a worksheet", provider: "gemini" });
+    await handleGenerate({ userText: "Make a worksheet", mode: "playground" });
+    expect(logEvent).toHaveBeenCalledWith(
+      "ai_generate",
+      expect.objectContaining({ trackId: null }),
+    );
+  });
 });

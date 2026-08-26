@@ -22,11 +22,13 @@ export async function handleGenerate({
   mode,
   signal,
   artifactType = null,
+  trackId = null,
 }: {
   userText: string;
   mode: AiMode;
   signal?: AbortSignal;
   artifactType?: string | null;
+  trackId?: string | null;
 }): Promise<GenerateResponse> {
   const user = await getSessionUser();
   if (!user) return { error: "Please sign in.", code: "unauthorized" };
@@ -65,7 +67,7 @@ export async function handleGenerate({
       signal,
       maxTokens: archetype ? 2048 : undefined,
     });
-    await logEvent("ai_generate", { mode, provider: result.provider });
+    await logEvent("ai_generate", { mode, provider: result.provider, trackId });
     if (archetype) {
       const structured = extractAndValidate(result.text, archetype);
       if (structured) {

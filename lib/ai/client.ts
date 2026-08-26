@@ -13,12 +13,13 @@ export async function requestGenerate(
   mode: AiMode = "playground",
   signal?: AbortSignal,
   artifactType?: string | null,
+  trackId?: string | null,
 ): Promise<GenerateReply> {
   try {
     const res = await fetch("/api/ai/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userText, mode, artifactType }),
+      body: JSON.stringify({ userText, mode, artifactType, trackId }),
       signal,
     });
     return (await res.json()) as GenerateReply;
