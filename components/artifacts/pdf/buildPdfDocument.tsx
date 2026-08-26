@@ -25,6 +25,7 @@ export function buildPdfDocument({
   templateType?: string | null;
   structured?: Record<string, unknown> | null;
   output: string;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- dispatcher returns one of 7 possible PDF element types; only consumer (DownloadPdfButton) never reads .props
 }): ReactElement<any> {
   if (structured) {
     switch (templateType as ArchetypeId | null | undefined) {
